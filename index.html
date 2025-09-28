@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=3.0">
+    <title>TASK Energy - Job Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --card-shadow-hover: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .dashboard-container {
+            max-width: 100%;
+            margin: 0;
+            background: white;
+            min-height: 100vh;
+        }
+
+        /* Mobile-First Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Mobile Stats Bar */
+        .stats-bar {
+            background: var(--light-bg);
+            padding: 15px 10px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px 5px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary-color);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
+        /* Mobile Controls */
+        .controls {
+            padding: 15px;
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            position: sticky;
+            top: 140px;
+            z-index: 90;
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .search-box:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #6c757d;
+        }
+
+        /* Mobile Filter Chips */
+        .filter-container {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .filter-container::-webkit-scrollbar {
+            height: 3px;
+        }
+
+        .filter-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .filter-container::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 3px;
+        }
+
+        .filter-chip {
+            padding: 8px 16px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            min-width: fit-content;
+            touch-action: manipulation;
+        }
+
+        .filter-chip.active {
+            background: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+
+        .filter-chip:active {
+            transform: scale(0.95);
+        }
+
+        /* Mobile Refresh Button */
+        .refresh-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--card-shadow-hover);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+        }
+
+        .refresh-btn:active {
+            transform: scale(0.9);
+        }
+
+        .refresh-btn.spinning {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mobile Job Cards */
+        .jobs-container {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-bottom: 100px; /* Space for floating button */
+        }
+
+        .job-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-left: 5px solid var(--secondary-color);
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        .job-card:active {
+            transform: scale(0.98);
+        }
+
+        .job-card.priority-urgent { border-left-color: var(--danger-color); }
+        .job-card.priority-high { border-left-color: var(--warning-color); }
+        .job-card.priority-normal { border-left-color: var(--secondary-color); }
+        .job-card.priority-low { border-left-color: #95a5a6; }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .job-id {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            flex: 1;
+            min-width: 0;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .status-new { background: #e3f2fd; color: #1976d2; }
+        .status-approved { background: #e8f5e8; color: #2e7d32; }
+        .status-rejected { background: #ffebee; color: #c62828; }
+        .status-pending { background: #fff3e0; color: #f57c00; }
+
+        /* Mobile Grid Layout */
+        .job-details {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .job-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .job-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .job-detail.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .job-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .job-value {
+            font-size: 0.95rem;
+            color: var(--primary-color);
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .job-value.highlight {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        /* Priority Indicator */
+        .priority-dot {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--secondary-color);
+        }
+
+        .priority-urgent .priority-dot { background: var(--danger-color); }
+        .priority-high .priority-dot { background: var(--warning-color); }
+        .priority-normal .priority-dot { background: var(--secondary-color); }
+        .priority-low .priority-dot { background: #95a5a6; }
+
+        /* Loading States */
+        .loading, .error, .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .loading {
+            font-size: 1.1rem;
+        }
+
+        .error {
+            color: var(--danger-color);
+        }
+
+        .no-results {
+            font-size: 1rem;
+        }
+
+        /* Pull to Refresh Indicator */
+        .pull-refresh {
+            position: fixed;
+            top: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            display: none;
+            z-index: 1000;
+        }
+
+        /* Tablet Styles */
+        @media (min-width: 768px) {
+            .dashboard-container {
+                max-width: 800px;
+                margin: 0 auto;
+                border-radius: 0;
+            }
+
+            .header {
+                border-radius: 0;
+            }
+
+            .stats-bar {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 15px;
+                padding: 20px;
+            }
+
+            .jobs-container {
+                padding: 20px;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                gap: 20px;
+            }
+
+            .job-details {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Desktop Styles */
+        @media (min-width: 1024px) {
+            .dashboard-container {
+                max-width: 1200px;
+            }
+
+            .jobs-container {
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                gap: 25px;
+                padding: 30px;
+            }
+
+            .controls {
+                padding: 20px 30px;
+            }
+
+            .filter-container {
+                justify-content: center;
+            }
+        }
+
+        /* Dark Mode Support */
+        @media (prefers-color-scheme: dark) {
+            .dashboard-container {
+                background: #1a1a1a;
+                color: #ffffff;
+            }
+            
+            .job-card {
+                background: #2d2d2d;
+                color: #ffffff;
+            }
+            
+            .search-box {
+                background: #2d2d2d;
+                color: #ffffff;
+                border-color: #404040;
+            }
+        }
+
+        /* Touch Improvements */
+        .touchable {
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* High Contrast Mode */
+        @media (prefers-contrast: high) {
+            .job-card {
+                border: 2px solid #000;
+            }
+            
+            .filter-chip {
+                border-width: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🛢️ TASK Energy</h1>
+            <p>Wireline Callout Jobs</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number" id="totalJobs">-</span>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="pendingJobs">-</span>
+                <div class="stat-label">Pending</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="approvedJobs">-</span>
+                <div class="stat-label">Approved</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="urgentJobs">-</span>
+                <div class="stat-label">Urgent</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="search-container">
+                <div class="search-icon">🔍</div>
+                <input type="text" class="search-box" id="searchInput" placeholder="Search RIG, Well, Location...">
+            </div>
+            
+            <div class="filter-container">
+                <div class="filter-chip active touchable" data-filter="all">All Jobs</div>
+                <div class="filter-chip touchable" data-filter="New Callout">New</div>
+                <div class="filter-chip touchable" data-filter="Approved">Approved</div>
+                <div class="filter-chip touchable" data-filter="Pending">Pending</div>
+                <div class="filter-chip touchable" data-filter="Rejected">Rejected</div>
+            </div>
+        </div>
+
+        <!-- Jobs Container -->
+        <div class="jobs-container" id="jobsContainer">
+            <div class="loading">📊 Loading job data...</div>
+        </div>
+
+        <!-- Floating Refresh Button -->
+        <button class="refresh-btn touchable" id="refreshBtn" onclick="loadJobs()">🔄</button>
+
+        <!-- Pull to Refresh Indicator -->
+        <div class="pull-refresh" id="pullRefresh">🔄 Pull to refresh</div>
+    </div>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            SHEET_ID: '1kS_vO8FfE94LHnv5ftsHqaHLm8Xum0l5W6NvXGlZB1A',
+            API_KEY: 'YOUR_GOOGLE_API_KEY', // Replace with your API key
+            RANGE: 'Sheet1!A1:Z1000',
+            REFRESH_INTERVAL: 5 * 60 * 1000 // 5 minutes
+        };
+
+        let allJobs = [];
+        let filteredJobs = [];
+        let refreshInterval;
+
+        // Job-related fields to display
+        const JOB_FIELDS = [
+            'calloutId', 'ticketNumber', 'rigNumber', 'rig', 'wellName', 
+            'location', 'field', 'serviceType', 'rosDate', 'equipmentDate', 
+            'crewDate', 'contactPerson', 'contactPhone', 'status', 'priority', 
+            'comments', 'authorization', 'createdDate'
+        ];
+
+        // Sample data for testing
+        const SAMPLE_JOBS = [
+            {
+                calloutId: 'CL-2025-001',
+                ticketNumber: 'TK-45891',
+                rigNumber: '45',
+                wellName: 'BURHAAN W_COREWELL-37(BRNW-14)',
+                location: 'Burhaan Main',
+                serviceType: 'Wireline GYRO Survey',
+                rosDate: '2025-09-09',
+                equipmentDate: '2025-09-08',
+                crewDate: '2025-09-08',
+                contactPerson: 'Abdullah',
+                contactPhone: '243-83412',
+                status: 'New Callout',
+                priority: 'High',
+                comments: 'ROS will be updated later',
+                authorization: 'Mohammed Al Wahaibi',
+                createdDate: '2025-09-28'
+            },
+            {
+                calloutId: 'CL-2025-002',
+                ticketNumber: 'TK-45892',
+                rigNumber: '97',
+                wellName: 'Anbar-42',
+                location: 'Anbar',
+                serviceType: 'Wireline Casing Survey',
+                rosDate: '2025-09-19',
+                equipmentDate: '2025-09-18',
+                crewDate: '2025-09-18',
+                contactPerson: 'Mohammed',
+                contactPhone: '24366132',
+                status: 'Approved',
+                priority: 'Normal',
+                comments: 'ROS to be confirmed',
+                authorization: 'TASK Operations',
+                createdDate: '2025-09-27'
+            },
+            {
+                calloutId: 'CL-2025-003',
+                ticketNumber: 'TK-45893',
+                rigNumber: '112',
+                wellName: 'Fahud North-8',
+                location: 'Fahud',
+                serviceType: 'Memory GYRO Survey',
+                rosDate: '2025-09-30',
+                equipmentDate: '2025-09-29',
+                crewDate: '2025-09-29',
+                contactPerson: 'Salem',
+                contactPhone: '91234567',
+                status: 'Pending',
+                priority: 'Urgent',
+                comments: 'Emergency callout - equipment failure',
+                authorization: 'Operations Manager',
+                createdDate: '2025-09-28'
+            }
+        ];
+
+        async function loadJobs() {
+            try {
+                showLoading();
+                
+                // For demo purposes, using sample data
+                // Replace this with your Google Sheets API call
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
+                
+                allJobs = SAMPLE_JOBS;
+                filteredJobs = [...allJobs];
+                
+                updateStats();
+                renderJobs();
+                
+                console.log(`✅ Loaded ${allJobs.length} jobs`);
+                
+            } catch (error) {
+                showError(error.message);
+                console.error('❌ Error loading jobs:', error);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function showLoading() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            refreshBtn.classList.add('spinning');
+            
+            document.getElementById('jobsContainer').innerHTML = 
+                '<div class="loading">📊 Loading fresh job data...</div>';
+        }
+
+        function hideLoading() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            refreshBtn.classList.remove('spinning');
+        }
+
+        function showError(message) {
+            document.getElementById('jobsContainer').innerHTML = 
+                `<div class="error">❌ Error: ${message}<br><small>Tap refresh to try again</small></div>`;
+        }
+
+        function updateStats() {
+            const total = allJobs.length;
+            const pending = allJobs.filter(job => job.status?.toLowerCase().includes('pending')).length;
+            const approved = allJobs.filter(job => job.status?.toLowerCase().includes('approved')).length;
+            const urgent = allJobs.filter(job => job.priority?.toLowerCase() === 'urgent').length;
+
+            document.getElementById('totalJobs').textContent = total;
+            document.getElementById('pendingJobs').textContent = pending;
+            document.getElementById('approvedJobs').textContent = approved;
+            document.getElementById('urgentJobs').textContent = urgent;
+        }
+
+        function renderJobs() {
+            const container = document.getElementById('jobsContainer');
+            
+            if (filteredJobs.length === 0) {
+                container.innerHTML = '<div class="no-results">📭 No jobs found matching your criteria</div>';
+                return;
+            }
+
+            const jobsHTML = filteredJobs.map(job => createJobCard(job)).join('');
+            container.innerHTML = jobsHTML;
+        }
+
+        function createJobCard(job) {
+            const statusClass = `status-${(job.status || 'new').toLowerCase().replace(/\s+/g, '')}`;
+            const priorityClass = `priority-${(job.priority || 'normal').toLowerCase()}`;
+            
+            return `
+                <div class="job-card ${priorityClass}" onclick="expandJob('${job.calloutId}')">
+                    <div class="priority-dot"></div>
+                    
+                    <div class="job-header">
+                        <div class="job-id">${job.calloutId || 'N/A'}</div>
+                        <div class="status-badge ${statusClass}">${job.status || 'New'}</div>
+                    </div>
+
+                    <div class="job-details">
+                        <div class="job-row">
+                            <div class="job-detail">
+                                <div class="job-label">RIG Number</div>
+                                <div class="job-value highlight">${job.rigNumber || job.rig || 'N/A'}</div>
+                            </div>
+                            <div class="job-detail">
+                                <div class="job-label">Priority</div>
+                                <div class="job-value">${job.priority || 'Normal'}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="job-detail full-width">
+                            <div class="job-label">Well Name</div>
+                            <div class="job-value">${job.wellName || 'N/A'}</div>
+                        </div>
+                        
+                        <div class="job-row">
+                            <div class="job-detail">
+                                <div class="job-label">Location</div>
+                                <div class="job-value">${job.location || job.field || 'N/A'}</div>
+                            </div>
+                            <div class="job-detail">
+                                <div class="job-label">Service</div>
+                                <div class="job-value">${job.serviceType || 'Survey'}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="job-row">
+                            <div class="job-detail">
+                                <div class="job-label">ROS Date</div>
+                                <div class="job-value highlight">${formatDate(job.rosDate)}</div>
+                            </div>
+                            <div class="job-detail">
+                                <div class="job-label">Equipment Date</div>
+                                <div class="job-value">${formatDate(job.equipmentDate)}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="job-row">
+                            <div class="job-detail">
+                                <div class="job-label">Contact</div>
+                                <div class="job-value">${job.contactPerson || 'N/A'}</div>
+                            </div>
+                            <div class="job-detail">
+                                <div class="job-label">Phone</div>
+                                <div class="job-value">${job.contactPhone || 'N/A'}</div>
+                            </div>
+                        </div>
+                        
+                        ${job.comments ? `
+                        <div class="job-detail full-width">
+                            <div class="job-label">Comments</div>
+                            <div class="job-value">${job.comments}</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function expandJob(calloutId) {
+            // Add haptic feedback on mobile
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+            
+            // For now, just log - you could expand this to show full details
+            console.log('Job tapped:', calloutId);
+            
+            // You could implement a modal or navigate to detail page here
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            try {
+                return new Date(dateStr).toLocaleDateString('en-GB');
+            } catch {
+                return dateStr;
+            }
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            filteredJobs = allJobs.filter(job => 
+                (job.rigNumber?.toString().toLowerCase().includes(searchTerm)) ||
+                (job.rig?.toString().toLowerCase().includes(searchTerm)) ||
+                (job.wellName?.toLowerCase().includes(searchTerm)) ||
+                (job.location?.toLowerCase().includes(searchTerm)) ||
+                (job.field?.toLowerCase().includes(searchTerm)) ||
+                (job.contactPerson?.toLowerCase().includes(searchTerm)) ||
+                (job.calloutId?.toLowerCase().includes(searchTerm))
+            );
+            renderJobs();
+        });
+
+        // Filter functionality
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                // Haptic feedback
+                if (navigator.vibrate) {
+                    navigator.vibrate(25);
+                }
+                
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                if (filter === 'all') {
+                    filteredJobs = [...allJobs];
+                } else {
+                    filteredJobs = allJobs.filter(job => job.status?.includes(filter));
+                }
+                renderJobs();
+            });
+        });
+
+        // Pull to refresh (mobile)
+        let touchStartY = 0;
+        let pullDistance = 0;
+        
+        document.addEventListener('touchstart', function(e) {
+            if (window.scrollY === 0) {
+                touchStartY = e.touches[0].clientY;
+            }
+        });
+        
+        document.addEventListener('touchmove', function(e) {
+            if (window.scrollY === 0 && touchStartY > 0) {
+                pullDistance = e.touches[0].clientY - touchStartY;
+                if (pullDistance > 50) {
+                    document.getElementById('pullRefresh').style.display = 'block';
+                }
+            }
+        });
+        
+        document.addEventListener('touchend', function(e) {
+            if (pullDistance > 100) {
+                loadJobs();
+            }
+            document.getElementById('pullRefresh').style.display = 'none';
+            touchStartY = 0;
+            pullDistance = 0;
+        });
+
+        // Initialize
+        loadJobs();
+        
+        // Auto-refresh
+        refreshInterval = setInterval(loadJobs, CONFIG.REFRESH_INTERVAL);
+        
+        // Page visibility API - pause refresh when page is hidden
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                clearInterval(refreshInterval);
+            } else {
+                refreshInterval = setInterval(loadJobs, CONFIG.REFRESH_INTERVAL);
+                loadJobs(); // Refresh immediately when page becomes visible
+            }
+        });
+
+        // Service Worker removed for simple deployment
+        // Can be added later for offline support if needed
+    </script>
+</body>
+</html>

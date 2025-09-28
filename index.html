@@ -13,7 +13,7 @@
         }
 
         :root {
-            --primary-color: #2c3e50;
+            --primary-color: #B91515;
             --secondary-color: #3498db;
             --success-color: #27ae60;
             --warning-color: #f39c12;
@@ -25,9 +25,11 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #B91515 0%, #8B0000 100%);
             min-height: 100vh;
             line-height: 1.6;
+            padding: 0;
+            margin: 0;
         }
 
         .dashboard-container {
@@ -35,6 +37,7 @@
             margin: 0;
             background: white;
             min-height: 100vh;
+            width: 100%;
         }
 
         /* Mobile-First Header */
@@ -43,8 +46,7 @@
             color: white;
             padding: 20px 15px;
             text-align: center;
-            position: sticky;
-            top: 0;
+            position: relative;
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
@@ -100,14 +102,14 @@
             padding: 15px;
             background: white;
             border-bottom: 1px solid #e9ecef;
-            position: sticky;
-            top: 140px;
+            position: relative;
             z-index: 90;
         }
 
         .search-container {
             position: relative;
             margin-bottom: 15px;
+            width: 100%;
         }
 
         .search-box {
@@ -118,6 +120,7 @@
             font-size: 16px;
             transition: all 0.3s ease;
             background: #f8f9fa;
+            box-sizing: border-box;
         }
 
         .search-box:focus {
@@ -222,11 +225,13 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            padding-bottom: 100px; /* Space for floating button */
+            padding-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .job-card {
-            background: white;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
             border-radius: 16px;
             padding: 20px;
             box-shadow: var(--card-shadow);
@@ -234,12 +239,12 @@
             position: relative;
             overflow: hidden;
             border-left: 5px solid var(--secondary-color);
-            cursor: pointer;
             touch-action: manipulation;
+            color: #ffffff;
         }
 
         .job-card:active {
-            transform: scale(0.98);
+            transform: scale(1.0);
         }
 
         .job-card.priority-urgent { border-left-color: var(--danger-color); }
@@ -259,7 +264,7 @@
         .job-id {
             font-size: 1.1rem;
             font-weight: 700;
-            color: var(--primary-color);
+            color: #3498db;
             flex: 1;
             min-width: 0;
         }
@@ -295,6 +300,8 @@
         .job-detail {
             display: flex;
             flex-direction: column;
+            min-width: 0;
+            flex: 1;
         }
 
         .job-detail.full-width {
@@ -302,24 +309,64 @@
         }
 
         .job-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            color: #6c757d;
+            color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 2px;
+            white-space: nowrap;
         }
 
         .job-value {
-            font-size: 0.95rem;
-            color: var(--primary-color);
+            font-size: 0.85rem;
+            color: #ffffff;
             font-weight: 500;
-            word-break: break-word;
+            white-space: nowrap;
         }
 
-        .job-value.highlight {
-            color: var(--secondary-color);
+        /* Job Info Line Layout */
+        .job-info-line {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .info-label {
+            font-size: 0.7rem;
             font-weight: 600;
+            color: #ffffff;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 0.85rem;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .info-value.highlight {
+            color: #3498db;
+            font-weight: 700;
+        }
+
+        .info-divider {
+            color: #ffffff;
+            opacity: 0.5;
+            font-weight: bold;
+            margin: 0 2px;
         }
 
         /* Priority Indicator */
@@ -360,7 +407,7 @@
         /* Pull to Refresh Indicator */
         .pull-refresh {
             position: fixed;
-            top: 140px;
+            top: 50px;
             left: 50%;
             transform: translateX(-50%);
             background: white;
@@ -374,8 +421,8 @@
         /* Tablet Styles */
         @media (min-width: 768px) {
             .dashboard-container {
-                max-width: 800px;
-                margin: 0 auto;
+                max-width: 100%;
+                margin: 0;
                 border-radius: 0;
             }
 
@@ -404,7 +451,7 @@
         /* Desktop Styles */
         @media (min-width: 1024px) {
             .dashboard-container {
-                max-width: 1200px;
+                max-width: 100%;
             }
 
             .jobs-container {
@@ -467,13 +514,179 @@
                 border-width: 3px;
             }
         }
+
+        /* Details Button */
+        .details-btn {
+            width: 100%;
+            padding: 12px 20px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+        }
+
+        .details-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .details-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 0;
+            width: 95%;
+            max-width: 800px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .detail-section {
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .detail-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                margin: 2% auto;
+                width: 98%;
+                height: 96vh;
+            }
+            
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="dashboard-container">
         <!-- Header -->
         <div class="header">
-            <h1>🛢️ TASK Energy</h1>
+            <h1>TASK Energy</h1>
             <p>Wireline Callout Jobs</p>
         </div>
 
@@ -501,7 +714,7 @@
         <div class="controls">
             <div class="search-container">
                 <div class="search-icon">🔍</div>
-                <input type="text" class="search-box" id="searchInput" placeholder="Search RIG, Well, Location...">
+                <input type="text" class="search-box" id="searchInput" placeholder="Search Client, RIG, Well, Location...">
             </div>
             
             <div class="filter-container">
@@ -525,6 +738,19 @@
         <div class="pull-refresh" id="pullRefresh">🔄 Pull to refresh</div>
     </div>
 
+    <!-- Job Details Modal -->
+    <div class="modal" id="jobModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Job Details</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Job details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
     <script>
         // Configuration
         const CONFIG = {
@@ -546,61 +772,124 @@
             'comments', 'authorization', 'createdDate'
         ];
 
-        // Sample data for testing
+                        // Sample data for testing
         const SAMPLE_JOBS = [
             {
                 calloutId: 'CL-2025-001',
-                ticketNumber: 'TK-45891',
-                rigNumber: '45',
-                wellName: 'BURHAAN W_COREWELL-37(BRNW-14)',
-                location: 'Burhaan Main',
-                serviceType: 'Wireline GYRO Survey',
-                rosDate: '2025-09-09',
-                equipmentDate: '2025-09-08',
-                crewDate: '2025-09-08',
-                contactPerson: 'Abdullah',
-                contactPhone: '243-83412',
+                ticketNumber: '33198',
+                client: 'PDO',
+                rigNumber: '144',
+                wellName: 'HZR-128',
+                location: 'HZR',
+                serviceType: 'Wireline Casing Survey',
+                depth: '6.77m - 420m',
+                wellProfile: 'Vertical',
+                rosDate: '2025-04-10',
+                rosStatus: 'CONFIRMED',
+                equipmentDate: '2025-04-10',
+                crewDate: '2025-04-10',
+                contactPerson: 'Hani',
+                contactPhone: '24366282',
+                designation: 'PE',
                 status: 'New Callout',
                 priority: 'High',
-                comments: 'ROS will be updated later',
+                comments: 'Equipment and crew required on-site',
                 authorization: 'Mohammed Al Wahaibi',
-                createdDate: '2025-09-28'
+                createdDate: '2025-09-28',
+                // Additional callout sheet details
+                holeSection: '12¼"',
+                fieldName: 'HZR',
+                surveyStartDepth: 'SURFACE',
+                surveyEndDepth: '1670',
+                surveyInterval: '1670',
+                casingSize: '9 5/8',
+                drillpipeSize: 'N/A',
+                groundElevation: 'N/A',
+                rigFloorElevation: 'N/A',
+                coordinates: {
+                    latitude: 'N/A',
+                    longitude: '6',
+                    northing: '382599.967E',
+                    easting: '2265899.94N'
+                }
             },
             {
                 calloutId: 'CL-2025-002',
                 ticketNumber: 'TK-45892',
+                client: 'PDO',
                 rigNumber: '97',
                 wellName: 'Anbar-42',
                 location: 'Anbar',
                 serviceType: 'Wireline Casing Survey',
+                depth: 'Surface - 548.49m',
+                wellProfile: 'Vertical',
                 rosDate: '2025-09-19',
+                rosStatus: 'TBC',
                 equipmentDate: '2025-09-18',
                 crewDate: '2025-09-18',
                 contactPerson: 'Mohammed',
                 contactPhone: '24366132',
+                designation: 'PE',
                 status: 'Approved',
                 priority: 'Normal',
                 comments: 'ROS to be confirmed',
                 authorization: 'TASK Operations',
-                createdDate: '2025-09-27'
+                createdDate: '2025-09-27',
+                // Additional details
+                holeSection: '12¼"',
+                fieldName: 'Anbar',
+                surveyStartDepth: 'Surface',
+                surveyEndDepth: '548.49',
+                surveyInterval: '548.49',
+                casingSize: '9 5/8',
+                drillpipeSize: 'N/A',
+                groundElevation: 'N/A',
+                rigFloorElevation: 'N/A',
+                coordinates: {
+                    latitude: 'N/A',
+                    longitude: 'N/A',
+                    northing: '2129932.082N',
+                    easting: '424955.649 E'
+                }
             },
             {
                 calloutId: 'CL-2025-003',
                 ticketNumber: 'TK-45893',
+                client: 'Shell',
                 rigNumber: '112',
                 wellName: 'Fahud North-8',
                 location: 'Fahud',
                 serviceType: 'Memory GYRO Survey',
+                depth: '10m - 850m',
+                wellProfile: 'Directional',
                 rosDate: '2025-09-30',
+                rosStatus: 'URGENT',
                 equipmentDate: '2025-09-29',
                 crewDate: '2025-09-29',
                 contactPerson: 'Salem',
                 contactPhone: '91234567',
+                designation: 'Operations Manager',
                 status: 'Pending',
                 priority: 'Urgent',
                 comments: 'Emergency callout - equipment failure',
                 authorization: 'Operations Manager',
-                createdDate: '2025-09-28'
+                createdDate: '2025-09-28',
+                // Additional details
+                holeSection: '8½"',
+                fieldName: 'Fahud',
+                surveyStartDepth: '10',
+                surveyEndDepth: '850',
+                surveyInterval: '840',
+                casingSize: '9 5/8',
+                drillpipeSize: '6',
+                groundElevation: '285m',
+                rigFloorElevation: '295m',
+                coordinates: {
+                    latitude: '23° 15\' 10.25" N',
+                    longitude: '56° 30\' 45.12" E',
+                    northing: '2571234.567N',
+                    easting: '385678.901 E'
+                }
             }
         ];
 
@@ -608,17 +897,15 @@
             try {
                 showLoading();
                 
-                // For demo purposes, using sample data
-                // Replace this with your Google Sheets API call
-                await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
-                
+                // USING SAMPLE DATA - shows immediately without API
                 allJobs = SAMPLE_JOBS;
                 filteredJobs = [...allJobs];
                 
+                // Force update stats and render
                 updateStats();
                 renderJobs();
                 
-                console.log(`✅ Loaded ${allJobs.length} jobs`);
+                console.log(`✅ Loaded ${allJobs.length} sample jobs`);
                 
             } catch (error) {
                 showError(error.message);
@@ -675,7 +962,7 @@
             const priorityClass = `priority-${(job.priority || 'normal').toLowerCase()}`;
             
             return `
-                <div class="job-card ${priorityClass}" onclick="expandJob('${job.calloutId}')">
+                <div class="job-card ${priorityClass}">
                     <div class="priority-dot"></div>
                     
                     <div class="job-header">
@@ -683,62 +970,44 @@
                         <div class="status-badge ${statusClass}">${job.status || 'New'}</div>
                     </div>
 
-                    <div class="job-details">
-                        <div class="job-row">
-                            <div class="job-detail">
-                                <div class="job-label">RIG Number</div>
-                                <div class="job-value highlight">${job.rigNumber || job.rig || 'N/A'}</div>
-                            </div>
-                            <div class="job-detail">
-                                <div class="job-label">Priority</div>
-                                <div class="job-value">${job.priority || 'Normal'}</div>
-                            </div>
-                        </div>
+                    <div class="job-info-line">
+                        <span class="info-item">
+                            <span class="info-label">CLIENT:</span>
+                            <span class="info-value">${job.client || 'N/A'}</span>
+                        </span>
+                        <span class="info-divider">•</span>
+                        <span class="info-item">
+                            <span class="info-label">ROS:</span>
+                            <span class="info-value highlight">${formatDate(job.rosDate)} ${job.rosStatus || 'TBC'}</span>
+                        </span>
+                        <span class="info-divider">•</span>
+                        <span class="info-item">
+                            <span class="info-label">SERVICE:</span>
+                            <span class="info-value">${job.serviceType || 'Survey'}</span>
+                        </span>
+                    </div>
+
+                    <div class="job-info-line">
+                        <span class="info-item">
+                            <span class="info-label">DEPTH:</span>
+                            <span class="info-value">${job.depth || 'N/A'}</span>
+                        </span>
+                        <span class="info-divider">•</span>
+                        <span class="info-item">
+                            <span class="info-label">PROFILE:</span>
+                            <span class="info-value">${job.wellProfile || 'N/A'}</span>
+                        </span>
+                        <span class="info-divider">•</span>
+                        <span class="info-item">
+                            <span class="info-label">WELL:</span>
+                            <span class="info-value">${job.wellName || 'N/A'}</span>
+                        </span>
+                    </div>
                         
-                        <div class="job-detail full-width">
-                            <div class="job-label">Well Name</div>
-                            <div class="job-value">${job.wellName || 'N/A'}</div>
-                        </div>
-                        
-                        <div class="job-row">
-                            <div class="job-detail">
-                                <div class="job-label">Location</div>
-                                <div class="job-value">${job.location || job.field || 'N/A'}</div>
-                            </div>
-                            <div class="job-detail">
-                                <div class="job-label">Service</div>
-                                <div class="job-value">${job.serviceType || 'Survey'}</div>
-                            </div>
-                        </div>
-                        
-                        <div class="job-row">
-                            <div class="job-detail">
-                                <div class="job-label">ROS Date</div>
-                                <div class="job-value highlight">${formatDate(job.rosDate)}</div>
-                            </div>
-                            <div class="job-detail">
-                                <div class="job-label">Equipment Date</div>
-                                <div class="job-value">${formatDate(job.equipmentDate)}</div>
-                            </div>
-                        </div>
-                        
-                        <div class="job-row">
-                            <div class="job-detail">
-                                <div class="job-label">Contact</div>
-                                <div class="job-value">${job.contactPerson || 'N/A'}</div>
-                            </div>
-                            <div class="job-detail">
-                                <div class="job-label">Phone</div>
-                                <div class="job-value">${job.contactPhone || 'N/A'}</div>
-                            </div>
-                        </div>
-                        
-                        ${job.comments ? `
-                        <div class="job-detail full-width">
-                            <div class="job-label">Comments</div>
-                            <div class="job-value">${job.comments}</div>
-                        </div>
-                        ` : ''}
+                    <div class="job-detail full-width" style="margin-top: 15px;">
+                        <button class="details-btn" onclick="showJobDetails('${job.calloutId}')">
+                            📋 View Full Details
+                        </button>
                     </div>
                 </div>
             `;
@@ -754,6 +1023,240 @@
             console.log('Job tapped:', calloutId);
             
             // You could implement a modal or navigate to detail page here
+        }
+
+        function showJobDetails(calloutId) {
+            // Add haptic feedback
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+            
+            const job = allJobs.find(j => j.calloutId === calloutId);
+            if (!job) return;
+            
+            // Update modal title
+            document.getElementById('modalTitle').textContent = `${job.calloutId} - Job Details`;
+            
+            // Create detailed view
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = createJobDetailsView(job);
+            
+            // Show modal
+            document.getElementById('jobModal').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent background scroll
+        }
+
+        function closeModal() {
+            document.getElementById('jobModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scroll
+        }
+
+        function createJobDetailsView(job) {
+            const statusClass = `status-${(job.status || 'new').toLowerCase().replace(/\s+/g, '')}`;
+            
+            return `
+                <div class="detail-section">
+                    <div class="section-title">1. General Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Customer</div>
+                            <div class="detail-value">${job.client || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Rig Number</div>
+                            <div class="detail-value">${job.rigNumber || job.rig || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Well Name</div>
+                            <div class="detail-value">${job.wellName || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Hole Section</div>
+                            <div class="detail-value">${job.holeSection || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Well ID #</div>
+                            <div class="detail-value">${job.ticketNumber || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Field Name</div>
+                            <div class="detail-value">${job.location || job.fieldName || 'N/A'}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">2. Type of Service Required</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Service Type</div>
+                            <div class="detail-value">${job.serviceType || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Survey Category</div>
+                            <div class="detail-value">${getServiceCategory(job.serviceType)}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">3. Well Information</div>
+                    <div class="detail-grid">
+                        ${job.coordinates ? `
+                        <div class="detail-item">
+                            <div class="detail-label">Latitude</div>
+                            <div class="detail-value">${job.coordinates.latitude || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Northing</div>
+                            <div class="detail-value">${job.coordinates.northing || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Longitude</div>
+                            <div class="detail-value">${job.coordinates.longitude || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Easting</div>
+                            <div class="detail-value">${job.coordinates.easting || 'N/A'}</div>
+                        </div>
+                        ` : ''}
+                        <div class="detail-item">
+                            <div class="detail-label">Casing Size</div>
+                            <div class="detail-value">${job.casingSize || 'N/A'} Inch</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Ground Elevation</div>
+                            <div class="detail-value">${job.groundElevation || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Drillpipe Size</div>
+                            <div class="detail-value">${job.drillpipeSize || 'N/A'} Inch</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Rig Floor Elevation</div>
+                            <div class="detail-value">${job.rigFloorElevation || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Well Profile</div>
+                            <div class="detail-value">${job.wellProfile || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Max Down Hole Temp</div>
+                            <div class="detail-value">°C</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Minimum ID</div>
+                            <div class="detail-value">Inch</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Maximum Inclination</div>
+                            <div class="detail-value">°</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">H2S Level</div>
+                            <div class="detail-value">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">4. Survey Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Survey Start Depth</div>
+                            <div class="detail-value">${job.surveyStartDepth || 'N/A'} m</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Survey End Depth</div>
+                            <div class="detail-value">${job.surveyEndDepth || 'N/A'} m</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Survey Interval</div>
+                            <div class="detail-value">${job.surveyInterval || 'N/A'} m</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Equipment Required On-Site</div>
+                            <div class="detail-value">${formatDate(job.equipmentDate)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Crew Required On-Site</div>
+                            <div class="detail-value">${formatDate(job.crewDate)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Date Required on Site</div>
+                            <div class="detail-value">${formatDate(job.rosDate)}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">5. Contact Information & Comments</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Callout Completed By</div>
+                            <div class="detail-value">${job.contactPerson || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Designation</div>
+                            <div class="detail-value">${job.designation || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Contact #</div>
+                            <div class="detail-value">
+                                ${job.contactPhone ? `<a href="tel:${job.contactPhone}" style="color: var(--secondary-color);">${job.contactPhone}</a>` : 'N/A'}
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Authorization</div>
+                            <div class="detail-value">${job.authorization || 'N/A'}</div>
+                        </div>
+                        ${job.comments ? `
+                        <div class="detail-item" style="grid-column: 1 / -1;">
+                            <div class="detail-label">Comments</div>
+                            <div class="detail-value">${job.comments}</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">Job Status & Tracking</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Callout ID</div>
+                            <div class="detail-value" style="color: var(--secondary-color); font-weight: bold;">${job.calloutId || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">
+                                <span class="status-badge ${statusClass}">${job.status || 'New'}</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Priority</div>
+                            <div class="detail-value">${job.priority || 'Normal'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Created Date</div>
+                            <div class="detail-value">${formatDate(job.createdDate)}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Helper function to categorize service types
+        function getServiceCategory(serviceType) {
+            if (!serviceType) return 'N/A';
+            
+            const service = serviceType.toLowerCase();
+            if (service.includes('wireline') && service.includes('gyro')) return 'Wireline Gyro Surveys';
+            if (service.includes('memory') && service.includes('gyro')) return 'Memory Gyro Surveys';
+            if (service.includes('wireline') && service.includes('casing')) return 'Wireline Gyro Surveys';
+            if (service.includes('memory') && service.includes('casing')) return 'Memory Gyro Surveys';
+            if (service.includes('orientation')) return 'Wireline Gyro Surveys';
+            if (service.includes('drillpipe')) return 'Wireline Gyro Surveys';
+            return 'Wireline Gyro Surveys';
         }
 
         function formatDate(dateStr) {
@@ -774,6 +1277,8 @@
                 (job.wellName?.toLowerCase().includes(searchTerm)) ||
                 (job.location?.toLowerCase().includes(searchTerm)) ||
                 (job.field?.toLowerCase().includes(searchTerm)) ||
+                (job.client?.toLowerCase().includes(searchTerm)) ||
+                (job.serviceType?.toLowerCase().includes(searchTerm)) ||
                 (job.contactPerson?.toLowerCase().includes(searchTerm)) ||
                 (job.calloutId?.toLowerCase().includes(searchTerm))
             );
@@ -847,6 +1352,21 @@
 
         // Service Worker removed for simple deployment
         // Can be added later for offline support if needed
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('jobModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+        // Close modal with escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
     </script>
 </body>
 </html>

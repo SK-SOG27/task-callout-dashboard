@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=3.0">
-    <title>TASK Energy - Callout Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TASK Energy - Job Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -84,7 +84,6 @@
             font-weight: 800;
             color: var(--secondary-color);
             display: block;
-            margin-bottom: 5px;
         }
 
         .stat-label {
@@ -92,11 +91,13 @@
             color: #6c757d;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            margin-top: 2px;
+            font-weight: 600;
         }
 
         .controls {
             padding: 15px;
-            background: var(--light-bg);
+            background: white;
             border-bottom: 1px solid #e9ecef;
         }
 
@@ -105,28 +106,29 @@
             margin-bottom: 15px;
         }
 
-        .search-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.2rem;
-            opacity: 0.5;
-        }
-
         .search-box {
             width: 100%;
-            padding: 12px 15px 12px 45px;
-            border: 2px solid #dee2e6;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid #e9ecef;
             border-radius: 25px;
-            font-size: 1rem;
+            font-size: 16px;
             transition: all 0.3s ease;
+            background: #f8f9fa;
         }
 
         .search-box:focus {
-            outline: none;
             border-color: var(--secondary-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            outline: none;
+            background: white;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #6c757d;
         }
 
         .filter-container {
@@ -134,26 +136,18 @@
             gap: 8px;
             overflow-x: auto;
             padding-bottom: 5px;
-            -webkit-overflow-scrolling: touch;
         }
 
         .filter-chip {
             padding: 8px 16px;
-            border-radius: 20px;
-            border: 2px solid #dee2e6;
+            border: 2px solid #e9ecef;
             background: white;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #6c757d;
+            border-radius: 20px;
             cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            font-size: 0.85rem;
             white-space: nowrap;
-            transition: all 0.3s ease;
-            touch-action: manipulation;
-        }
-
-        .filter-chip:hover {
-            border-color: var(--secondary-color);
-            color: var(--secondary-color);
         }
 
         .filter-chip.active {
@@ -168,8 +162,6 @@
             flex-direction: column;
             gap: 15px;
             padding-bottom: 100px;
-            width: 100%;
-            box-sizing: border-box;
         }
 
         .job-card {
@@ -179,22 +171,25 @@
             box-shadow: var(--card-shadow);
             transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
             border-left: 5px solid var(--secondary-color);
-            touch-action: manipulation;
             color: #ffffff;
         }
 
-        .job-card:active {
-            transform: scale(0.98);
+        .job-card.priority-urgent { border-left-color: var(--danger-color); }
+        .job-card.priority-high { border-left-color: var(--warning-color); }
+
+        .priority-dot {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--secondary-color);
         }
 
-        .job-card.status-pending_approval { border-left-color: var(--warning-color); }
-        .job-card.status-approved { border-left-color: var(--success-color); }
-        .job-card.status-confirmed { border-left-color: var(--success-color); }
-        .job-card.status-declined { border-left-color: var(--danger-color); }
-        .job-card.status-rejected { border-left-color: var(--danger-color); }
-        .job-card.status-completed { border-left-color: var(--secondary-color); }
+        .priority-urgent .priority-dot { background: var(--danger-color); }
+        .priority-high .priority-dot { background: var(--warning-color); }
 
         .job-header {
             display: flex;
@@ -210,7 +205,6 @@
             font-weight: 700;
             color: #3498db;
             flex: 1;
-            min-width: 0;
         }
 
         .status-badge {
@@ -219,16 +213,13 @@
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             white-space: nowrap;
         }
 
-        .status-badge.status-pending_approval { background: #fff3cd; color: #856404; }
-        .status-badge.status-approved { background: #d4edda; color: #155724; }
-        .status-badge.status-confirmed { background: #d4edda; color: #155724; }
-        .status-badge.status-declined { background: #f8d7da; color: #721c24; }
-        .status-badge.status-rejected { background: #f8d7da; color: #721c24; }
-        .status-badge.status-completed { background: #d1ecf1; color: #0c5460; }
+        .status-newcallout { background: #e3f2fd; color: #1976d2; }
+        .status-approved { background: #e8f5e8; color: #2e7d32; }
+        .status-rejected { background: #ffebee; color: #c62828; }
+        .status-pending { background: #fff3e0; color: #f57c00; }
 
         .job-info-line {
             display: flex;
@@ -236,14 +227,12 @@
             flex-wrap: wrap;
             gap: 8px;
             margin-bottom: 8px;
-            line-height: 1.4;
         }
 
         .info-item {
             display: flex;
             align-items: center;
             gap: 4px;
-            white-space: nowrap;
         }
 
         .info-label {
@@ -252,7 +241,6 @@
             color: #ffffff;
             opacity: 0.8;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .info-value {
@@ -270,11 +258,33 @@
             color: #ffffff;
             opacity: 0.5;
             font-weight: bold;
-            margin: 0 2px;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-complete {
+            padding: 12px 20px;
+            background: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-complete:hover {
+            background: #1e8449;
+            transform: translateY(-2px);
         }
 
         .details-btn {
-            width: 100%;
             padding: 12px 20px;
             background: var(--secondary-color);
             color: white;
@@ -284,17 +294,11 @@
             font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            touch-action: manipulation;
-            margin-top: 15px;
         }
 
         .details-btn:hover {
             background: #2980b9;
             transform: translateY(-2px);
-        }
-
-        .details-btn:active {
-            transform: scale(0.98);
         }
 
         .refresh-btn {
@@ -312,11 +316,6 @@
             box-shadow: var(--card-shadow-hover);
             z-index: 1000;
             transition: all 0.3s ease;
-            touch-action: manipulation;
-        }
-
-        .refresh-btn:active {
-            transform: scale(0.9);
         }
 
         .refresh-btn.spinning {
@@ -328,23 +327,6 @@
             to { transform: rotate(360deg); }
         }
 
-        .loading, .error, .no-results {
-            text-align: center;
-            padding: 60px 20px;
-            color: #6c757d;
-        }
-
-        .loading {
-            font-size: 1.1rem;
-        }
-
-        .error {
-            color: var(--danger-color);
-            background: #f8d7da;
-            border-radius: 15px;
-            padding: 20px;
-        }
-
         .modal {
             display: none;
             position: fixed;
@@ -354,7 +336,10 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.8);
-            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: block;
         }
 
         .modal-content {
@@ -367,17 +352,6 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-height: 90vh;
             overflow-y: auto;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
         }
 
         .modal-header {
@@ -390,23 +364,71 @@
             align-items: center;
         }
 
+        .modal-header.edit-header {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+
         .modal-title {
-            font-size: 1.3rem;
-            font-weight: 700;
+            font-size: 1.5rem;
+            font-weight: bold;
             margin: 0;
         }
 
-        .close {
+        .close-btn {
+            background: none;
+            border: none;
             color: white;
             font-size: 2rem;
-            font-weight: bold;
             cursor: pointer;
-            line-height: 1;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-action-btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .close:hover {
-            transform: scale(1.2);
+        .btn-edit {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        .btn-complete-modal {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-complete-modal:hover {
+            background: #1e8449;
+            transform: translateY(-2px);
         }
 
         .modal-body {
@@ -415,15 +437,19 @@
 
         .detail-section {
             margin-bottom: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid var(--secondary-color);
         }
 
         .section-title {
-            font-size: 1.1rem;
-            font-weight: 700;
+            font-size: 1.2rem;
+            font-weight: bold;
             color: var(--primary-color);
             margin-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
             padding-bottom: 10px;
-            border-bottom: 2px solid var(--primary-color);
         }
 
         .detail-grid {
@@ -433,13 +459,14 @@
         }
 
         .detail-item {
+            background: white;
             padding: 12px;
-            background: var(--light-bg);
             border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .detail-label {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 600;
             color: #6c757d;
             text-transform: uppercase;
@@ -449,8 +476,60 @@
 
         .detail-value {
             font-size: 1rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .edit-input, .edit-select, .edit-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .edit-input:focus, .edit-select:focus, .edit-textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .edit-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin: 20px;
+            text-align: center;
             font-weight: 600;
-            color: #333;
+            display: none;
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        .loading, .error {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .error {
+            color: var(--danger-color);
         }
 
         @media (min-width: 768px) {
@@ -462,17 +541,13 @@
             }
         }
 
-        .last-updated {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            background: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            color: #6c757d;
-            box-shadow: var(--card-shadow);
-            z-index: 999;
+        @media (max-width: 768px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-actions {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -485,20 +560,20 @@
 
         <div class="stats-bar">
             <div class="stat-item">
-                <span class="stat-number" id="totalJobs">-</span>
+                <span class="stat-number" id="totalJobs">3</span>
                 <div class="stat-label">Total</div>
             </div>
             <div class="stat-item">
-                <span class="stat-number" id="pendingJobs">-</span>
+                <span class="stat-number" id="pendingJobs">1</span>
                 <div class="stat-label">Pending</div>
             </div>
             <div class="stat-item">
-                <span class="stat-number" id="approvedJobs">-</span>
+                <span class="stat-number" id="approvedJobs">1</span>
                 <div class="stat-label">Approved</div>
             </div>
             <div class="stat-item">
-                <span class="stat-number" id="completedJobs">-</span>
-                <div class="stat-label">Completed</div>
+                <span class="stat-number" id="urgentJobs">1</span>
+                <div class="stat-label">Urgent</div>
             </div>
         </div>
 
@@ -509,277 +584,248 @@
             </div>
             
             <div class="filter-container">
-                <div class="filter-chip active" data-filter="all">All Jobs</div>
-                <div class="filter-chip" data-filter="PENDING_APPROVAL">Pending</div>
-                <div class="filter-chip" data-filter="APPROVED">Approved</div>
-                <div class="filter-chip" data-filter="CONFIRMED">Confirmed</div>
-                <div class="filter-chip" data-filter="REJECTED">Rejected</div>
-                <div class="filter-chip" data-filter="COMPLETED">Completed</div>
+                <div class="filter-chip active">All Jobs</div>
+                <div class="filter-chip">New Callout</div>
+                <div class="filter-chip">Approved</div>
+                <div class="filter-chip">Pending</div>
+                <div class="filter-chip">Rejected</div>
             </div>
         </div>
 
         <div class="jobs-container" id="jobsContainer">
-            <div class="loading">📊 Loading job data from Google Sheets...</div>
+            <!-- Sample Job Cards -->
+            <div class="job-card priority-high">
+                <div class="priority-dot"></div>
+                
+                <div class="job-header">
+                    <div class="job-id">CL-2025-001</div>
+                    <div class="status-badge status-newcallout">New Callout</div>
+                </div>
+
+                <div class="job-info-line">
+                    <span class="info-item">
+                        <span class="info-label">CLIENT:</span>
+                        <span class="info-value">PDO</span>
+                    </span>
+                    <span class="info-divider">•</span>
+                    <span class="info-item">
+                        <span class="info-label">ROS:</span>
+                        <span class="info-value highlight">10/04/2025 CONFIRMED</span>
+                    </span>
+                    <span class="info-divider">•</span>
+                    <span class="info-item">
+                        <span class="info-label">SERVICE:</span>
+                        <span class="info-value">Wireline Casing Survey</span>
+                    </span>
+                </div>
+
+                <div class="job-info-line">
+                    <span class="info-item">
+                        <span class="info-label">DEPTH:</span>
+                        <span class="info-value">6.77m - 420m</span>
+                    </span>
+                    <span class="info-divider">•</span>
+                    <span class="info-item">
+                        <span class="info-label">PROFILE:</span>
+                        <span class="info-value">Vertical</span>
+                    </span>
+                    <span class="info-divider">•</span>
+                    <span class="info-item">
+                        <span class="info-label">WELL:</span>
+                        <span class="info-value">HZR-128</span>
+                    </span>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-complete" onclick="completeJob('CL-2025-001')">
+                        ✓ Complete
+                    </button>
+                    <button class="details-btn" onclick="showJobDetails('CL-2025-001')">
+                        📋 Details
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <button class="refresh-btn" id="refreshBtn" onclick="loadJobs()">🔄</button>
-        <div class="last-updated" id="lastUpdated"></div>
+        <button class="refresh-btn" onclick="alert('Refreshing...')">🔄</button>
     </div>
 
+    <div class="success-message" id="successMessage"></div>
+
+    <!-- Job Details Modal -->
     <div class="modal" id="jobModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Job Details</h2>
-                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 class="modal-title" id="modalTitle">CL-2025-001 - Job Details</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
-            <div class="modal-body" id="modalBody"></div>
+
+            <div class="modal-actions">
+                <button class="modal-action-btn btn-edit" onclick="showEditModal('CL-2025-001')">
+                    ✎ Edit Job
+                </button>
+                <button class="modal-action-btn btn-complete-modal" onclick="completeJob('CL-2025-001')">
+                    ✓ Mark Complete
+                </button>
+            </div>
+
+            <div class="modal-body" id="modalBody">
+                <!-- Will be filled dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header edit-header">
+                <h2 class="modal-title">Edit Job - CL-2025-001</h2>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <form id="editForm">
+                    <!-- Survey Information -->
+                    <div class="detail-section">
+                        <div class="section-title">Survey Information</div>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Survey Start Depth (m)</div>
+                                <input type="text" class="edit-input" name="surveyStartDepth" value="SURFACE">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Survey End Depth (m)</div>
+                                <input type="text" class="edit-input" name="surveyEndDepth" value="1670">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Survey Interval (m)</div>
+                                <input type="text" class="edit-input" name="surveyInterval" value="1670">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Equipment Required Date</div>
+                                <input type="date" class="edit-input" name="equipmentDate" value="2025-04-10">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Crew Required Date</div>
+                                <input type="date" class="edit-input" name="crewDate" value="2025-04-10">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">ROS Date</div>
+                                <input type="date" class="edit-input" name="rosDate" value="2025-04-10">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Type of Service Required -->
+                    <div class="detail-section">
+                        <div class="section-title">Type of Service Required</div>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Service Type</div>
+                                <input type="text" class="edit-input" name="serviceType" value="Wireline Casing Survey">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Survey Category</div>
+                                <select class="edit-select" name="surveyCategory">
+                                    <option value="Wireline Gyro Surveys" selected>Wireline Gyro Surveys</option>
+                                    <option value="Memory Gyro Surveys">Memory Gyro Surveys</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="detail-section">
+                        <div class="section-title">Status</div>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Job Status</div>
+                                <select class="edit-select" name="status">
+                                    <option value="New Callout" selected>New Callout</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Rejected">Rejected</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comments -->
+                    <div class="detail-section">
+                        <div class="section-title">Comments</div>
+                        <div class="detail-item">
+                            <div class="detail-label">Additional Notes</div>
+                            <textarea class="edit-textarea" name="comments" placeholder="Add notes or comments...">Equipment and crew required on-site</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Save/Cancel Buttons -->
+                    <div class="modal-actions">
+                        <button type="button" class="modal-action-btn" style="background: #95a5a6;" onclick="closeEditModal()">
+                            Cancel
+                        </button>
+                        <button type="button" class="modal-action-btn btn-complete-modal" onclick="saveEdit()">
+                            💾 Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
     <script>
-        const CONFIG = {
-            SHEET_ID: '1kS_vO8FfE94LHnv5ftsHqaHLm8Xum0l5W6NvXGlZB1A',
-            API_KEY: 'AIzaSyBcudKMCGF58ItQ5-v_2PAFEdZO6CyHXEs',
-            RANGE: 'Sheet1!A:Z',
-            REFRESH_INTERVAL: 300000
+        const SAMPLE_JOB = {
+            calloutId: 'CL-2025-001',
+            ticketNumber: '33198',
+            client: 'PDO',
+            rigNumber: '144',
+            wellName: 'HZR-128',
+            location: 'HZR',
+            serviceType: 'Wireline Casing Survey',
+            depth: '6.77m - 420m',
+            wellProfile: 'Vertical',
+            rosDate: '2025-04-10',
+            rosStatus: 'CONFIRMED',
+            holeSection: '12¼"',
+            fieldName: 'HZR',
+            surveyStartDepth: 'SURFACE',
+            surveyEndDepth: '1670',
+            surveyInterval: '1670',
+            casingSize: '9 5/8',
+            drillpipeSize: 'N/A',
+            groundElevation: 'N/A',
+            rigFloorElevation: 'N/A',
+            equipmentDate: '2025-04-10',
+            crewDate: '2025-04-10',
+            contactPerson: 'Hani',
+            contactPhone: '24366282',
+            designation: 'PE',
+            authorization: 'Mohammed Al Wahaibi',
+            comments: 'Equipment and crew required on-site',
+            coordinates: {
+                latitude: 'N/A',
+                longitude: '6',
+                northing: '382599.967E',
+                easting: '2265899.94N'
+            }
         };
 
-        let allJobs = [];
-        let filteredJobs = [];
-        let currentFilter = 'all';
-
-        function extractROSDate(summary) {
-            if (!summary) return null;
-            const rosMatch = summary.match(/ROS:\s*(\d{1,2}\/\d{1,2}\/\d{4})/i);
-            return rosMatch ? rosMatch[1] : null;
-        }
-
-        function mapSheetDataToJobs(sheetData) {
-            if (!sheetData || !sheetData.values || sheetData.values.length < 2) {
-                return [];
-            }
-
-            const [headers, ...rows] = sheetData.values;
-            
-            const getIndex = (name) => headers.findIndex(h => h && h.toLowerCase() === name.toLowerCase());
-
-            const indices = {
-                calloutId: getIndex('Callout ID'),
-                ticketNumber: getIndex('Ticket Number'),
-                status: getIndex('Status'),
-                timestamp: getIndex('Timestamp'),
-                summary: getIndex('Summary'),
-                customer: getIndex('Customer'),
-                rigNumber: getIndex('RIG Number'),
-                wellName: getIndex('Well Name'),
-                wellId: getIndex('Well ID'),
-                fieldName: getIndex('Field Name'),
-                serviceType: getIndex('Service Type'),
-                holeSection: getIndex('Hole Section'),
-                casingSize: getIndex('Casing Size'),
-                drillpipeSize: getIndex('Drillpipe Size'),
-                minimumId: getIndex('Minimum ID'),
-                wellProfile: getIndex('Well Profile'),
-                latitude: getIndex('Latitude'),
-                longitude: getIndex('Longitude'),
-                northing: getIndex('Northing'),
-                easting: getIndex('Easting'),
-                groundElevation: getIndex('Ground Elevation'),
-                rigFloorElevation: getIndex('RIG Floor Elevation'),
-                maximumInclination: getIndex('Maximum Inclination')
-            };
-
-            return rows.map(row => {
-                if (!row[indices.calloutId]) return null;
-
-                const summary = row[indices.summary] || '';
-                const rawStatus = row[indices.status] || 'PENDING';
-                const rosDate = extractROSDate(summary);
-
-                return {
-                    calloutId: row[indices.calloutId],
-                    ticketNumber: row[indices.ticketNumber] || '',
-                    status: rawStatus,
-                    timestamp: row[indices.timestamp] || '',
-                    summary: summary,
-                    client: row[indices.customer] || '',
-                    rigNumber: row[indices.rigNumber] || '',
-                    wellName: row[indices.wellName] || '',
-                    wellId: row[indices.wellId] || '',
-                    fieldName: row[indices.fieldName] || '',
-                    serviceType: row[indices.serviceType] || '',
-                    holeSection: row[indices.holeSection] || '',
-                    casingSize: row[indices.casingSize] || '',
-                    drillpipeSize: row[indices.drillpipeSize] || '',
-                    minimumId: row[indices.minimumId] || '',
-                    wellProfile: row[indices.wellProfile] || '',
-                    rosDate: rosDate,
-                    latitude: row[indices.latitude] || '',
-                    longitude: row[indices.longitude] || '',
-                    northing: row[indices.northing] || '',
-                    easting: row[indices.easting] || '',
-                    groundElevation: row[indices.groundElevation] || '',
-                    rigFloorElevation: row[indices.rigFloorElevation] || '',
-                    maximumInclination: row[indices.maximumInclination] || ''
-                };
-            }).filter(job => job !== null);
-        }
-
-        async function loadJobs() {
-            const btn = document.getElementById('refreshBtn');
-            btn.classList.add('spinning');
-            
-            const container = document.getElementById('jobsContainer');
-            
-            try {
-                const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/${CONFIG.RANGE}?key=${CONFIG.API_KEY}`;
-                
-                const response = await fetch(url);
-                const data = await response.json();
-
-                if (data.error) {
-                    throw new Error(data.error.message);
-                }
-
-                allJobs = mapSheetDataToJobs(data);
-                applyFilters();
-                updateStats();
-                updateLastUpdated();
-
-            } catch (error) {
-                container.innerHTML = `
-                    <div class="error">
-                        <strong>Error loading data:</strong><br>
-                        ${error.message}
-                    </div>
-                `;
-                console.error('Load error:', error);
-            } finally {
-                btn.classList.remove('spinning');
-            }
-        }
-
-        function updateStats() {
-            document.getElementById('totalJobs').textContent = allJobs.length;
-            document.getElementById('pendingJobs').textContent = 
-                allJobs.filter(j => j.status.includes('PENDING')).length;
-            document.getElementById('approvedJobs').textContent = 
-                allJobs.filter(j => j.status.includes('APPROVED') || j.status.includes('CONFIRMED')).length;
-            document.getElementById('completedJobs').textContent = 
-                allJobs.filter(j => j.status.includes('COMPLETED')).length;
-        }
-
-        function renderJobs() {
-            const container = document.getElementById('jobsContainer');
-            
-            if (filteredJobs.length === 0) {
-                container.innerHTML = '<div class="no-results">No callouts found</div>';
-                return;
-            }
-
-            const sortedJobs = [...filteredJobs].sort((a, b) => 
-                new Date(b.timestamp) - new Date(a.timestamp)
-            );
-
-            container.innerHTML = sortedJobs.map(job => createJobCard(job)).join('');
-        }
-
-        function createJobCard(job) {
-            const statusClass = job.status.toLowerCase().replace(/\s+/g, '_');
-            
-            return `
-                <div class="job-card status-${statusClass}">
-                    <div class="job-header">
-                        <div class="job-id">${job.calloutId}</div>
-                        <span class="status-badge status-${statusClass}">${job.status}</span>
-                    </div>
-                    
-                    <div class="job-info-line">
-                        <span class="info-item">
-                            <span class="info-label">CLIENT:</span>
-                            <span class="info-value highlight">${job.client}</span>
-                        </span>
-                        <span class="info-divider">•</span>
-                        <span class="info-item">
-                            <span class="info-label">RIG:</span>
-                            <span class="info-value highlight">${job.rigNumber}</span>
-                        </span>
-                    </div>
-
-                    <div class="job-info-line">
-                        <span class="info-item">
-                            <span class="info-label">WELL:</span>
-                            <span class="info-value">${job.wellName}</span>
-                        </span>
-                        ${job.fieldName ? `
-                        <span class="info-divider">•</span>
-                        <span class="info-item">
-                            <span class="info-label">FIELD:</span>
-                            <span class="info-value">${job.fieldName}</span>
-                        </span>
-                        ` : ''}
-                    </div>
-
-                    <div class="job-info-line">
-                        <span class="info-item">
-                            <span class="info-label">SERVICE:</span>
-                            <span class="info-value">${job.serviceType}</span>
-                        </span>
-                    </div>
-
-                    ${job.rosDate ? `
-                    <div class="job-info-line">
-                        <span class="info-item">
-                            <span class="info-label">ROS DATE:</span>
-                            <span class="info-value highlight">${job.rosDate}</span>
-                        </span>
-                    </div>
-                    ` : ''}
-
-                    <button class="details-btn" onclick="showJobDetails('${job.calloutId}')">
-                        📋 View Full Details
-                    </button>
-                </div>
-            `;
-        }
-
         function showJobDetails(calloutId) {
-            const job = allJobs.find(j => j.calloutId === calloutId);
-            if (!job) return;
-
+            const job = SAMPLE_JOB;
             document.getElementById('modalTitle').textContent = `${job.calloutId} - Job Details`;
-            document.getElementById('modalBody').innerHTML = createDetailView(job);
-            document.getElementById('jobModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function createDetailView(job) {
-            const statusClass = job.status.toLowerCase().replace(/\s+/g, '_');
             
-            return `
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
                 <div class="detail-section">
                     <div class="section-title">1. General Information</div>
                     <div class="detail-grid">
                         <div class="detail-item">
-                            <div class="detail-label">Callout ID</div>
-                            <div class="detail-value" style="color: var(--secondary-color)">${job.calloutId}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Ticket Number</div>
-                            <div class="detail-value">${job.ticketNumber || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Status</div>
-                            <div class="detail-value">
-                                <span class="status-badge status-${statusClass}">${job.status}</span>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Client</div>
+                            <div class="detail-label">Customer</div>
                             <div class="detail-value">${job.client}</div>
                         </div>
                         <div class="detail-item">
-                            <div class="detail-label">RIG Number</div>
+                            <div class="detail-label">Rig Number</div>
                             <div class="detail-value">${job.rigNumber}</div>
                         </div>
                         <div class="detail-item">
@@ -787,29 +833,31 @@
                             <div class="detail-value">${job.wellName}</div>
                         </div>
                         <div class="detail-item">
-                            <div class="detail-label">Well ID</div>
-                            <div class="detail-value">${job.wellId || 'N/A'}</div>
+                            <div class="detail-label">Hole Section</div>
+                            <div class="detail-value">${job.holeSection}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Well ID #</div>
+                            <div class="detail-value">${job.ticketNumber}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Field Name</div>
-                            <div class="detail-value">${job.fieldName || 'N/A'}</div>
+                            <div class="detail-value">${job.fieldName}</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="detail-section">
-                    <div class="section-title">2. Service Type Required</div>
+                    <div class="section-title">2. Type of Service Required</div>
                     <div class="detail-grid">
-                        <div class="detail-item" style="grid-column: 1 / -1;">
+                        <div class="detail-item">
                             <div class="detail-label">Service Type</div>
                             <div class="detail-value">${job.serviceType}</div>
                         </div>
-                        ${job.rosDate ? `
                         <div class="detail-item">
-                            <div class="detail-label">ROS Date</div>
-                            <div class="detail-value">${job.rosDate}</div>
+                            <div class="detail-label">Survey Category</div>
+                            <div class="detail-value">Wireline Gyro Surveys</div>
                         </div>
-                        ` : ''}
                     </div>
                 </div>
 
@@ -817,126 +865,188 @@
                     <div class="section-title">3. Well Information</div>
                     <div class="detail-grid">
                         <div class="detail-item">
-                            <div class="detail-label">Hole Section</div>
-                            <div class="detail-value">${job.holeSection || 'N/A'}</div>
+                            <div class="detail-label">Latitude</div>
+                            <div class="detail-value">${job.coordinates.latitude}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Northing</div>
+                            <div class="detail-value">${job.coordinates.northing}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Longitude</div>
+                            <div class="detail-value">${job.coordinates.longitude}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Easting</div>
+                            <div class="detail-value">${job.coordinates.easting}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Casing Size</div>
-                            <div class="detail-value">${job.casingSize || 'N/A'}</div>
+                            <div class="detail-value">${job.casingSize} Inch</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Drillpipe Size</div>
-                            <div class="detail-value">${job.drillpipeSize || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Minimum ID</div>
-                            <div class="detail-value">${job.minimumId || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Well Profile</div>
-                            <div class="detail-value">${job.wellProfile || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Max Inclination</div>
-                            <div class="detail-value">${job.maximumInclination || 'N/A'}</div>
-                        </div>
-                        ${job.northing ? `
-                        <div class="detail-item">
-                            <div class="detail-label">Northing</div>
-                            <div class="detail-value">${job.northing}</div>
-                        </div>
-                        ` : ''}
-                        ${job.easting ? `
-                        <div class="detail-item">
-                            <div class="detail-label">Easting</div>
-                            <div class="detail-value">${job.easting}</div>
-                        </div>
-                        ` : ''}
-                        ${job.groundElevation ? `
                         <div class="detail-item">
                             <div class="detail-label">Ground Elevation</div>
                             <div class="detail-value">${job.groundElevation}</div>
                         </div>
-                        ` : ''}
-                        ${job.rigFloorElevation ? `
                         <div class="detail-item">
-                            <div class="detail-label">RIG Floor Elevation</div>
+                            <div class="detail-label">Drillpipe Size</div>
+                            <div class="detail-value">${job.drillpipeSize} Inch</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Rig Floor Elevation</div>
                             <div class="detail-value">${job.rigFloorElevation}</div>
                         </div>
-                        ` : ''}
+                        <div class="detail-item">
+                            <div class="detail-label">Well Profile</div>
+                            <div class="detail-value">${job.wellProfile}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Max Down Hole Temp</div>
+                            <div class="detail-value">°C</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Minimum ID</div>
+                            <div class="detail-value">Inch</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Maximum Inclination</div>
+                            <div class="detail-value">°</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">H2S Level</div>
+                            <div class="detail-value">0</div>
+                        </div>
                     </div>
                 </div>
 
-                ${job.summary ? `
                 <div class="detail-section">
-                    <div class="section-title">Summary</div>
-                    <div class="detail-item">
-                        <div class="detail-value">${job.summary}</div>
+                    <div class="section-title">4. Survey Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Survey Start Depth</div>
+                            <div class="detail-value">${job.surveyStartDepth} m</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Survey End Depth</div>
+                            <div class="detail-value">${job.surveyEndDepth} m</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Survey Interval</div>
+                            <div class="detail-value">${job.surveyInterval} m</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Equipment Required On-Site</div>
+                            <div class="detail-value">${job.equipmentDate}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Crew Required On-Site</div>
+                            <div class="detail-value">${job.crewDate}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Date Required on Site</div>
+                            <div class="detail-value">${job.rosDate}</div>
+                        </div>
                     </div>
                 </div>
-                ` : ''}
+
+                <div class="detail-section">
+                    <div class="section-title">5. Contact Information & Comments</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Callout Completed By</div>
+                            <div class="detail-value">${job.contactPerson}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Designation</div>
+                            <div class="detail-value">${job.designation}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Contact #</div>
+                            <div class="detail-value"><a href="tel:${job.contactPhone}" style="color: var(--secondary-color);">${job.contactPhone}</a></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Authorization</div>
+                            <div class="detail-value">${job.authorization}</div>
+                        </div>
+                        <div class="detail-item" style="grid-column: 1 / -1;">
+                            <div class="detail-label">Comments</div>
+                            <div class="detail-value">${job.comments}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">Job Status & Tracking</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Callout ID</div>
+                            <div class="detail-value" style="color: var(--secondary-color); font-weight: bold;">${job.calloutId}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">
+                                <span class="status-badge status-newcallout">New Callout</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Priority</div>
+                            <div class="detail-value">High</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Created Date</div>
+                            <div class="detail-value">28/09/2025</div>
+                        </div>
+                    </div>
+                </div>
             `;
+            
+            document.getElementById('jobModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
-            document.getElementById('jobModal').style.display = 'none';
+            document.getElementById('jobModal').classList.remove('active');
             document.body.style.overflow = 'auto';
         }
 
-        function applyFilters() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            
-            filteredJobs = allJobs.filter(job => {
-                const matchesFilter = currentFilter === 'all' || job.status === currentFilter;
-                const matchesSearch = !searchTerm || 
-                    job.calloutId.toLowerCase().includes(searchTerm) ||
-                    job.client.toLowerCase().includes(searchTerm) ||
-                    job.rigNumber.toLowerCase().includes(searchTerm) ||
-                    job.wellName.toLowerCase().includes(searchTerm) ||
-                    job.serviceType.toLowerCase().includes(searchTerm) ||
-                    job.fieldName.toLowerCase().includes(searchTerm);
-                
-                return matchesFilter && matchesSearch;
-            });
-            
-            renderJobs();
+        function showEditModal(calloutId) {
+            closeModal();
+            document.getElementById('editModal').classList.add('active');
         }
 
-        function updateLastUpdated() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('en-US', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-            });
-            document.getElementById('lastUpdated').textContent = `Updated: ${timeString}`;
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
         }
 
-        document.getElementById('searchInput').addEventListener('input', applyFilters);
+        function saveEdit() {
+            closeEditModal();
+            const msg = document.getElementById('successMessage');
+            msg.textContent = '✓ Job updated successfully!';
+            msg.classList.add('active');
+            setTimeout(() => {
+                msg.classList.remove('active');
+            }, 3000);
+        }
 
-        document.querySelectorAll('.filter-chip').forEach(chip => {
-            chip.addEventListener('click', function() {
-                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-                currentFilter = this.dataset.filter;
-                applyFilters();
-            });
-        });
+        function completeJob(calloutId) {
+            if (confirm(`Mark ${calloutId} as COMPLETED?`)) {
+                closeModal();
+                const msg = document.getElementById('successMessage');
+                msg.textContent = `✓ ${calloutId} marked as COMPLETED!`;
+                msg.classList.add('active');
+                setTimeout(() => {
+                    msg.classList.remove('active');
+                }, 3000);
+            }
+        }
 
         window.onclick = function(event) {
-            const modal = document.getElementById('jobModal');
-            if (event.target === modal) {
-                closeModal();
-            }
+            const jobModal = document.getElementById('jobModal');
+            const editModal = document.getElementById('editModal');
+            if (event.target === jobModal) closeModal();
+            if (event.target === editModal) closeEditModal();
         };
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeModal();
-            }
-        });
-
-        loadJobs();
-        setInterval(loadJobs, CONFIG.REFRESH_INTERVAL);
     </script>
 </body>
 </html>

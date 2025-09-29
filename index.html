@@ -736,7 +736,7 @@
             </div>
         </div>
 
-        <button class="refresh-btn" onclick="alert('Refreshing...')">🔄</button>
+        <button class="refresh-btn" onclick="loadJobs()">🔄</button>
     </div>
 
     <div class="success-message" id="successMessage"></div>
@@ -1000,49 +1000,13 @@
     </div>
 
     <script>
-        const SAMPLE_JOB = {
-            calloutId: '144-HZR-128-HZR',
-            ticketNumber: '33198',
-            client: 'PDO',
-            rigNumber: '144',
-            wellName: 'HZR-128',
-            location: 'HZR',
-            serviceType: 'Wireline Casing Survey',
-            depth: '6.77m - 420m',
-            wellProfile: 'Vertical',
-            rosDate: '2025-04-10',
-            rosStatus: 'CONFIRMED',
-            rosHistory: 'Initial callout confirmed. Equipment scheduled for deployment.',
-            holeSection: '12¼"',
-            fieldName: 'HZR',
-            surveyStartDepth: 'SURFACE',
-            surveyEndDepth: '1670',
-            surveyInterval: '1670',
-            casingSize: '9 5/8',
-            drillpipeSize: 'N/A',
-            groundElevation: 'N/A',
-            rigFloorElevation: 'N/A',
-            maxDownHoleTemp: '65°C',
-            minimumID: '8.5 Inch',
-            maximumInclination: '10°',
-            h2sLevel: '0 ppm',
-            equipmentDate: '2025-04-10',
-            crewDate: '2025-04-10',
-            contactPerson: 'Hani',
-            contactPhone: '24366282',
-            designation: 'PE',
-            authorization: 'Mohammed Al Wahaibi',
-            comments: 'Equipment and crew required on-site',
-            coordinates: {
-                latitude: '22° 15\' 30.00" N',
-                longitude: '58° 10\' 45.00" E',
-                northing: '382599.967E',
-                easting: '2265899.94N'
-            }
-        };
-
         function showJobDetails(calloutId) {
-            const job = SAMPLE_JOB;
+            const job = allJobs.find(j => j.calloutId === calloutId);
+            if (!job) {
+                alert('Job not found!');
+                return;
+            }
+            
             document.getElementById('modalTitle').textContent = `${job.calloutId} - Job Details`;
             
             const modalBody = document.getElementById('modalBody');

@@ -303,209 +303,6 @@
             transition: all 0.3s ease;
         }
 
-        .refresh-btn.spinning {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-        }
-
-        .modal.active {
-            display: block;
-        }
-
-        .modal-content {
-            background: white;
-            margin: 5% auto;
-            padding: 0;
-            width: 95%;
-            max-width: 800px;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 16px 16px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-header.edit-header {
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 0;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            padding: 0;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .close-btn:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        .modal-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4px;
-            padding: 6px 10px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        .modal-action-btn {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-edit {
-            background: #f39c12;
-            color: white;
-        }
-
-        .btn-edit:hover {
-            background: #e67e22;
-            transform: translateY(-2px);
-        }
-
-        .btn-complete-modal {
-            background: var(--success-color);
-            color: white;
-        }
-
-        .btn-complete-modal:hover {
-            background: #1e8449;
-            transform: translateY(-2px);
-        }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        .detail-section {
-            margin-bottom: 25px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            border-left: 4px solid var(--secondary-color);
-        }
-
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 10px;
-        }
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .detail-item {
-            background: white;
-            padding: 12px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .detail-label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #6c757d;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 5px;
-        }
-
-        .detail-value {
-            font-size: 1rem;
-            color: var(--primary-color);
-            font-weight: 500;
-        }
-
-        .edit-input, .edit-select, .edit-textarea {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-
-        .edit-input:focus, .edit-select:focus, .edit-textarea:focus {
-            outline: none;
-            border-color: var(--secondary-color);
-        }
-
-        .edit-textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px 20px;
-            border-radius: 12px;
-            margin: 20px;
-            text-align: center;
-            font-weight: 600;
-            display: none;
-            position: fixed;
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 3000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .success-message.active {
-            display: block;
-        }
-
         .loading, .error {
             text-align: center;
             padding: 60px 20px;
@@ -525,12 +322,6 @@
                 padding: 20px;
             }
         }
-
-        @media (max-width: 768px) {
-            .detail-grid {
-                grid-template-columns: 1fr;
-            }
-        }
     </style>
 </head>
 <body>
@@ -542,19 +333,19 @@
 
         <div class="stats-bar">
             <div class="stat-item">
-                <span class="stat-number" id="totalJobs">3</span>
+                <span class="stat-number" id="totalJobs">-</span>
                 <div class="stat-label">Total</div>
             </div>
             <div class="stat-item">
-                <span class="stat-number" id="pendingJobs">1</span>
+                <span class="stat-number" id="pendingJobs">-</span>
                 <div class="stat-label">Pending</div>
             </div>
             <div class="stat-item">
-                <span class="stat-number" id="approvedJobs">1</span>
+                <span class="stat-number" id="approvedJobs">-</span>
                 <div class="stat-label">Approved</div>
             </div>
             <div class="stat-item">
-                <span class="stat-number" id="urgentJobs">1</span>
+                <span class="stat-number" id="urgentJobs">-</span>
                 <div class="stat-label">Urgent</div>
             </div>
         </div>
@@ -575,532 +366,241 @@
         </div>
 
         <div class="jobs-container" id="jobsContainer">
-            <div class="loading">📊 Initializing dashboard...</div>
+            <div class="loading">Loading job data from Google Sheets...</div>
         </div>
 
         <button class="refresh-btn" onclick="loadJobs()">🔄</button>
     </div>
 
-    <div class="success-message" id="successMessage"></div>
-
-    <!-- Job Details Modal -->
-    <div class="modal" id="jobModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">144-HZR-128-HZR - Job Details</h2>
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
-
-            <div class="modal-actions">
-                <button class="modal-action-btn btn-edit" onclick="showEditModal('144-HZR-128-HZR')">
-                    ✎ Edit Job Details
-                </button>
-                <button class="modal-action-btn btn-complete-modal" onclick="completeJob('144-HZR-128-HZR')">
-                    ✓ Mark Complete
-                </button>
-            </div>
-
-            <div class="modal-body" id="modalBody">
-                <!-- Will be filled dynamically -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal" id="editModal">
-        <div class="modal-content">
-            <div class="modal-header edit-header">
-                <h2 class="modal-title">Edit Job - 144-HZR-128-HZR</h2>
-                <button class="close-btn" onclick="closeEditModal()">&times;</button>
-            </div>
-
-            <div class="modal-body">
-                <form id="editForm">
-                    <!-- 1. ROS Details -->
-                    <div class="detail-section">
-                        <div class="section-title">1. ROS Details</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">ROS Date</div>
-                                <input type="date" class="edit-input" name="rosDate" value="2025-04-10">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">ROS Status</div>
-                                <select class="edit-select" name="rosStatus">
-                                    <option value="CONFIRMED" selected>CONFIRMED</option>
-                                    <option value="TBC">TBC</option>
-                                    <option value="PENDING">PENDING</option>
-                                    <option value="CANCELLED">CANCELLED</option>
-                                </select>
-                            </div>
-                            <div class="detail-item" style="grid-column: 1 / -1;">
-                                <div class="detail-label">ROS History</div>
-                                <textarea class="edit-textarea" name="rosHistory">Initial callout confirmed. Equipment scheduled for deployment.</textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 2. Survey Information -->
-                    <div class="detail-section">
-                        <div class="section-title">2. Survey Information</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Survey Start Depth (m)</div>
-                                <input type="text" class="edit-input" name="surveyStartDepth" value="SURFACE">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Survey End Depth (m)</div>
-                                <input type="text" class="edit-input" name="surveyEndDepth" value="1670">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Survey Interval (m)</div>
-                                <input type="text" class="edit-input" name="surveyInterval" value="1670">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Equipment Required Date</div>
-                                <input type="date" class="edit-input" name="equipmentDate" value="2025-04-10">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Crew Required Date</div>
-                                <input type="date" class="edit-input" name="crewDate" value="2025-04-10">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Date Required on Site</div>
-                                <input type="date" class="edit-input" name="dateRequiredOnSite" value="2025-04-10">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 3. Contact Information & Comments -->
-                    <div class="detail-section">
-                        <div class="section-title">3. Contact Information & Comments</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Callout Completed By</div>
-                                <input type="text" class="edit-input" name="contactPerson" value="Hani">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Designation</div>
-                                <input type="text" class="edit-input" name="designation" value="PE">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Contact #</div>
-                                <input type="text" class="edit-input" name="contactPhone" value="24366282">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Authorization</div>
-                                <input type="text" class="edit-input" name="authorization" value="Mohammed Al Wahaibi">
-                            </div>
-                            <div class="detail-item" style="grid-column: 1 / -1;">
-                                <div class="detail-label">Comments</div>
-                                <textarea class="edit-textarea" name="comments">Equipment and crew required on-site</textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 4. Type of Service Required -->
-                    <div class="detail-section">
-                        <div class="section-title">4. Type of Service Required</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Service Type</div>
-                                <input type="text" class="edit-input" name="serviceType" value="Wireline Casing Survey">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Survey Category</div>
-                                <select class="edit-select" name="surveyCategory">
-                                    <option value="Wireline Gyro Surveys" selected>Wireline Gyro Surveys</option>
-                                    <option value="Memory Gyro Surveys">Memory Gyro Surveys</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 5. General Information -->
-                    <div class="detail-section">
-                        <div class="section-title">5. General Information</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Customer</div>
-                                <input type="text" class="edit-input" name="client" value="PDO">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Rig Number</div>
-                                <input type="text" class="edit-input" name="rigNumber" value="144">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Well Name</div>
-                                <input type="text" class="edit-input" name="wellName" value="HZR-128">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Hole Section</div>
-                                <input type="text" class="edit-input" name="holeSection" value="12¼&quot;">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Well ID #</div>
-                                <input type="text" class="edit-input" name="ticketNumber" value="33198">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Field Name</div>
-                                <input type="text" class="edit-input" name="fieldName" value="HZR">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 6. Well Information -->
-                    <div class="detail-section">
-                        <div class="section-title">6. Well Information</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Casing Size</div>
-                                <input type="text" class="edit-input" name="casingSize" value="9 5/8">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Well Profile</div>
-                                <select class="edit-select" name="wellProfile">
-                                    <option value="Vertical" selected>Vertical</option>
-                                    <option value="Directional">Directional</option>
-                                    <option value="Horizontal">Horizontal</option>
-                                </select>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Max Down Hole Temp</div>
-                                <input type="text" class="edit-input" name="maxDownHoleTemp" value="65°C">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Ground Elevation</div>
-                                <input type="text" class="edit-input" name="groundElevation" value="N/A">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Drillpipe Size</div>
-                                <input type="text" class="edit-input" name="drillpipeSize" value="N/A">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Rig Floor Elevation</div>
-                                <input type="text" class="edit-input" name="rigFloorElevation" value="N/A">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Latitude</div>
-                                <input type="text" class="edit-input" name="latitude" value="22° 15' 30.00&quot; N">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Longitude</div>
-                                <input type="text" class="edit-input" name="longitude" value="58° 10' 45.00&quot; E">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Northing</div>
-                                <input type="text" class="edit-input" name="northing" value="382599.967E">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Easting</div>
-                                <input type="text" class="edit-input" name="easting" value="2265899.94N">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Minimum ID</div>
-                                <input type="text" class="edit-input" name="minimumID" value="8.5 Inch">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Maximum Inclination</div>
-                                <input type="text" class="edit-input" name="maximumInclination" value="10°">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">H2S Level</div>
-                                <input type="text" class="edit-input" name="h2sLevel" value="0 ppm">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Status -->
-                    <div class="detail-section">
-                        <div class="section-title">Job Status</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Job Status</div>
-                                <select class="edit-select" name="status">
-                                    <option value="New Callout" selected>New Callout</option>
-                                    <option value="Approved">Approved</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Rejected">Rejected</option>
-                                    <option value="Completed">Completed</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Save/Cancel Buttons -->
-                    <div class="modal-actions">
-                        <button type="button" class="modal-action-btn" style="background: #95a5a6;" onclick="closeEditModal()">
-                            Cancel
-                        </button>
-                        <button type="button" class="modal-action-btn btn-complete-modal" onclick="saveEdit()">
-                            💾 Save Changes
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <script>
-        function showJobDetails(calloutId) {
-            const job = allJobs.find(j => j.calloutId === calloutId);
-            if (!job) {
-                alert('Job not found!');
+        // Configuration
+        const SHEET_ID = '1kS_vO8FfE94LHnv5ftsHqaHLm8Xum0l5W6NvXGlZB1A';
+        
+        // Variables
+        let allJobs = [];
+        let filteredJobs = [];
+        let currentFilter = 'all';
+        let isLoading = false;
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Dashboard loaded, starting data fetch...');
+            loadJobs();
+        });
+
+        // Load jobs from Google Sheets CSV
+        async function loadJobs() {
+            if (isLoading) return;
+            
+            isLoading = true;
+            console.log('Loading jobs from CSV...');
+            document.getElementById('jobsContainer').innerHTML = '<div class="loading">Loading job data from Google Sheets...</div>';
+            updateStats({ total: '-', pending: '-', approved: '-', urgent: '-' });
+
+            try {
+                const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+                console.log('Fetching CSV from:', csvUrl);
+                
+                const response = await fetch(csvUrl);
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch data (Status: ${response.status})`);
+                }
+                
+                const csvText = await response.text();
+                console.log('CSV data length:', csvText.length);
+                
+                if (!csvText || csvText.trim().length === 0) {
+                    throw new Error('No data found in the sheet');
+                }
+                
+                // Parse CSV data
+                allJobs = parseCSV(csvText);
+                filteredJobs = [...allJobs];
+                
+                console.log('Parsed jobs:', allJobs.length);
+                
+                if (allJobs.length === 0) {
+                    throw new Error('No valid job data found');
+                }
+                
+                renderJobs();
+                updateStats(calculateStats());
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('jobsContainer').innerHTML = `
+                    <div class="error">
+                        Error loading job data: ${error.message}<br>
+                        <small>Make sure your Google Sheet is publicly viewable (Share → Anyone with link → Viewer)</small>
+                    </div>
+                `;
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // Parse CSV data
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n').filter(line => line.trim());
+            if (lines.length < 2) return [];
+            
+            // Simple CSV parsing
+            const parseRow = (line) => {
+                const result = [];
+                let current = '';
+                let inQuotes = false;
+                
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        result.push(current.trim());
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                result.push(current.trim());
+                return result;
+            };
+            
+            const headers = parseRow(lines[0]);
+            const jobs = [];
+            
+            console.log('Headers found:', headers);
+            
+            // Process data rows
+            for (let i = 1; i < lines.length; i++) {
+                const row = parseRow(lines[i]);
+                if (row.length < 2) continue;
+                
+                const job = {
+                    calloutId: row[0] || `JOB-${i}`,
+                    ticketNumber: row[1] || '',
+                    status: row[2] || 'Pending',
+                    timestamp: row[3] || '',
+                    client: row[4] || 'Unknown Client',
+                    rigNumber: row[5] || '',
+                    wellName: row[6] || 'Unknown Well',
+                    serviceType: row[7] || 'Unknown Service',
+                    location: row[8] || 'Unknown Location',
+                    priority: getPriority(row[2]),
+                    rosDate: formatDate(row[3]) || '2025-01-01',
+                    rosStatus: 'TBC',
+                    depth: 'TBD',
+                    wellProfile: 'Unknown'
+                };
+                
+                jobs.push(job);
+            }
+            
+            return jobs;
+        }
+
+        // Get priority from status
+        function getPriority(status) {
+            if (!status) return 'normal';
+            const s = status.toLowerCase();
+            if (s.includes('urgent') || s.includes('emergency')) return 'urgent';
+            if (s.includes('high') || s.includes('priority')) return 'high';
+            return 'normal';
+        }
+
+        // Format date
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            try {
+                return new Date(dateStr).toISOString().split('T')[0];
+            } catch {
+                return '2025-01-01';
+            }
+        }
+
+        // Calculate statistics
+        function calculateStats() {
+            const total = allJobs.length;
+            const pending = allJobs.filter(job => job.status && job.status.toLowerCase().includes('pending')).length;
+            const approved = allJobs.filter(job => job.status && job.status.toLowerCase().includes('approved')).length;
+            const urgent = allJobs.filter(job => job.priority === 'urgent').length;
+            
+            return { total, pending, approved, urgent };
+        }
+
+        // Update statistics
+        function updateStats(stats) {
+            document.getElementById('totalJobs').textContent = stats.total;
+            document.getElementById('pendingJobs').textContent = stats.pending;
+            document.getElementById('approvedJobs').textContent = stats.approved;
+            document.getElementById('urgentJobs').textContent = stats.urgent;
+        }
+
+        // Render jobs
+        function renderJobs() {
+            const container = document.getElementById('jobsContainer');
+            
+            if (filteredJobs.length === 0) {
+                container.innerHTML = '<div class="error">No jobs found</div>';
                 return;
             }
-            
-            document.getElementById('modalTitle').textContent = `${job.calloutId} - Job Details`;
-            
-            const modalBody = document.getElementById('modalBody');
-            modalBody.innerHTML = `
-                <div class="detail-section">
-                    <div class="section-title">1. ROS Details</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">ROS Date</div>
-                            <div class="detail-value">${job.rosDate}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">ROS Status</div>
-                            <div class="detail-value">${job.rosStatus}</div>
-                        </div>
-                        <div class="detail-item" style="grid-column: 1 / -1;">
-                            <div class="detail-label">ROS History</div>
-                            <div class="detail-value">${job.rosHistory}</div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="detail-section">
-                    <div class="section-title">2. Survey Information</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">Survey Start Depth</div>
-                            <div class="detail-value">${job.surveyStartDepth} m</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Survey End Depth</div>
-                            <div class="detail-value">${job.surveyEndDepth} m</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Survey Interval</div>
-                            <div class="detail-value">${job.surveyInterval} m</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Equipment Required On-Site</div>
-                            <div class="detail-value">${job.equipmentDate}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Crew Required On-Site</div>
-                            <div class="detail-value">${job.crewDate}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Date Required on Site</div>
-                            <div class="detail-value">${job.rosDate}</div>
-                        </div>
+            container.innerHTML = filteredJobs.map(job => `
+                <div class="job-card priority-${job.priority}">
+                    <div class="status-indicator ${job.status.toLowerCase().replace(' ', '')}">${job.status.toUpperCase()}</div>
+                    
+                    <div class="job-header">
+                        <div class="job-id">${job.calloutId}</div>
                     </div>
-                </div>
 
-                <div class="detail-section">
-                    <div class="section-title">3. Contact Information & Comments</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">Callout Completed By</div>
-                            <div class="detail-value">${job.contactPerson}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Designation</div>
-                            <div class="detail-value">${job.designation}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Contact #</div>
-                            <div class="detail-value"><a href="tel:${job.contactPhone}" style="color: var(--secondary-color);">${job.contactPhone}</a></div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Authorization</div>
-                            <div class="detail-value">${job.authorization}</div>
-                        </div>
-                        <div class="detail-item" style="grid-column: 1 / -1;">
-                            <div class="detail-label">Comments</div>
-                            <div class="detail-value">${job.comments}</div>
-                        </div>
+                    <div class="job-info-line">
+                        <span class="info-item">
+                            <span class="info-label">CLIENT:</span>
+                            <span class="info-value">${job.client}</span>
+                        </span>
+                        <span class="info-divider">•</span>
+                        <span class="info-item">
+                            <span class="info-label">RIG:</span>
+                            <span class="info-value">${job.rigNumber || 'N/A'}</span>
+                        </span>
                     </div>
-                </div>
 
-                <div class="detail-section">
-                    <div class="section-title">4. Type of Service Required</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">Service Type</div>
-                            <div class="detail-value">${job.serviceType}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Survey Category</div>
-                            <div class="detail-value">Wireline Gyro Surveys</div>
-                        </div>
+                    <div class="job-info-line">
+                        <span class="info-item">
+                            <span class="info-label">SERVICE:</span>
+                            <span class="info-value">${job.serviceType}</span>
+                        </span>
                     </div>
-                </div>
 
-                <div class="detail-section">
-                    <div class="section-title">5. General Information</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">Customer</div>
-                            <div class="detail-value">${job.client}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Rig Number</div>
-                            <div class="detail-value">${job.rigNumber}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Well Name</div>
-                            <div class="detail-value">${job.wellName}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Hole Section</div>
-                            <div class="detail-value">${job.holeSection}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Well ID #</div>
-                            <div class="detail-value">${job.ticketNumber}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Field Name</div>
-                            <div class="detail-value">${job.fieldName}</div>
-                        </div>
+                    <div class="job-info-line">
+                        <span class="info-item">
+                            <span class="info-label">WELL:</span>
+                            <span class="info-value">${job.wellName}</span>
+                        </span>
+                        <span class="info-divider">•</span>
+                        <span class="info-item">
+                            <span class="info-label">LOCATION:</span>
+                            <span class="info-value">${job.location}</span>
+                        </span>
                     </div>
-                </div>
 
-                <div class="detail-section">
-                    <div class="section-title">6. Well Information</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">Casing Size</div>
-                            <div class="detail-value">${job.casingSize} Inch</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Well Profile</div>
-                            <div class="detail-value">${job.wellProfile}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Max Down Hole Temp</div>
-                            <div class="detail-value">${job.maxDownHoleTemp}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Ground Elevation</div>
-                            <div class="detail-value">${job.groundElevation}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Drillpipe Size</div>
-                            <div class="detail-value">${job.drillpipeSize} Inch</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Rig Floor Elevation</div>
-                            <div class="detail-value">${job.rigFloorElevation}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Latitude</div>
-                            <div class="detail-value">${job.coordinates.latitude}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Longitude</div>
-                            <div class="detail-value">${job.coordinates.longitude}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Northing</div>
-                            <div class="detail-value">${job.coordinates.northing}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Easting</div>
-                            <div class="detail-value">${job.coordinates.easting}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Minimum ID</div>
-                            <div class="detail-value">${job.minimumID}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Maximum Inclination</div>
-                            <div class="detail-value">${job.maximumInclination}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">H2S Level</div>
-                            <div class="detail-value">${job.h2sLevel}</div>
-                        </div>
+                    <div class="action-buttons">
+                        <button class="btn-complete" onclick="completeJob('${job.calloutId}')">
+                            ✓ Complete
+                        </button>
+                        <button class="details-btn" onclick="alert('Job details for ${job.calloutId}')">
+                            📋 View Details
+                        </button>
                     </div>
                 </div>
-
-                <div class="detail-section">
-                    <div class="section-title">7. Job Status & Tracking</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">Callout ID</div>
-                            <div class="detail-value" style="color: var(--secondary-color); font-weight: bold;">${job.calloutId}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Status</div>
-                            <div class="detail-value">
-                                <span class="status-badge status-newcallout">New Callout</span>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Priority</div>
-                            <div class="detail-value">High</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Created Date</div>
-                            <div class="detail-value">28/09/2025</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('jobModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
+            `).join('');
         }
 
-        function closeModal() {
-            document.getElementById('jobModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        function showEditModal(calloutId) {
-            closeModal();
-            document.getElementById('editModal').classList.add('active');
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        function saveEdit() {
-            closeEditModal();
-            const msg = document.getElementById('successMessage');
-            msg.textContent = '✓ Job updated successfully!';
-            msg.classList.add('active');
-            setTimeout(() => {
-                msg.classList.remove('active');
-            }, 3000);
-        }
-
+        // Complete job function
         function completeJob(calloutId) {
-            if (confirm(`Mark ${calloutId} as COMPLETED?`)) {
-                closeModal();
-                const msg = document.getElementById('successMessage');
-                msg.textContent = `✓ ${calloutId} marked as COMPLETED!`;
-                msg.classList.add('active');
-                setTimeout(() => {
-                    msg.classList.remove('active');
-                }, 3000);
-            }
+            alert(`Mark ${calloutId} as completed?`);
         }
-
-        window.onclick = function(event) {
-            const jobModal = document.getElementById('jobModal');
-            const editModal = document.getElementById('editModal');
-            if (event.target === jobModal) closeModal();
-            if (event.target === editModal) closeEditModal();
-        };
     </script>
 </body>
 </html>

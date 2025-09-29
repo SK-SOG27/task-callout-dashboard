@@ -253,13 +253,13 @@
         }
 
         .btn-complete {
-            padding: 10px 16px;
+            padding: 8px 12px;
             background: var(--success-color);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -270,13 +270,13 @@
         }
 
         .details-btn {
-            padding: 10px 16px;
+            padding: 8px 12px;
             background: var(--secondary-color);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -381,17 +381,17 @@
         .modal-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            padding: 20px;
+            gap: 4px;
+            padding: 6px 10px;
             border-bottom: 2px solid #f0f0f0;
         }
 
         .modal-action-btn {
-            padding: 14px 24px;
+            padding: 5px 10px;
             border: none;
-            border-radius: 25px;
+            border-radius: 6px;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -530,9 +530,6 @@
             .detail-grid {
                 grid-template-columns: 1fr;
             }
-            .modal-actions {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -583,7 +580,7 @@
                 <div class="status-indicator new">NEW CALLOUT</div>
                 
                 <div class="job-header">
-                    <div class="job-id">CL-2025-001</div>
+                    <div class="job-id">144-HZR-128-HZR</div>
                 </div>
 
                 <div class="job-info-line">
@@ -623,10 +620,10 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button class="btn-complete" onclick="completeJob('CL-2025-001')">
+                    <button class="btn-complete" onclick="completeJob('144-HZR-128-HZR')">
                         ✓ Complete
                     </button>
-                    <button class="details-btn" onclick="showJobDetails('CL-2025-001')">
+                    <button class="details-btn" onclick="showJobDetails('144-HZR-128-HZR')">
                         📋 View Full Details
                     </button>
                 </div>
@@ -748,15 +745,15 @@
     <div class="modal" id="jobModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">CL-2025-001 - Job Details</h2>
+                <h2 class="modal-title" id="modalTitle">144-HZR-128-HZR - Job Details</h2>
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
 
             <div class="modal-actions">
-                <button class="modal-action-btn btn-edit" onclick="showEditModal('CL-2025-001')">
-                    ✎ Edit Job
+                <button class="modal-action-btn btn-edit" onclick="showEditModal('144-HZR-128-HZR')">
+                    ✎ Edit Job Details
                 </button>
-                <button class="modal-action-btn btn-complete-modal" onclick="completeJob('CL-2025-001')">
+                <button class="modal-action-btn btn-complete-modal" onclick="completeJob('144-HZR-128-HZR')">
                     ✓ Mark Complete
                 </button>
             </div>
@@ -771,15 +768,39 @@
     <div class="modal" id="editModal">
         <div class="modal-content">
             <div class="modal-header edit-header">
-                <h2 class="modal-title">Edit Job - CL-2025-001</h2>
+                <h2 class="modal-title">Edit Job - 144-HZR-128-HZR</h2>
                 <button class="close-btn" onclick="closeEditModal()">&times;</button>
             </div>
 
             <div class="modal-body">
                 <form id="editForm">
-                    <!-- Survey Information -->
+                    <!-- 1. ROS Details -->
                     <div class="detail-section">
-                        <div class="section-title">Survey Information</div>
+                        <div class="section-title">1. ROS Details</div>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">ROS Date</div>
+                                <input type="date" class="edit-input" name="rosDate" value="2025-04-10">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">ROS Status</div>
+                                <select class="edit-select" name="rosStatus">
+                                    <option value="CONFIRMED" selected>CONFIRMED</option>
+                                    <option value="TBC">TBC</option>
+                                    <option value="PENDING">PENDING</option>
+                                    <option value="CANCELLED">CANCELLED</option>
+                                </select>
+                            </div>
+                            <div class="detail-item" style="grid-column: 1 / -1;">
+                                <div class="detail-label">ROS History</div>
+                                <textarea class="edit-textarea" name="rosHistory">Initial callout confirmed. Equipment scheduled for deployment.</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Survey Information -->
+                    <div class="detail-section">
+                        <div class="section-title">2. Survey Information</div>
                         <div class="detail-grid">
                             <div class="detail-item">
                                 <div class="detail-label">Survey Start Depth (m)</div>
@@ -802,15 +823,42 @@
                                 <input type="date" class="edit-input" name="crewDate" value="2025-04-10">
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">ROS Date</div>
-                                <input type="date" class="edit-input" name="rosDate" value="2025-04-10">
+                                <div class="detail-label">Date Required on Site</div>
+                                <input type="date" class="edit-input" name="dateRequiredOnSite" value="2025-04-10">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Type of Service Required -->
+                    <!-- 3. Contact Information & Comments -->
                     <div class="detail-section">
-                        <div class="section-title">Type of Service Required</div>
+                        <div class="section-title">3. Contact Information & Comments</div>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Callout Completed By</div>
+                                <input type="text" class="edit-input" name="contactPerson" value="Hani">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Designation</div>
+                                <input type="text" class="edit-input" name="designation" value="PE">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Contact #</div>
+                                <input type="text" class="edit-input" name="contactPhone" value="24366282">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Authorization</div>
+                                <input type="text" class="edit-input" name="authorization" value="Mohammed Al Wahaibi">
+                            </div>
+                            <div class="detail-item" style="grid-column: 1 / -1;">
+                                <div class="detail-label">Comments</div>
+                                <textarea class="edit-textarea" name="comments">Equipment and crew required on-site</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Type of Service Required -->
+                    <div class="detail-section">
+                        <div class="section-title">4. Type of Service Required</div>
                         <div class="detail-grid">
                             <div class="detail-item">
                                 <div class="detail-label">Service Type</div>
@@ -826,9 +874,103 @@
                         </div>
                     </div>
 
+                    <!-- 5. General Information -->
+                    <div class="detail-section">
+                        <div class="section-title">5. General Information</div>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Customer</div>
+                                <input type="text" class="edit-input" name="client" value="PDO">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Rig Number</div>
+                                <input type="text" class="edit-input" name="rigNumber" value="144">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Well Name</div>
+                                <input type="text" class="edit-input" name="wellName" value="HZR-128">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Hole Section</div>
+                                <input type="text" class="edit-input" name="holeSection" value="12¼&quot;">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Well ID #</div>
+                                <input type="text" class="edit-input" name="ticketNumber" value="33198">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Field Name</div>
+                                <input type="text" class="edit-input" name="fieldName" value="HZR">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6. Well Information -->
+                    <div class="detail-section">
+                        <div class="section-title">6. Well Information</div>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Casing Size</div>
+                                <input type="text" class="edit-input" name="casingSize" value="9 5/8">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Well Profile</div>
+                                <select class="edit-select" name="wellProfile">
+                                    <option value="Vertical" selected>Vertical</option>
+                                    <option value="Directional">Directional</option>
+                                    <option value="Horizontal">Horizontal</option>
+                                </select>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Max Down Hole Temp</div>
+                                <input type="text" class="edit-input" name="maxDownHoleTemp" value="65°C">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Ground Elevation</div>
+                                <input type="text" class="edit-input" name="groundElevation" value="N/A">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Drillpipe Size</div>
+                                <input type="text" class="edit-input" name="drillpipeSize" value="N/A">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Rig Floor Elevation</div>
+                                <input type="text" class="edit-input" name="rigFloorElevation" value="N/A">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Latitude</div>
+                                <input type="text" class="edit-input" name="latitude" value="22° 15' 30.00&quot; N">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Longitude</div>
+                                <input type="text" class="edit-input" name="longitude" value="58° 10' 45.00&quot; E">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Northing</div>
+                                <input type="text" class="edit-input" name="northing" value="382599.967E">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Easting</div>
+                                <input type="text" class="edit-input" name="easting" value="2265899.94N">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Minimum ID</div>
+                                <input type="text" class="edit-input" name="minimumID" value="8.5 Inch">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Maximum Inclination</div>
+                                <input type="text" class="edit-input" name="maximumInclination" value="10°">
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">H2S Level</div>
+                                <input type="text" class="edit-input" name="h2sLevel" value="0 ppm">
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Status -->
                     <div class="detail-section">
-                        <div class="section-title">Status</div>
+                        <div class="section-title">Job Status</div>
                         <div class="detail-grid">
                             <div class="detail-item">
                                 <div class="detail-label">Job Status</div>
@@ -840,15 +982,6 @@
                                     <option value="Completed">Completed</option>
                                 </select>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Comments -->
-                    <div class="detail-section">
-                        <div class="section-title">Comments</div>
-                        <div class="detail-item">
-                            <div class="detail-label">Additional Notes</div>
-                            <textarea class="edit-textarea" name="comments" placeholder="Add notes or comments...">Equipment and crew required on-site</textarea>
                         </div>
                     </div>
 
@@ -868,7 +1001,7 @@
 
     <script>
         const SAMPLE_JOB = {
-            calloutId: 'CL-2025-001',
+            calloutId: '144-HZR-128-HZR',
             ticketNumber: '33198',
             client: 'PDO',
             rigNumber: '144',
@@ -879,6 +1012,7 @@
             wellProfile: 'Vertical',
             rosDate: '2025-04-10',
             rosStatus: 'CONFIRMED',
+            rosHistory: 'Initial callout confirmed. Equipment scheduled for deployment.',
             holeSection: '12¼"',
             fieldName: 'HZR',
             surveyStartDepth: 'SURFACE',
@@ -888,6 +1022,10 @@
             drillpipeSize: 'N/A',
             groundElevation: 'N/A',
             rigFloorElevation: 'N/A',
+            maxDownHoleTemp: '65°C',
+            minimumID: '8.5 Inch',
+            maximumInclination: '10°',
+            h2sLevel: '0 ppm',
             equipmentDate: '2025-04-10',
             crewDate: '2025-04-10',
             contactPerson: 'Hani',
@@ -896,8 +1034,8 @@
             authorization: 'Mohammed Al Wahaibi',
             comments: 'Equipment and crew required on-site',
             coordinates: {
-                latitude: 'N/A',
-                longitude: '6',
+                latitude: '22° 15\' 30.00" N',
+                longitude: '58° 10\' 45.00" E',
                 northing: '382599.967E',
                 easting: '2265899.94N'
             }
@@ -910,109 +1048,25 @@
             const modalBody = document.getElementById('modalBody');
             modalBody.innerHTML = `
                 <div class="detail-section">
-                    <div class="section-title">1. General Information</div>
+                    <div class="section-title">1. ROS Details</div>
                     <div class="detail-grid">
                         <div class="detail-item">
-                            <div class="detail-label">Customer</div>
-                            <div class="detail-value">${job.client}</div>
+                            <div class="detail-label">ROS Date</div>
+                            <div class="detail-value">${job.rosDate}</div>
                         </div>
                         <div class="detail-item">
-                            <div class="detail-label">Rig Number</div>
-                            <div class="detail-value">${job.rigNumber}</div>
+                            <div class="detail-label">ROS Status</div>
+                            <div class="detail-value">${job.rosStatus}</div>
                         </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Well Name</div>
-                            <div class="detail-value">${job.wellName}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Hole Section</div>
-                            <div class="detail-value">${job.holeSection}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Well ID #</div>
-                            <div class="detail-value">${job.ticketNumber}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Field Name</div>
-                            <div class="detail-value">${job.fieldName}</div>
+                        <div class="detail-item" style="grid-column: 1 / -1;">
+                            <div class="detail-label">ROS History</div>
+                            <div class="detail-value">${job.rosHistory}</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="detail-section">
-                    <div class="section-title">2. Type of Service Required</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">Service Type</div>
-                            <div class="detail-value">${job.serviceType}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Survey Category</div>
-                            <div class="detail-value">Wireline Gyro Surveys</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="detail-section">
-                    <div class="section-title">3. Well Information</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">Latitude</div>
-                            <div class="detail-value">${job.coordinates.latitude}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Northing</div>
-                            <div class="detail-value">${job.coordinates.northing}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Longitude</div>
-                            <div class="detail-value">${job.coordinates.longitude}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Easting</div>
-                            <div class="detail-value">${job.coordinates.easting}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Casing Size</div>
-                            <div class="detail-value">${job.casingSize} Inch</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Ground Elevation</div>
-                            <div class="detail-value">${job.groundElevation}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Drillpipe Size</div>
-                            <div class="detail-value">${job.drillpipeSize} Inch</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Rig Floor Elevation</div>
-                            <div class="detail-value">${job.rigFloorElevation}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Well Profile</div>
-                            <div class="detail-value">${job.wellProfile}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Max Down Hole Temp</div>
-                            <div class="detail-value">°C</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Minimum ID</div>
-                            <div class="detail-value">Inch</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Maximum Inclination</div>
-                            <div class="detail-value">°</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">H2S Level</div>
-                            <div class="detail-value">0</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="detail-section">
-                    <div class="section-title">4. Survey Information</div>
+                    <div class="section-title">2. Survey Information</div>
                     <div class="detail-grid">
                         <div class="detail-item">
                             <div class="detail-label">Survey Start Depth</div>
@@ -1042,7 +1096,7 @@
                 </div>
 
                 <div class="detail-section">
-                    <div class="section-title">5. Contact Information & Comments</div>
+                    <div class="section-title">3. Contact Information & Comments</div>
                     <div class="detail-grid">
                         <div class="detail-item">
                             <div class="detail-label">Callout Completed By</div>
@@ -1068,7 +1122,109 @@
                 </div>
 
                 <div class="detail-section">
-                    <div class="section-title">Job Status & Tracking</div>
+                    <div class="section-title">4. Type of Service Required</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Service Type</div>
+                            <div class="detail-value">${job.serviceType}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Survey Category</div>
+                            <div class="detail-value">Wireline Gyro Surveys</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">5. General Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Customer</div>
+                            <div class="detail-value">${job.client}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Rig Number</div>
+                            <div class="detail-value">${job.rigNumber}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Well Name</div>
+                            <div class="detail-value">${job.wellName}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Hole Section</div>
+                            <div class="detail-value">${job.holeSection}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Well ID #</div>
+                            <div class="detail-value">${job.ticketNumber}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Field Name</div>
+                            <div class="detail-value">${job.fieldName}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">6. Well Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Casing Size</div>
+                            <div class="detail-value">${job.casingSize} Inch</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Well Profile</div>
+                            <div class="detail-value">${job.wellProfile}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Max Down Hole Temp</div>
+                            <div class="detail-value">${job.maxDownHoleTemp}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Ground Elevation</div>
+                            <div class="detail-value">${job.groundElevation}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Drillpipe Size</div>
+                            <div class="detail-value">${job.drillpipeSize} Inch</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Rig Floor Elevation</div>
+                            <div class="detail-value">${job.rigFloorElevation}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Latitude</div>
+                            <div class="detail-value">${job.coordinates.latitude}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Longitude</div>
+                            <div class="detail-value">${job.coordinates.longitude}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Northing</div>
+                            <div class="detail-value">${job.coordinates.northing}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Easting</div>
+                            <div class="detail-value">${job.coordinates.easting}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Minimum ID</div>
+                            <div class="detail-value">${job.minimumID}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Maximum Inclination</div>
+                            <div class="detail-value">${job.maximumInclination}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">H2S Level</div>
+                            <div class="detail-value">${job.h2sLevel}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">7. Job Status & Tracking</div>
                     <div class="detail-grid">
                         <div class="detail-item">
                             <div class="detail-label">Callout ID</div>

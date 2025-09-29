@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Sheets API Test</title>
+</head>
+<body>
+    <h1>Testing Google Sheets API Connection</h1>
+    <button onclick="testAPI()">Test API Connection</button>
+    <pre id="result"></pre>
+
+    <script>
+        const CONFIG = {
+            SHEET_ID: '1kS_vO8FfE94LHnv5ftsHqaHLm8Xum0l5W6NvXGlZB1A',
+            API_KEY: 'AIzaSyBcudKMCGF58ItQ5-v_2PAFEdZO6CyHXEs',
+            RANGE: 'Sheet1!A1:Z10'
+        };
+
+        async function testAPI() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = 'Testing connection...\n';
+            
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/${CONFIG.RANGE}?key=${CONFIG.API_KEY}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.error) {
+                    resultDiv.textContent = '❌ ERROR:\n' + JSON.stringify(data.error, null, 2);
+                    return;
+                }
+                
+                if (data.values) {
+                    resultDiv.textContent = '✅ SUCCESS!\n\n';
+                    resultDiv.textContent += `Total rows: ${data.values.length}\n\n`;
+                    resultDiv.textContent += 'Headers:\n' + JSON.stringify(data.values[0], null, 2) + '\n\n';
+                    resultDiv.textContent += 'First data row:\n' + JSON.stringify(data.values[1], null, 2);
+                } else {
+                    resultDiv.textContent = '⚠️ No data found in range';
+                }
+            } catch (error) {
+                resultDiv.textContent = '❌ FETCH ERROR:\n' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

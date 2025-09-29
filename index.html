@@ -9,598 +9,979 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        :root {
-            --primary-color: #B91515;
-            --secondary-color: #3498db;
-            --success-color: #27ae60;
-            --warning-color: #f39c12;
-            --danger-color: #e74c3c;
-            --light-bg: #f8f9fa;
-            --card-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            --card-shadow-hover: 0 8px 24px rgba(0,0,0,0.15);
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #B91515 0%, #8B0000 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            line-height: 1.6;
-            padding: 0;
-            margin: 0;
+            color: #333;
         }
 
-        .dashboard-container {
-            max-width: 100%;
-            margin: 0;
-            background: white;
-            min-height: 100vh;
-            width: 100%;
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
         .header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
-            padding: 20px 15px;
             text-align: center;
-            position: relative;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            color: white;
         }
 
         .header h1 {
-            font-size: 1.8rem;
-            margin-bottom: 5px;
+            font-size: 2.5rem;
             font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .header p {
-            font-size: 1rem;
+            font-size: 1.1rem;
             opacity: 0.9;
-            font-weight: 300;
-        }
-
-        .stats-bar {
-            background: var(--light-bg);
-            padding: 15px 10px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 10px 5px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .stat-number {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--secondary-color);
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.75rem;
-            color: #6c757d;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 2px;
-            font-weight: 600;
         }
 
         .controls {
-            padding: 15px;
-            background: white;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .search-container {
-            position: relative;
-            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            align-items: center;
         }
 
         .search-box {
-            width: 100%;
-            padding: 15px 20px 15px 50px;
-            border: 2px solid #e9ecef;
-            border-radius: 25px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
+            flex: 1;
+            min-width: 300px;
+            position: relative;
         }
 
-        .search-box:focus {
-            border-color: var(--secondary-color);
+        .search-box input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
             outline: none;
-            background: white;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
         }
 
         .search-icon {
             position: absolute;
-            left: 18px;
+            right: 20px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 18px;
-            color: #6c757d;
+            color: #666;
         }
 
-        .filter-container {
+        .filters {
             display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 5px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .filter-chip {
-            padding: 8px 16px;
-            border: 2px solid #e9ecef;
-            background: white;
-            border-radius: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 600;
-            font-size: 0.85rem;
-            white-space: nowrap;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-chip:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
         }
 
         .filter-chip.active {
-            background: var(--secondary-color);
-            color: white;
-            border-color: var(--secondary-color);
-        }
-
-        .jobs-container {
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            padding-bottom: 100px;
-        }
-
-        .job-card {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: var(--card-shadow);
-            transition: all 0.3s ease;
-            position: relative;
-            border: 2px solid #333;
-            color: #ffffff;
-        }
-
-        .job-card.priority-urgent { border-color: var(--danger-color); }
-        .job-card.priority-high { border-color: var(--warning-color); }
-        .job-card.priority-normal { border-color: var(--secondary-color); }
-
-        .status-indicator {
-            position: absolute;
-            top: 0;
-            right: 0;
-            padding: 8px 16px;
-            border-radius: 0 10px 0 10px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .status-indicator.new { background: #ff9800; color: white; }
-        .status-indicator.approved { background: #4caf50; color: white; }
-        .status-indicator.pending { background: #ff9800; color: white; }
-
-        .job-header {
-            margin-bottom: 12px;
-            padding-right: 100px;
-        }
-
-        .job-id {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #3498db;
-            margin-bottom: 8px;
-        }
-
-        .job-info-line {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 6px;
-            font-size: 0.85rem;
-        }
-
-        .info-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .info-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #999;
-            text-transform: uppercase;
-        }
-
-        .info-value {
-            font-size: 0.85rem;
-            color: #ffffff;
-            font-weight: 500;
-        }
-
-        .info-value.highlight {
-            color: #3498db;
-            font-weight: 600;
-        }
-
-        .info-divider {
-            color: #666;
-            font-weight: bold;
-            margin: 0 4px;
-        }
-
-        .action-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .btn-complete {
-            padding: 8px 12px;
-            background: var(--success-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-complete:hover {
-            background: #1e8449;
-            transform: translateY(-1px);
-        }
-
-        .details-btn {
-            padding: 8px 12px;
-            background: var(--secondary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .details-btn:hover {
-            background: #2980b9;
-            transform: translateY(-1px);
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            border-color: rgba(255,255,255,0.9);
         }
 
         .refresh-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            background: var(--success-color);
+            padding: 12px 25px;
+            background: rgba(255,255,255,0.2);
             color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 1.5rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
             cursor: pointer;
-            box-shadow: var(--card-shadow-hover);
-            z-index: 1000;
             transition: all 0.3s ease;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
         }
 
-        .loading, .error {
+        .refresh-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             text-align: center;
-            padding: 60px 20px;
-            color: #6c757d;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .job-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .job-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .job-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .job-id {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .job-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-new { background: #e3f2fd; color: #1976d2; }
+        .status-confirmed { background: #e8f5e8; color: #2e7d32; }
+        .status-pending { background: #fff3e0; color: #f57c00; }
+        .status-completed { background: #f3e5f5; color: #7b1fa2; }
+
+        .job-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .job-meta {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .job-date {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .job-priority {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .priority-high { background: #ffebee; color: #c62828; }
+        .priority-normal { background: #f3e5f5; color: #7b1fa2; }
+        .priority-low { background: #e8f5e8; color: #2e7d32; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .modal-detail-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .modal-detail-label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-detail-value {
+            font-weight: 600;
+            color: #333;
             font-size: 1.1rem;
         }
 
-        .error {
-            color: var(--danger-color);
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: white;
+            font-size: 1.2rem;
         }
 
-        @media (min-width: 768px) {
-            .jobs-container {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-                gap: 20px;
-                padding: 20px;
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            color: white;
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
             }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                min-width: unset;
+            }
+
+            .filters {
+                justify-content: center;
+            }
+
+            .jobs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .job-details {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 2% auto;
+            }
+
+            .modal-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .last-updated {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-top: 30px;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
+    <div class="container">
         <div class="header">
-            <h1>TASK Energy</h1>
-            <p>Wireline Callout Jobs</p>
-        </div>
-
-        <div class="stats-bar">
-            <div class="stat-item">
-                <span class="stat-number" id="totalJobs">-</span>
-                <div class="stat-label">Total</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number" id="pendingJobs">-</span>
-                <div class="stat-label">Pending</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number" id="approvedJobs">-</span>
-                <div class="stat-label">Approved</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number" id="urgentJobs">-</span>
-                <div class="stat-label">Urgent</div>
-            </div>
+            <h1>TASK Energy - Job Dashboard</h1>
+            <p>Real-time Callout Management System</p>
         </div>
 
         <div class="controls">
-            <div class="search-container">
-                <div class="search-icon">🔍</div>
-                <input type="text" class="search-box" id="searchInput" placeholder="Search Client, RIG, Well, Location...">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search jobs by ID, client, rig, well, or service...">
+                <span class="search-icon">🔍</span>
             </div>
-            
-            <div class="filter-container">
-                <div class="filter-chip active">All Jobs</div>
-                <div class="filter-chip">New Callout</div>
-                <div class="filter-chip">Approved</div>
-                <div class="filter-chip">Pending</div>
-                <div class="filter-chip">Rejected</div>
+            <div class="filters">
+                <div class="filter-chip active" data-filter="all">All Jobs</div>
+                <div class="filter-chip" data-filter="New">New</div>
+                <div class="filter-chip" data-filter="Confirmed">Confirmed</div>
+                <div class="filter-chip" data-filter="Pending">Pending</div>
+                <div class="filter-chip" data-filter="Completed">Completed</div>
+            </div>
+            <button class="refresh-btn" onclick="loadData()">🔄 Refresh</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalJobs">0</div>
+                <div class="stat-label">Total Callouts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="newJobs">0</div>
+                <div class="stat-label">New Callouts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="activeJobs">0</div>
+                <div class="stat-label">Active Jobs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="completedJobs">0</div>
+                <div class="stat-label">Completed</div>
             </div>
         </div>
 
-        <div class="jobs-container" id="jobsContainer">
+        <div id="jobsContainer">
             <div class="loading">Loading job data from Google Sheets...</div>
         </div>
 
-        <button class="refresh-btn" onclick="loadJobs()">🔄</button>
+        <div class="last-updated" id="lastUpdated"></div>
+    </div>
+
+    <!-- Modal -->
+    <div id="jobModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Job Details</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Job details will be inserted here -->
+            </div>
+        </div>
     </div>
 
     <script>
         // Configuration
-        const SHEET_ID = '1kS_vO8FfE94LHnv5ftsHqaHLm8Xum0l5W6NvXGlZB1A';
-        
-        // Variables
+        const CONFIG = {
+            SHEET_ID: '1kS_vO8FfE94LHnv5ftsHqaHLm8Xum0l5W6NvXGlZB1A',
+            REFRESH_INTERVAL: 5 * 60 * 1000, // 5 minutes
+            CSV_URL: null // Will be set dynamically
+        };
+
         let allJobs = [];
         let filteredJobs = [];
-        let currentFilter = 'all';
-        let isLoading = false;
+        let refreshInterval;
+
+        // Initialize CSV URL
+        CONFIG.CSV_URL = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/export?format=csv&gid=0`;
 
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Dashboard loaded, starting data fetch...');
-            loadJobs();
+            loadData();
+            setupEventListeners();
+            startAutoRefresh();
         });
 
-        // Load jobs from Google Sheets CSV
-        async function loadJobs() {
-            if (isLoading) return;
-            
-            isLoading = true;
-            console.log('Loading jobs from CSV...');
-            document.getElementById('jobsContainer').innerHTML = '<div class="loading">Loading job data from Google Sheets...</div>';
-            updateStats({ total: '-', pending: '-', approved: '-', urgent: '-' });
+        function setupEventListeners() {
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                filteredJobs = allJobs.filter(job => 
+                    (job.calloutId?.toLowerCase().includes(searchTerm)) ||
+                    (job.ticketNumber?.toLowerCase().includes(searchTerm)) ||
+                    (job.client?.toLowerCase().includes(searchTerm)) ||
+                    (job.rigNumber?.toLowerCase().includes(searchTerm)) ||
+                    (job.wellName?.toLowerCase().includes(searchTerm)) ||
+                    (job.fieldName?.toLowerCase().includes(searchTerm)) ||
+                    (job.serviceType?.toLowerCase().includes(searchTerm)) ||
+                    (job.contactPerson?.toLowerCase().includes(searchTerm))
+                );
+                renderJobs();
+            });
 
+            // Filter functionality
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filter = this.dataset.filter;
+                    if (filter === 'all') {
+                        filteredJobs = [...allJobs];
+                    } else {
+                        filteredJobs = allJobs.filter(job => 
+                            job.status?.toLowerCase().includes(filter.toLowerCase())
+                        );
+                    }
+                    renderJobs();
+                });
+            });
+
+            // Modal functionality
+            window.addEventListener('click', function(event) {
+                const modal = document.getElementById('jobModal');
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+        }
+
+        async function loadData() {
+            console.log('Loading jobs from CSV...');
+            
             try {
-                const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
-                console.log('Fetching CSV from:', csvUrl);
+                console.log('Fetching CSV from:', CONFIG.CSV_URL);
+                const response = await fetch(CONFIG.CSV_URL);
                 
-                const response = await fetch(csvUrl);
                 console.log('Response status:', response.status);
                 
                 if (!response.ok) {
-                    throw new Error(`Failed to fetch data (Status: ${response.status})`);
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 
-                const csvText = await response.text();
-                console.log('CSV data length:', csvText.length);
+                const csvData = await response.text();
+                console.log('CSV data length:', csvData.length);
                 
-                if (!csvText || csvText.trim().length === 0) {
-                    throw new Error('No data found in the sheet');
-                }
+                const jobs = parseCSV(csvData);
+                console.log('Parsed jobs:', jobs.length);
                 
-                // Parse CSV data
-                allJobs = parseCSV(csvText);
+                allJobs = jobs;
                 filteredJobs = [...allJobs];
                 
-                console.log('Parsed jobs:', allJobs.length);
-                
-                if (allJobs.length === 0) {
-                    throw new Error('No valid job data found');
-                }
-                
                 renderJobs();
-                updateStats(calculateStats());
+                updateStats();
+                updateLastUpdated();
                 
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error loading data:', error);
                 document.getElementById('jobsContainer').innerHTML = `
                     <div class="error">
-                        Error loading job data: ${error.message}<br>
-                        <small>Make sure your Google Sheet is publicly viewable (Share → Anyone with link → Viewer)</small>
+                        <h3>Error Loading Data</h3>
+                        <p>Failed to load job data from Google Sheets. Please check the console for details.</p>
+                        <p>Error: ${error.message}</p>
+                        <button onclick="loadData()" style="margin-top: 15px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">Retry</button>
                     </div>
                 `;
-            } finally {
-                isLoading = false;
             }
         }
 
-        // Parse CSV data
-        function parseCSV(csvText) {
-            const lines = csvText.split('\n').filter(line => line.trim());
+        function parseCSV(csvData) {
+            const lines = csvData.split('\n').filter(line => line.trim());
             if (lines.length < 2) return [];
             
-            // Simple CSV parsing
-            const parseRow = (line) => {
-                const result = [];
-                let current = '';
-                let inQuotes = false;
-                
-                for (let i = 0; i < line.length; i++) {
-                    const char = line[i];
-                    if (char === '"') {
-                        inQuotes = !inQuotes;
-                    } else if (char === ',' && !inQuotes) {
-                        result.push(current.trim());
-                        current = '';
-                    } else {
-                        current += char;
-                    }
-                }
-                result.push(current.trim());
-                return result;
-            };
-            
-            const headers = parseRow(lines[0]);
-            const jobs = [];
-            
+            const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
             console.log('Headers found:', headers);
             
-            // Process data rows
+            const jobs = [];
+            
             for (let i = 1; i < lines.length; i++) {
-                const row = parseRow(lines[i]);
-                if (row.length < 2) continue;
+                const row = parseCSVRow(lines[i]);
+                if (row.length < 10) continue; // Skip rows with insufficient data
                 
                 const job = {
                     calloutId: row[0] || `JOB-${i}`,
                     ticketNumber: row[1] || '',
                     status: row[2] || 'Pending',
                     timestamp: row[3] || '',
-                    client: row[4] || 'Unknown Client',
-                    rigNumber: row[5] || '',
-                    wellName: row[6] || 'Unknown Well',
-                    serviceType: row[7] || 'Unknown Service',
-                    location: row[8] || 'Unknown Location',
-                    priority: getPriority(row[2]),
-                    rosDate: formatDate(row[3]) || '2025-01-01',
-                    rosStatus: 'TBC',
-                    depth: 'TBD',
-                    wellProfile: 'Unknown'
+                    emailId: row[4] || '',
+                    originalSubject: row[5] || '',
+                    summary: row[6] || '',
+                    dataSource: row[7] || '',
+                    client: row[8] || '',  // Customer column
+                    rigNumber: row[9] || '',  // RIG Number column
+                    wellName: row[10] || '',  // Well Name column
+                    wellId: row[11] || '',
+                    fieldName: row[12] || '',
+                    serviceType: row[13] || '',  // Service Type column
+                    holeSection: row[14] || '',
+                    casingSize: row[15] || '',
+                    drillpipeSize: row[16] || '',
+                    minimumID: row[17] || '',
+                    wellProfile: row[18] || '',
+                    latitude: row[19] || '',
+                    longitude: row[20] || '',
+                    northing: row[21] || '',
+                    easting: row[22] || '',
+                    groundElevation: row[23] || '',
+                    rigFloorElevation: row[24] || '',
+                    maxInclination: row[25] || '',
+                    maxDownHoleTemp: row[26] || '',
+                    h2sLevel: row[27] || '',
+                    surveyStartDepth: row[28] || '',
+                    surveyEndDepth: row[29] || '',
+                    surveyInterval: row[30] || '',
+                    rosDate: row[31] || '',  // ROS Date column
+                    rosStatus: row[32] || '',
+                    allROSDates: row[33] || '',
+                    equipmentDate: row[34] || '',  // Equipment Required Date
+                    equipmentTime: row[35] || '',
+                    crewDate: row[36] || '',  // Crew Required Date
+                    crewTime: row[37] || '',
+                    contactPerson: row[38] || '',  // Callout Completed By
+                    designation: row[39] || '',
+                    contactPhone: row[40] || '',  // Contact Number
+                    senderEmail: row[41] || '',
+                    senderName: row[42] || '',
+                    comments: row[43] || '',
+                    authorization: row[44] || '',
+                    priority: row[45] || 'Normal',  // Urgency column
+                    dataCompleteness: row[46] || '',
+                    actionBy: row[47] || '',
+                    actionDate: row[48] || '',
+                    updatedBy: row[49] || '',
+                    updatedDate: row[50] || '',
+                    dataConflicts: row[51] || '',
+                    acknowledgmentStatus: row[52] || '',
+                    acknowledgedBy: row[53] || '',
+                    acknowledgeTime: row[54] || '',
+                    hasPdfAttachment: row[55] || '',
+                    pdfDriveLink: row[56] || '',
+                    pdfExtractionStatus: row[57] || '',
+                    receivedDate: row[58] || '',
+                    extractionNotes: row[59] || '',
+                    lastUpdated: row[60] || '',
+                    // Taking location from field name since that makes more sense
+                    location: row[12] || (row[19] && row[20] ? `${row[19]}, ${row[20]}` : '')
                 };
                 
-                jobs.push(job);
+                // Skip empty rows
+                if (job.calloutId && job.calloutId !== `JOB-${i}`) {
+                    jobs.push(job);
+                }
             }
             
+            console.log('Successfully parsed jobs:', jobs.length);
             return jobs;
         }
 
-        // Get priority from status
-        function getPriority(status) {
-            if (!status) return 'normal';
-            const s = status.toLowerCase();
-            if (s.includes('urgent') || s.includes('emergency')) return 'urgent';
-            if (s.includes('high') || s.includes('priority')) return 'high';
-            return 'normal';
-        }
-
-        // Format date
-        function formatDate(dateStr) {
-            if (!dateStr) return '';
-            try {
-                return new Date(dateStr).toISOString().split('T')[0];
-            } catch {
-                return '2025-01-01';
-            }
-        }
-
-        // Calculate statistics
-        function calculateStats() {
-            const total = allJobs.length;
-            const pending = allJobs.filter(job => job.status && job.status.toLowerCase().includes('pending')).length;
-            const approved = allJobs.filter(job => job.status && job.status.toLowerCase().includes('approved')).length;
-            const urgent = allJobs.filter(job => job.priority === 'urgent').length;
+        function parseCSVRow(csvRow) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
             
-            return { total, pending, approved, urgent };
+            for (let i = 0; i < csvRow.length; i++) {
+                const char = csvRow[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current.trim());
+            return result.map(field => field.replace(/"/g, ''));
         }
 
-        // Update statistics
-        function updateStats(stats) {
-            document.getElementById('totalJobs').textContent = stats.total;
-            document.getElementById('pendingJobs').textContent = stats.pending;
-            document.getElementById('approvedJobs').textContent = stats.approved;
-            document.getElementById('urgentJobs').textContent = stats.urgent;
-        }
-
-        // Render jobs
         function renderJobs() {
             const container = document.getElementById('jobsContainer');
             
             if (filteredJobs.length === 0) {
-                container.innerHTML = '<div class="error">No jobs found</div>';
+                container.innerHTML = '<div class="no-results">No jobs found matching your criteria.</div>';
                 return;
             }
 
-            container.innerHTML = filteredJobs.map(job => `
-                <div class="job-card priority-${job.priority}">
-                    <div class="status-indicator ${job.status.toLowerCase().replace(' ', '')}">${job.status.toUpperCase()}</div>
-                    
+            const jobsHTML = filteredJobs.map(job => `
+                <div class="job-card" onclick="openJobModal('${job.calloutId}')">
                     <div class="job-header">
                         <div class="job-id">${job.calloutId}</div>
+                        <div class="job-status status-${getStatusClass(job.status)}">${job.status}</div>
                     </div>
-
-                    <div class="job-info-line">
-                        <span class="info-item">
-                            <span class="info-label">CLIENT:</span>
-                            <span class="info-value">${job.client}</span>
-                        </span>
-                        <span class="info-divider">•</span>
-                        <span class="info-item">
-                            <span class="info-label">RIG:</span>
-                            <span class="info-value">${job.rigNumber || 'N/A'}</span>
-                        </span>
+                    <div class="job-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Client</div>
+                            <div class="detail-value">${job.client || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">RIG</div>
+                            <div class="detail-value">${job.rigNumber || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Well</div>
+                            <div class="detail-value">${job.wellName || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Service</div>
+                            <div class="detail-value">${job.serviceType || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Location</div>
+                            <div class="detail-value">${job.fieldName || job.location || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">ROS Date</div>
+                            <div class="detail-value">${formatDate(job.rosDate) || 'TBD'}</div>
+                        </div>
                     </div>
-
-                    <div class="job-info-line">
-                        <span class="info-item">
-                            <span class="info-label">SERVICE:</span>
-                            <span class="info-value">${job.serviceType}</span>
-                        </span>
-                    </div>
-
-                    <div class="job-info-line">
-                        <span class="info-item">
-                            <span class="info-label">WELL:</span>
-                            <span class="info-value">${job.wellName}</span>
-                        </span>
-                        <span class="info-divider">•</span>
-                        <span class="info-item">
-                            <span class="info-label">LOCATION:</span>
-                            <span class="info-value">${job.location}</span>
-                        </span>
-                    </div>
-
-                    <div class="action-buttons">
-                        <button class="btn-complete" onclick="completeJob('${job.calloutId}')">
-                            ✓ Complete
-                        </button>
-                        <button class="details-btn" onclick="alert('Job details for ${job.calloutId}')">
-                            📋 View Details
-                        </button>
+                    <div class="job-meta">
+                        <div class="job-date">${formatDate(job.timestamp) || 'No date'}</div>
+                        <div class="job-priority priority-${getPriorityClass(job.priority)}">${job.priority || 'Normal'}</div>
                     </div>
                 </div>
             `).join('');
+
+            container.innerHTML = `<div class="jobs-grid">${jobsHTML}</div>`;
         }
 
-        // Complete job function
-        function completeJob(calloutId) {
-            alert(`Mark ${calloutId} as completed?`);
+        function updateStats() {
+            const totalJobs = allJobs.length;
+            const newJobs = allJobs.filter(job => job.status?.toLowerCase().includes('new')).length;
+            const activeJobs = allJobs.filter(job => 
+                job.status && !job.status.toLowerCase().includes('completed') && !job.status.toLowerCase().includes('cancelled')
+            ).length;
+            const completedJobs = allJobs.filter(job => job.status?.toLowerCase().includes('completed')).length;
+
+            document.getElementById('totalJobs').textContent = totalJobs;
+            document.getElementById('newJobs').textContent = newJobs;
+            document.getElementById('activeJobs').textContent = activeJobs;
+            document.getElementById('completedJobs').textContent = completedJobs;
         }
+
+        function openJobModal(calloutId) {
+            const job = allJobs.find(j => j.calloutId === calloutId);
+            if (!job) return;
+
+            const modalBody = document.getElementById('modalBody');
+            
+            modalBody.innerHTML = `
+                <div class="modal-details">
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Callout ID</div>
+                        <div class="modal-detail-value">${job.calloutId}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Ticket Number</div>
+                        <div class="modal-detail-value">${job.ticketNumber || 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Status</div>
+                        <div class="modal-detail-value">${job.status || 'Pending'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Client</div>
+                        <div class="modal-detail-value">${job.client || 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">RIG Number</div>
+                        <div class="modal-detail-value">${job.rigNumber || 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Well Name</div>
+                        <div class="modal-detail-value">${job.wellName || 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Field Name</div>
+                        <div class="modal-detail-value">${job.fieldName || 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Service Type</div>
+                        <div class="modal-detail-value">${job.serviceType || 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Well Profile</div>
+                        <div class="modal-detail-value">${job.wellProfile || 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Hole Section</div>
+                        <div class="modal-detail-value">${job.holeSection || 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Casing Size</div>
+                        <div class="modal-detail-value">${job.casingSize || 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Survey Depth</div>
+                        <div class="modal-detail-value">${job.surveyStartDepth && job.surveyEndDepth ? `${job.surveyStartDepth} - ${job.surveyEndDepth}` : 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">ROS Date</div>
+                        <div class="modal-detail-value">${formatDate(job.rosDate) || 'TBD'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">ROS Status</div>
+                        <div class="modal-detail-value">${job.rosStatus || 'Pending'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Equipment Date</div>
+                        <div class="modal-detail-value">${formatDate(job.equipmentDate) || 'TBD'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Equipment Time</div>
+                        <div class="modal-detail-value">${job.equipmentTime || 'TBD'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Crew Date</div>
+                        <div class="modal-detail-value">${formatDate(job.crewDate) || 'TBD'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Crew Time</div>
+                        <div class="modal-detail-value">${job.crewTime || 'TBD'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Contact Person</div>
+                        <div class="modal-detail-value">${job.contactPerson || 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Contact Phone</div>
+                        <div class="modal-detail-value">${job.contactPhone || 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Designation</div>
+                        <div class="modal-detail-value">${job.designation || 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Priority</div>
+                        <div class="modal-detail-value">${job.priority || 'Normal'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Authorization</div>
+                        <div class="modal-detail-value">${job.authorization || 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Coordinates</div>
+                        <div class="modal-detail-value">${job.latitude && job.longitude ? `${job.latitude}, ${job.longitude}` : 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">H2S Level</div>
+                        <div class="modal-detail-value">${job.h2sLevel || 'N/A'}</div>
+                    </div>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Max Temperature</div>
+                        <div class="modal-detail-value">${job.maxDownHoleTemp || 'N/A'}</div>
+                    </div>
+                    ${job.comments ? `
+                    <div class="modal-detail-item" style="grid-column: 1 / -1;">
+                        <div class="modal-detail-label">Comments</div>
+                        <div class="modal-detail-value">${job.comments}</div>
+                    </div>
+                    ` : ''}
+                    ${job.pdfDriveLink ? `
+                    <div class="modal-detail-item" style="grid-column: 1 / -1;">
+                        <div class="modal-detail-label">PDF Attachment</div>
+                        <div class="modal-detail-value">
+                            <a href="${job.pdfDriveLink}" target="_blank" style="color: #667eea; text-decoration: none;">📄 View PDF</a>
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            document.getElementById('jobModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('jobModal').style.display = 'none';
+        }
+
+        function getStatusClass(status) {
+            if (!status) return 'pending';
+            const s = status.toLowerCase();
+            if (s.includes('new')) return 'new';
+            if (s.includes('confirmed')) return 'confirmed';
+            if (s.includes('completed')) return 'completed';
+            return 'pending';
+        }
+
+        function getPriorityClass(priority) {
+            if (!priority) return 'normal';
+            const p = priority.toLowerCase();
+            if (p.includes('high') || p.includes('urgent')) return 'high';
+            if (p.includes('low')) return 'low';
+            return 'normal';
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return null;
+            
+            try {
+                // Handle various date formats
+                let date;
+                if (dateString.includes('-')) {
+                    date = new Date(dateString);
+                } else if (dateString.includes('/')) {
+                    date = new Date(dateString);
+                } else {
+                    return dateString; // Return as-is if not recognizable
+                }
+                
+                if (isNaN(date.getTime())) return dateString;
+                
+                return date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+            } catch (e) {
+                return dateString;
+            }
+        }
+
+        function updateLastUpdated() {
+            const now = new Date();
+            const timeString = now.toLocaleString();
+            document.getElementById('lastUpdated').textContent = `Last updated: ${timeString}`;
+        }
+
+        function startAutoRefresh() {
+            refreshInterval = setInterval(() => {
+                console.log('Auto-refreshing data...');
+                loadData();
+            }, CONFIG.REFRESH_INTERVAL);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+                e.preventDefault();
+                loadData();
+            }
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
+        });
     </script>
 </body>
 </html>

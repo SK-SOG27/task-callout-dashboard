@@ -161,8 +161,7 @@
 
         .stat-card.active {
             border-color: #8B0000;
-            background: rgba(139,0,0,0.1);
-            transform: translateY(-3px);
+            background: rgba(139, 0, 0, 0.05);
         }
 
         .stat-number {
@@ -180,14 +179,6 @@
             letter-spacing: 1px;
         }
 
-        .filter-info {
-            text-align: center;
-            color: rgba(255,255,255,0.9);
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
         .jobs-container {
             margin-bottom: 30px;
         }
@@ -198,6 +189,7 @@
             gap: 20px;
         }
 
+        /* OPTION 1 CARD STYLE - CONFIRMED SELECTION */
         .job-card {
             background: rgba(255,255,255,0.98);
             border-radius: 15px;
@@ -419,88 +411,90 @@
             padding: 30px;
         }
 
+        /* OPTION 6 MODAL SECTIONS - DARK THEME */
         .detail-section {
-            margin-bottom: 25px;
+            background: #2c3e50;
+            color: white;
+            border-radius: 12px;
             padding: 20px;
-            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            border-top: 3px solid #f39c12;
         }
 
         .detail-section-1 {
-            background: #e3f2fd;
-            border-left: 4px solid #1976d2;
+            /* Dark theme - no individual colors needed */
         }
 
         .detail-section-2 {
-            background: #e8f5e8;
-            border-left: 4px solid #2e7d32;
+            /* Dark theme - no individual colors needed */
         }
 
         .detail-section-3 {
-            background: #fff3e0;
-            border-left: 4px solid #f57c00;
+            /* Dark theme - no individual colors needed */
         }
 
         .detail-section-4 {
-            background: #f3e5f5;
-            border-left: 4px solid #7b1fa2;
+            /* Dark theme - no individual colors needed */
         }
 
         .detail-section-5 {
-            background: #e0f2f1;
-            border-left: 4px solid #00695c;
+            /* Dark theme - no individual colors needed */
         }
 
         .detail-section-6 {
-            background: #fff8e1;
-            border-left: 4px solid #ff8f00;
+            /* Dark theme - no individual colors needed */
         }
 
         .detail-section-7 {
-            background: #e8eaf6;
-            border-left: 4px solid #3f51b5;
+            /* Dark theme - no individual colors needed */
         }
 
         .section-title {
             font-size: 1.1rem;
             font-weight: 700;
-            color: #333;
+            color: #f39c12;
             margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            height: 2px;
+            background: linear-gradient(90deg, #f39c12, transparent);
+            flex: 1;
         }
 
         .detail-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
         }
 
         .detail-item {
+            background: rgba(255,255,255,0.05);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid #f39c12;
             display: flex;
             flex-direction: column;
-            min-height: 60px;
         }
 
         .detail-label {
-            font-size: 0.8rem;
-            color: #666;
+            font-size: 0.7rem;
+            color: #bdc3c7;
             font-weight: 600;
-            margin-bottom: 5px;
             text-transform: uppercase;
+            margin-bottom: 5px;
             letter-spacing: 0.5px;
-            line-height: 1.2;
         }
 
         .detail-value {
             font-weight: 600;
-            color: #333;
-            font-size: 1rem;
-            line-height: 1.3;
-        }
-
-        /* Special handling for full-width items */
-        .detail-item.full-width {
-            grid-column: 1 / -1;
+            color: white;
+            font-size: 0.95rem;
         }
 
         /* Edit Modal Styles */
@@ -643,7 +637,7 @@
 
         <div class="controls">
             <div class="search-container">
-                <input type="text" id="searchInput" class="search-input" placeholder="Search jobs by ID, ticket, client, rig, well...">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search jobs by ID, client, rig, well...">
                 <span class="search-icon">🔍</span>
             </div>
             <div class="filter-buttons">
@@ -657,35 +651,31 @@
         </div>
 
         <div class="stats-grid">
-            <div class="stat-card active" data-stat-filter="all" onclick="filterByStats('all')">
-                <div class="stat-number" id="totalJobs">9</div>
+            <div class="stat-card" data-stat-filter="all" onclick="filterByStats('all')">
+                <div class="stat-number" id="totalJobs">0</div>
                 <div class="stat-label">Total</div>
             </div>
             <div class="stat-card" data-stat-filter="pending" onclick="filterByStats('pending')">
-                <div class="stat-number" id="pendingJobs">3</div>
+                <div class="stat-number" id="pendingJobs">0</div>
                 <div class="stat-label">Pending</div>
             </div>
             <div class="stat-card" data-stat-filter="approved" onclick="filterByStats('approved')">
-                <div class="stat-number" id="approvedJobs">4</div>
+                <div class="stat-number" id="approvedJobs">0</div>
                 <div class="stat-label">Approved</div>
             </div>
             <div class="stat-card" data-stat-filter="completed" onclick="filterByStats('completed')">
-                <div class="stat-number" id="completedJobs">2</div>
+                <div class="stat-number" id="completedJobs">0</div>
                 <div class="stat-label">Completed</div>
             </div>
         </div>
 
-        <div class="filter-info" id="filterInfo">Showing All Jobs (9 total)</div>
-
         <div class="jobs-container">
             <div id="jobsContainer">
-                <div class="jobs-grid" id="jobsGrid">
-                    <!-- Job cards will be populated by JavaScript -->
-                </div>
+                <div class="loading-container">Loading job data from Google Sheets...</div>
             </div>
         </div>
 
-        <div class="last-updated" id="lastUpdated">Last updated: Now</div>
+        <div class="last-updated" id="lastUpdated"></div>
     </div>
 
     <!-- Job Details Modal -->
@@ -705,138 +695,207 @@
         </div>
     </div>
 
+    <!-- Edit Job Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Edit Job Details</h2>
+                <button class="close-button" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="editModalBody">
+                <!-- Edit form will be inserted here -->
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Sample data matching the requirements
-        const sampleJobs = [
-            {
-                calloutId: '144-HZR-128-HZR',
-                ticketNumber: '33198',
-                status: 'PENDING_APPROVAL',
-                client: 'PDO',
-                rigNumber: '144',
-                wellName: 'HZR-128',
-                serviceType: 'Wireline Casing Survey',
-                surveyStartDepth: '6.77m',
-                surveyEndDepth: '420m',
-                wellProfile: 'Vertical'
-            },
-            {
-                calloutId: 'RIG-144-HZR-128',
-                ticketNumber: '33881',
-                status: 'UPDATED',
-                client: 'PDO',
-                rigNumber: 'RIG-144',
-                wellName: 'HZR-128',
-                serviceType: 'Gyro Survey - Inside Casing',
-                surveyStartDepth: 'SURFACE',
-                surveyEndDepth: '1670m',
-                wellProfile: 'Vertical'
-            },
-            {
-                calloutId: 'RIG-97-BRN-110',
-                ticketNumber: '33599',
-                status: 'PENDING_APPROVAL',
-                client: 'PDO',
-                rigNumber: 'RIG-97',
-                wellName: 'BRN-110',
-                serviceType: 'Gyro Survey',
-                surveyStartDepth: '10m',
-                surveyEndDepth: '363m',
-                wellProfile: 'Vertical'
-            },
-            {
-                calloutId: 'RIG-45-ZL-189',
-                ticketNumber: '36153',
-                status: 'COMPLETED',
-                client: 'PDO',
-                rigNumber: 'RIG-45',
-                wellName: 'ZL-189',
-                serviceType: 'Wireline Casing Survey',
-                surveyStartDepth: '780m',
-                surveyEndDepth: '1537m',
-                wellProfile: 'Vertical'
-            },
-            {
-                calloutId: 'RIG-23-MLH-45',
-                ticketNumber: '34271',
-                status: 'PENDING_APPROVAL',
-                client: 'PDO',
-                rigNumber: 'RIG-23',
-                wellName: 'MLH-45',
-                serviceType: 'Memory Gyro Survey',
-                surveyStartDepth: '50m',
-                surveyEndDepth: '890m',
-                wellProfile: 'Directional'
-            },
-            {
-                calloutId: 'RIG-67-QRN-22',
-                ticketNumber: '35182',
-                status: 'CONFIRMED',
-                client: 'PDO',
-                rigNumber: 'RIG-67',
-                wellName: 'QRN-22',
-                serviceType: 'Wireline Orientation Survey',
-                surveyStartDepth: '120m',
-                surveyEndDepth: '750m',
-                wellProfile: 'Horizontal'
-            },
-            {
-                calloutId: 'RIG-89-FHD-33',
-                ticketNumber: '34956',
-                status: 'PENDING_APPROVAL',
-                client: 'PDO',
-                rigNumber: 'RIG-89',
-                wellName: 'FHD-33',
-                serviceType: 'Gyro Survey - Inside Casing',
-                surveyStartDepth: '200m',
-                surveyEndDepth: '980m',
-                wellProfile: 'Vertical'
-            },
-            {
-                calloutId: 'RIG-12-ANR-67',
-                ticketNumber: '35847',
-                status: 'CONFIRMED',
-                client: 'PDO',
-                rigNumber: 'RIG-12',
-                wellName: 'ANR-67',
-                serviceType: 'Wireline Casing Survey',
-                surveyStartDepth: 'SURFACE',
-                surveyEndDepth: '1245m',
-                wellProfile: 'Vertical'
-            },
-            {
-                calloutId: 'RIG-56-KHL-12',
-                ticketNumber: '33754',
-                status: 'COMPLETED',
-                client: 'PDO',
-                rigNumber: 'RIG-56',
-                wellName: 'KHL-12',
-                serviceType: 'Gyro Survey',
-                surveyStartDepth: '45m',
-                surveyEndDepth: '432m',
-                wellProfile: 'Vertical'
-            }
-        ];
+        // Configuration
+        const CONFIG = {
+            SHEET_ID: '1kS_vO8FfE94LHnv5ftsHqaHLm8Xum0l5W6NvXGlZB1A',
+            REFRESH_INTERVAL: 5 * 60 * 1000,
+            CSV_URL: null
+        };
 
-        let allJobs = [...sampleJobs];
-        let filteredJobs = [...sampleJobs];
-        let currentFilter = 'all';
-        let currentStatsFilter = 'all';
+        let allJobs = [];
+        let filteredJobs = [];
+        let currentJob = null;
+        let refreshInterval;
 
-        // Render jobs in the grid
-        function renderJobs() {
-            const jobsGrid = document.getElementById('jobsGrid');
+        // Initialize CSV URL
+        CONFIG.CSV_URL = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/export?format=csv&gid=0`;
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Dashboard loaded, starting data fetch...');
+            loadData();
+            setupEventListeners();
+            startAutoRefresh();
+        });
+
+        function setupEventListeners() {
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                filteredJobs = allJobs.filter(job => 
+                    (job.calloutId?.toLowerCase().includes(searchTerm)) ||
+                    (job.client?.toLowerCase().includes(searchTerm)) ||
+                    (job.rigNumber?.toLowerCase().includes(searchTerm)) ||
+                    (job.wellName?.toLowerCase().includes(searchTerm)) ||
+                    (job.serviceType?.toLowerCase().includes(searchTerm))
+                );
+                renderJobs();
+            });
+
+            // Filter functionality
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filter = this.dataset.filter;
+                    if (filter === 'all') {
+                        filteredJobs = [...allJobs];
+                    } else {
+                        filteredJobs = allJobs.filter(job => 
+                            job.status?.toLowerCase().includes(filter.toLowerCase())
+                        );
+                    }
+                    renderJobs();
+                });
+            });
+
+            // Modal functionality
+            window.addEventListener('click', function(event) {
+                const modal = document.getElementById('jobModal');
+                const editModal = document.getElementById('editModal');
+                if (event.target === modal) {
+                    closeModal();
+                }
+                if (event.target === editModal) {
+                    closeEditModal();
+                }
+            });
+        }
+
+        async function loadData() {
+            console.log('Loading jobs from Google Sheets...');
             
-            if (filteredJobs.length === 0) {
-                jobsGrid.innerHTML = `
-                    <div class="no-results">
-                        <div>📋 No jobs found</div>
-                        <div style="margin-top: 10px; font-size: 0.9rem;">Try adjusting your search or filter criteria.</div>
+            try {
+                const response = await fetch(CONFIG.CSV_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const csvData = await response.text();
+                const jobs = parseCSV(csvData);
+                
+                allJobs = jobs;
+                filteredJobs = [...allJobs];
+                
+                renderJobs();
+                updateStats();
+                updateLastUpdated();
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('jobsContainer').innerHTML = `
+                    <div class="error-container">
+                        <h3>Error Loading Data</h3>
+                        <p>Failed to load job data from Google Sheets. Error: ${error.message}</p>
+                        <button onclick="loadData()" style="margin-top: 15px; padding: 10px 20px; background: #8B0000; color: white; border: none; border-radius: 8px; cursor: pointer;">Retry</button>
                     </div>
                 `;
-                return;
+            }
+        }
+
+        function parseCSV(csvData) {
+            const lines = csvData.split('\n').filter(line => line.trim());
+            if (lines.length < 2) return [];
+            
+            const jobs = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const row = parseCSVRow(lines[i]);
+                if (row.length < 10) continue;
+                
+                const job = {
+                    calloutId: row[0] || `JOB-${i}`,
+                    ticketNumber: row[1] || '',
+                    status: row[2] || 'Pending',
+                    timestamp: row[3] || '',
+                    client: row[8] || '',
+                    rigNumber: row[9] || '',
+                    wellName: row[10] || '',
+                    wellId: row[11] || '',
+                    fieldName: row[12] || '',
+                    serviceType: row[13] || '',
+                    holeSection: row[14] || '',
+                    casingSize: row[15] || '',
+                    wellProfile: row[18] || '',
+                    latitude: row[19] || '',
+                    longitude: row[20] || '',
+                    surveyStartDepth: row[28] || '',
+                    surveyEndDepth: row[29] || '',
+                    surveyInterval: row[30] || '',
+                    rosDate: row[31] || '',
+                    rosStatus: row[32] || '',
+                    equipmentDate: row[34] || '',
+                    equipmentTime: row[35] || '',
+                    crewDate: row[36] || '',
+                    crewTime: row[37] || '',
+                    contactPerson: row[38] || '',
+                    designation: row[39] || '',
+                    contactPhone: row[40] || '',
+                    comments: row[43] || '',
+                    authorization: row[44] || '',
+                    priority: row[45] || 'Normal',
+                    h2sLevel: row[27] || '0',
+                    rosHistory: row[33] || 'Initial callout received',
+                    lastUpdated: new Date().toLocaleString(),
+                    processingStep: 'Initial Review',
+                    workflowStatus: 'In Progress',
+                    nextStep: 'Awaiting Approval',
+                    assignedTo: 'Operations Team'
+                };
+                
+                if (job.calloutId && job.calloutId !== `JOB-${i}`) {
+                    jobs.push(job);
+                }
             }
             
+            return jobs;
+        }
+
+        function parseCSVRow(csvRow) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < csvRow.length; i++) {
+                const char = csvRow[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current.trim());
+            return result.map(field => field.replace(/"/g, ''));
+        }
+
+        function renderJobs() {
+            const container = document.getElementById('jobsContainer');
+            
+            if (filteredJobs.length === 0) {
+                container.innerHTML = '<div class="no-results">No jobs found matching your criteria.</div>';
+                return;
+            }
+
             const jobsHTML = filteredJobs.map(job => `
                 <div class="job-card">
                     <div class="job-header">
@@ -844,10 +903,6 @@
                         <div class="job-status status-${getStatusClass(job.status)}">${job.status}</div>
                     </div>
                     <div class="job-info">
-                        <div class="info-item">
-                            <div class="info-label">Ticket ID</div>
-                            <div class="info-value">${job.ticketNumber || 'N/A'}</div>
-                        </div>
                         <div class="info-item">
                             <div class="info-label">Client</div>
                             <div class="info-value">${job.client || 'N/A'}</div>
@@ -880,80 +935,9 @@
                 </div>
             `).join('');
 
-            jobsGrid.innerHTML = jobsHTML;
-            updateFilterInfo();
+            container.innerHTML = `<div class="jobs-grid">${jobsHTML}</div>`;
         }
 
-        // Filter by statistics cards
-        function filterByStats(filter) {
-            // Remove active class from all stat cards and filter buttons
-            document.querySelectorAll('.stat-card').forEach(card => card.classList.remove('active'));
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            
-            // Add active class to clicked stat card
-            document.querySelector(`[data-stat-filter="${filter}"]`).classList.add('active');
-            
-            currentStatsFilter = filter;
-            currentFilter = 'all'; // Reset filter buttons
-            
-            // Filter jobs based on selection
-            if (filter === 'all') {
-                filteredJobs = [...allJobs];
-            } else if (filter === 'pending') {
-                filteredJobs = allJobs.filter(job => 
-                    job.status?.toLowerCase().includes('pending')
-                );
-            } else if (filter === 'approved') {
-                filteredJobs = allJobs.filter(job => 
-                    job.status?.toLowerCase().includes('confirmed') || 
-                    job.status?.toLowerCase().includes('approved')
-                );
-            } else if (filter === 'completed') {
-                filteredJobs = allJobs.filter(job => 
-                    job.status?.toLowerCase().includes('completed')
-                );
-            }
-            
-            renderJobs();
-        }
-
-        // Update filter info display
-        function updateFilterInfo() {
-            const filterInfo = document.getElementById('filterInfo');
-            const activeStatCard = document.querySelector('.stat-card.active');
-            const filterType = activeStatCard ? activeStatCard.dataset.statFilter : 'all';
-            
-            let filterText = '';
-            switch(filterType) {
-                case 'all':
-                    filterText = `Showing All Jobs (${filteredJobs.length} total)`;
-                    break;
-                case 'pending':
-                    filterText = `Showing Pending Jobs (${filteredJobs.length} of ${allJobs.length})`;
-                    break;
-                case 'approved':
-                    filterText = `Showing Approved Jobs (${filteredJobs.length} of ${allJobs.length})`;
-                    break;
-                case 'completed':
-                    filterText = `Showing Completed Jobs (${filteredJobs.length} of ${allJobs.length})`;
-                    break;
-            }
-            
-            filterInfo.textContent = filterText;
-        }
-
-        // Complete job from card
-        function completeJobFromCard(calloutId) {
-            const job = allJobs.find(j => j.calloutId === calloutId);
-            if (job) {
-                job.status = 'COMPLETED';
-                updateStats();
-                renderJobs();
-                alert(`Job ${calloutId} marked as completed!`);
-            }
-        }
-
-        // Update statistics
         function updateStats() {
             const totalJobs = allJobs.length;
             const pendingJobs = allJobs.filter(job => job.status?.toLowerCase().includes('pending')).length;
@@ -966,139 +950,66 @@
             document.getElementById('completedJobs').textContent = completedJobs;
         }
 
-        // Get status class for styling
-        function getStatusClass(status) {
-            if (!status) return 'pending';
-            const s = status.toLowerCase();
-            if (s.includes('new')) return 'new';
-            if (s.includes('confirmed') || s.includes('approved')) return 'confirmed';
-            if (s.includes('completed')) return 'completed';
-            if (s.includes('pending_approval')) return 'pending_approval';
-            if (s.includes('updated')) return 'updated';
-            return 'pending';
+        function filterByStats(filter) {
+            // Clear all active states
+            document.querySelectorAll('.stat-card').forEach(card => card.classList.remove('active'));
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Set active state for clicked stat card
+            document.querySelector(`[data-stat-filter="${filter}"]`).classList.add('active');
+            
+            // Apply filter
+            if (filter === 'all') {
+                filteredJobs = [...allJobs];
+            } else if (filter === 'pending') {
+                filteredJobs = allJobs.filter(job => job.status?.toLowerCase().includes('pending'));
+            } else if (filter === 'approved') {
+                filteredJobs = allJobs.filter(job => 
+                    job.status?.toLowerCase().includes('confirmed') || 
+                    job.status?.toLowerCase().includes('approved') ||
+                    job.status?.toLowerCase().includes('updated')
+                );
+            } else if (filter === 'completed') {
+                filteredJobs = allJobs.filter(job => job.status?.toLowerCase().includes('completed'));
+            }
+            
+            renderJobs();
+            
+            // Show filter info
+            showFilterInfo(filter);
         }
 
-        let currentJob = null;
-
-        // Enhanced sample data with full details
-        const detailedJobs = {
-            '144-HZR-128-HZR': {
-                calloutId: '144-HZR-128-HZR',
-                ticketNumber: '33198',
-                status: 'PENDING_APPROVAL',
-                client: 'PDO',
-                rigNumber: '144',
-                wellName: 'HZR-128',
-                serviceType: 'Wireline Casing Survey',
-                surveyStartDepth: '6.77m',
-                surveyEndDepth: '420m',
-                wellProfile: 'Vertical',
-                rosDate: '25/09/2025',
-                rosStatus: 'TBC',
-                rosHistory: 'Initial callout confirmed. Equipment scheduled for deployment.',
-                surveyInterval: '413m',
-                equipmentDate: '2025-09-25',
-                equipmentTime: '08:00',
-                crewDate: '2025-09-25',
-                contactPerson: 'Hani',
-                designation: 'PE',
-                contactPhone: '24366282',
-                authorization: 'Mohammed Al Wahaibi',
-                comments: 'Equipment and crew required on-site',
-                holeSection: '12¼"',
-                wellId: '33198',
-                fieldName: 'HZR',
-                casingSize: '9 5/8"',
-                latitude: 'N/A',
-                longitude: '6',
-                priority: 'High',
-                h2sLevel: '0',
-                lastUpdated: '2025-09-30 14:30',
-                processingStep: 'Pending Client Approval',
-                workflowStatus: 'Awaiting Response',
-                nextStep: 'Equipment Deployment',
-                assignedTo: 'Operations Manager'
-            },
-            'RIG-144-HZR-128': {
-                calloutId: 'RIG-144-HZR-128',
-                ticketNumber: '33881',
-                status: 'UPDATED',
-                client: 'PDO',
-                rigNumber: 'RIG-144',
-                wellName: 'HZR-128',
-                serviceType: 'Gyro Survey - Inside Casing',
-                surveyStartDepth: 'SURFACE',
-                surveyEndDepth: '1670m',
-                wellProfile: 'Vertical',
-                rosDate: '27/09/2025',
-                rosStatus: 'TBC',
-                rosHistory: 'ROS confirmed for 27/09/2025. Awaiting final equipment confirmation.',
-                surveyInterval: '1670m',
-                equipmentDate: '2025-09-27',
-                equipmentTime: '06:00',
-                crewDate: '2025-09-27',
-                contactPerson: 'Mohammed',
-                designation: 'PE',
-                contactPhone: '24366132',
-                authorization: 'PDO Operations',
-                comments: 'ROS to be confirm.',
-                holeSection: '12.25"',
-                wellId: '33881',
-                fieldName: 'Anbar',
-                casingSize: '9 5/8"',
-                latitude: '2129932.082N',
-                longitude: '424955.649 E',
-                priority: 'Normal',
-                h2sLevel: '0',
-                lastUpdated: '2025-09-30 12:15',
-                processingStep: 'ROS Confirmation',
-                workflowStatus: 'Active',
-                nextStep: 'Final Equipment Check',
-                assignedTo: 'Field Operations'
+        function showFilterInfo(filter) {
+            const container = document.getElementById('jobsContainer');
+            const filterInfo = document.createElement('div');
+            filterInfo.className = 'filter-info-banner';
+            filterInfo.style.cssText = `
+                background: rgba(139, 0, 0, 0.1);
+                border-left: 4px solid #8B0000;
+                padding: 10px 15px;
+                margin-bottom: 15px;
+                border-radius: 0 8px 8px 0;
+                font-size: 0.9rem;
+                color: #333;
+                font-weight: 600;
+            `;
+            
+            if (filter !== 'all') {
+                filterInfo.textContent = `Showing ${filteredJobs.length} ${filter} jobs out of ${allJobs.length} total jobs`;
+                container.insertBefore(filterInfo, container.firstChild);
+                
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    if (filterInfo.parentNode) {
+                        filterInfo.remove();
+                    }
+                }, 3000);
             }
-        };
+        }
 
-        // Fill in data for other jobs
-        sampleJobs.forEach(job => {
-            if (!detailedJobs[job.calloutId]) {
-                detailedJobs[job.calloutId] = {
-                    ...job,
-                    rosDate: '2025-10-01',
-                    rosStatus: 'PENDING',
-                    rosHistory: 'Awaiting client confirmation for equipment deployment.',
-                    surveyInterval: 'TBD',
-                    equipmentDate: '2025-10-01',
-                    equipmentTime: 'TBD',
-                    crewDate: '2025-10-01',
-                    contactPerson: 'Field Engineer',
-                    designation: 'FE',
-                    contactPhone: 'TBD',
-                    authorization: 'Pending',
-                    comments: 'Standard survey request',
-                    holeSection: '12¼"',
-                    wellId: job.ticketNumber,
-                    fieldName: 'Field TBD',
-                    casingSize: 'TBD',
-                    latitude: 'TBD',
-                    longitude: 'TBD',
-                    priority: 'Normal',
-                    h2sLevel: '0',
-                    lastUpdated: '2025-09-30 09:45',
-                    processingStep: 'Initial Assessment',
-                    workflowStatus: 'Queued',
-                    nextStep: 'Technical Review',
-                    assignedTo: 'Technical Team'
-                };
-            }
-        });
-
-        // Open job modal with full details
         function openJobModal(calloutId) {
-            const job = detailedJobs[calloutId];
-            if (!job) {
-                alert('Job details not found');
-                return;
-            }
+            const job = allJobs.find(j => j.calloutId === calloutId);
+            if (!job) return;
 
             currentJob = job;
             
@@ -1247,7 +1158,7 @@
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">H2S Level</div>
-                            <div class="detail-value">${job.h2sLevel || '0'} PPM</div>
+                            <div class="detail-value">${job.h2sLevel || '0'}</div>
                         </div>
                     </div>
                 </div>
@@ -1287,7 +1198,6 @@
             document.getElementById('jobModal').style.display = 'block';
         }
 
-        // Open edit modal
         function openEditModal() {
             if (!currentJob) return;
 
@@ -1311,7 +1221,7 @@
                                     <option value="CANCELLED" ${currentJob.rosStatus === 'CANCELLED' ? 'selected' : ''}>CANCELLED</option>
                                 </select>
                             </div>
-                            <div class="detail-item">
+                            <div class="detail-item" style="grid-column: 1 / -1;">
                                 <div class="detail-label">ROS History</div>
                                 <textarea class="edit-textarea" name="rosHistory">${currentJob.rosHistory || ''}</textarea>
                             </div>
@@ -1484,134 +1394,107 @@
                 </form>
             `;
 
-            closeModal(); // Close the details modal first
             document.getElementById('editModal').style.display = 'block';
         }
 
-        // Save changes from edit modal
         function saveChanges() {
             const form = document.getElementById('editForm');
             const formData = new FormData(form);
             const updates = Object.fromEntries(formData);
             
+            console.log('Saving changes:', updates);
+            
             // Update current job (in production, this would save to backend)
             Object.assign(currentJob, updates);
             
-            // Update the job in both arrays
-            const mainJob = allJobs.find(j => j.calloutId === currentJob.calloutId);
-            if (mainJob) {
-                Object.assign(mainJob, updates);
+            // Update display
+            const jobIndex = allJobs.findIndex(j => j.calloutId === currentJob.calloutId);
+            if (jobIndex !== -1) {
+                allJobs[jobIndex] = currentJob;
             }
             
-            updateStats();
+            // Refresh displays
             renderJobs();
+            openJobModal(currentJob.calloutId); // Refresh modal
             closeEditModal();
             
             alert('Changes saved successfully!');
         }
 
-        // Close edit modal
-        function closeEditModal() {
-            document.getElementById('editModal').style.display = 'none';
-        }
-
-        // Complete job
         function completeJob() {
             if (!currentJob) return;
             
-            // Update status in both arrays
-            currentJob.status = 'COMPLETED';
-            const mainJob = allJobs.find(j => j.calloutId === currentJob.calloutId);
-            if (mainJob) {
-                mainJob.status = 'COMPLETED';
+            currentJob.status = 'Completed';
+            const jobIndex = allJobs.findIndex(j => j.calloutId === currentJob.calloutId);
+            if (jobIndex !== -1) {
+                allJobs[jobIndex] = currentJob;
             }
             
-            updateStats();
             renderJobs();
+            updateStats();
             closeModal();
             
             alert(`Job ${currentJob.calloutId} marked as completed!`);
         }
 
-        // Close modal
+        function completeJobFromCard(calloutId) {
+            const job = allJobs.find(j => j.calloutId === calloutId);
+            if (!job) return;
+            
+            job.status = 'Completed';
+            renderJobs();
+            updateStats();
+            
+            alert(`Job ${calloutId} marked as completed!`);
+        }
+
         function closeModal() {
             document.getElementById('jobModal').style.display = 'none';
             currentJob = null;
         }
 
-        // Load data (placeholder)
-        function loadData() {
-            alert('Data refreshed!');
-            renderJobs();
-            updateStats();
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
         }
 
-        // Filter functionality for buttons
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                // Remove active from both filter buttons and stat cards
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.stat-card').forEach(card => card.classList.remove('active'));
-                this.classList.add('active');
-                
-                const filter = this.dataset.filter;
-                currentFilter = filter;
-                currentStatsFilter = 'all';
-                
-                if (filter === 'all') {
-                    filteredJobs = [...allJobs];
-                    document.querySelector('[data-stat-filter="all"]').classList.add('active');
-                } else {
-                    filteredJobs = allJobs.filter(job => {
-                        const statusClass = getStatusClass(job.status);
-                        return statusClass.includes(filter.toLowerCase()) || 
-                               job.status?.toLowerCase().includes(filter.toLowerCase());
-                    });
-                }
-                renderJobs();
-            });
-        });
+        function getStatusClass(status) {
+            if (!status) return 'pending';
+            const s = status.toLowerCase();
+            if (s.includes('new')) return 'new';
+            if (s.includes('confirmed') || s.includes('approved')) return 'confirmed';
+            if (s.includes('completed')) return 'completed';
+            if (s.includes('pending_approval')) return 'pending_approval';
+            if (s.includes('updated')) return 'updated';
+            return 'pending';
+        }
 
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            
-            // Start with the current filter base
-            let baseJobs = allJobs;
-            if (currentStatsFilter !== 'all') {
-                if (currentStatsFilter === 'pending') {
-                    baseJobs = allJobs.filter(job => job.status?.toLowerCase().includes('pending'));
-                } else if (currentStatsFilter === 'approved') {
-                    baseJobs = allJobs.filter(job => 
-                        job.status?.toLowerCase().includes('confirmed') || 
-                        job.status?.toLowerCase().includes('approved')
-                    );
-                } else if (currentStatsFilter === 'completed') {
-                    baseJobs = allJobs.filter(job => job.status?.toLowerCase().includes('completed'));
-                }
+        function updateLastUpdated() {
+            const now = new Date();
+            const timeString = now.toLocaleString();
+            document.getElementById('lastUpdated').textContent = `Last updated: ${timeString}`;
+        }
+
+        function startAutoRefresh() {
+            refreshInterval = setInterval(() => {
+                console.log('Auto-refreshing data...');
+                loadData();
+            }, CONFIG.REFRESH_INTERVAL);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeEditModal();
             }
-            
-            filteredJobs = baseJobs.filter(job => 
-                (job.calloutId?.toLowerCase().includes(searchTerm)) ||
-                (job.ticketNumber?.toLowerCase().includes(searchTerm)) ||
-                (job.client?.toLowerCase().includes(searchTerm)) ||
-                (job.rigNumber?.toLowerCase().includes(searchTerm)) ||
-                (job.wellName?.toLowerCase().includes(searchTerm)) ||
-                (job.serviceType?.toLowerCase().includes(searchTerm))
-            );
-            
-            renderJobs();
         });
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            renderJobs();
-            updateStats();
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+            }
         });
-
-        // Initialize immediately
-        renderJobs();
-        updateStats();
     </script>
 </body>
 </html>

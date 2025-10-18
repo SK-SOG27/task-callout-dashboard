@@ -1733,4 +1733,1132 @@
                 }
                 
                 // Ctrl/Cmd + R: Refresh
-                if ((e.ctrlKey
+                if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+                    e.preventDefault();
+                    loadData();
+                }
+                
+                // Escape: Close modals
+                if (e.key === 'Escape') {
+                    closeModal();
+                    closeEditModal();
+                }
+                
+                // Ctrl/Cmd + F: Focus search
+                if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+            });
+        }
+
+        // Enhanced Data Loading with Progress Tracking
+        async function loadData() {
+            if (appState.isLoading) return;
+            
+            try {
+                appState.isLoading = true;
+                showSystemStatus('Loading data...', 'info');
+                updateLoadingState(true);
+                
+                console.log('📡 Loading callouts from API...');
+                const response = await fetchWithRetry(`${CONFIG.APPS_SCRIPT_URL}?action=read`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    appState.allJobs = result.data.callouts || [];
+                    appState.lastUpdated = new Date();
+                    
+                    // Calculate enhanced stats
+                    calculateEnhancedStats();
+                    
+                    // Apply current filters
+                    applyFilters();
+                    
+                    // Update UI
+                    updateStats();
+                    updateLastUpdated();
+                    
+                    showSystemStatus('Data loaded successfully', 'success');
+                    console.log(`✅ Loaded ${appState.allJobs.length} callouts`);
+                } else {
+                    throw new Error(result.message || 'Failed to load data');
+                }
+                
+            } catch (error) {
+                console.error('❌ Error loading data:', error);
+                showError(error);
+                showSystemStatus('Load failed', 'error');
+            } finally {
+                appState.isLoading = false;
+                updateLoadingState(false);
+            }
+        }
+
+        // Enhanced CRUD Operations
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const calloutData = formDataToCalloutObject(formData);
+            
+            try {
+                showNotification('Processing request...', 'info');
+                
+                let result;
+                if (appState.isEditMode && appState.currentJob) {
+                    result = await updateCallout(appState.currentJob['Callout ID'], calloutData);
+                } else {
+                    result = await createCallout(calloutData);
+                }
+                
+                if (result.success) {
+                    const action = appState.isEditMode ? 'updated' : 'created';
+                    showNotification(`Callout ${action} successfully!`, 'success');
+                    closeEditModal();
+                    await loadData();
+                } else {
+                    throw new Error(result.message || 'Operation failed');
+                }
+                
+            } catch (error) {
+                console.error('Form submission error:', error);
+                showNotification(error.message || 'Operation failed. Please try again.', 'error');
+            }
+        }
+
+        async function createCallout(calloutData) {
+            // Add system fields
+            calloutData['Timestamp'] = new Date().toISOString();
+            calloutData['Status'] = 'PENDING_APPROVAL';
+            calloutData['Callout ID'] = generateCalloutId();
+            calloutData['Created By'] = 'Dashboard User';
+            calloutData['Last Updated'] = new Date().toISOString();
+            
+            const response = await fetchWithRetry(CONFIG.APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'create',
+                    callout: calloutData
+                })
+            });
+            
+            return await response.json();
+        }
+
+        async function updateCallout(calloutId, updates) {
+            updates['Last Updated'] = new Date().toISOString();
+            updates['Updated By'] = 'Dashboard User';
+            
+            const response = await fetchWithRetry(CONFIG.APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'update',
+                    calloutId: calloutId,
+                    updates: updates
+                })
+            });
+            
+            return await response.json();
+        }
+
+        async function deleteCallout(calloutId) {
+            if (!confirm('Are you sure you want to cancel this callout? This action cannot be undone.')) {
+                return;
+            }
+            
+            try {
+                showNotification('Cancelling callout...', 'info');
+                
+                const response = await fetchWithRetry(CONFIG.APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'delete',
+                        calloutId: calloutId
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('Callout cancelled successfully', 'success');
+                    await loadData();
+                } else {
+                    throw new Error(result.message || 'Failed to cancel callout');
+                }
+                
+            } catch (error) {
+                console.error('Delete error:', error);
+                showNotification(error.message || 'Failed to cancel callout', 'error');
+            }
+        }
+
+        // Enhanced Filtering System
+        function applyFilters() {
+            let filtered = [...appState.allJobs];
+            
+            // Apply search filter
+            if (appState.searchTerm) {
+                filtered = filtered.filter(job => {
+                    const searchableFields = [
+                        job['Callout ID'], job.Customer, job['RIG Number'], 
+                        job['Well Name'], job['Service Type'], job['Field Name'],
+                        job['Callout Completed By'], job.Designation
+                    ];
+                    
+                    return searchableFields.some(field => 
+                        field && field.toString().toLowerCase().includes(appState.searchTerm)
+                    );
+                });
+            }
+            
+            // Apply status filter
+            if (appState.currentFilter !== 'all') {
+                filtered = filtered.filter(job => {
+                    const status = job.Status || '';
+                    
+                    switch (appState.currentFilter) {
+                        case 'pending':
+                        case 'PENDING_APPROVAL':
+                            return status === 'PENDING_APPROVAL' || status.includes('PENDING');
+                        case 'approved':
+                        case 'APPROVED':
+                            return status === 'APPROVED';
+                        case 'updated':
+                        case 'UPDATED':
+                            return status === 'UPDATED';
+                        case 'completed':
+                        case 'COMPLETED':
+                            return status === 'COMPLETED';
+                        default:
+                            return true;
+                    }
+                });
+            }
+            
+            // Apply advanced filters
+            Object.entries(appState.advancedFilters).forEach(([key, value]) => {
+                if (!value) return;
+                
+                filtered = filtered.filter(job => {
+                    switch (key) {
+                        case 'customer':
+                            return job.Customer === value;
+                        case 'serviceType':
+                            return job['Service Type'] && job['Service Type'].includes(value);
+                        case 'priority':
+                            return job.Urgency === value;
+                        case 'dateRange':
+                            return filterByDateRange(job, value);
+                        default:
+                            return true;
+                    }
+                });
+            });
+            
+            appState.filteredJobs = filtered;
+            renderJobs();
+            updateJobsTitle();
+        }
+
+        function filterByDateRange(job, range) {
+            const jobDate = new Date(job['Equipment Required Date'] || job['Timestamp']);
+            const now = new Date();
+            
+            switch (range) {
+                case 'today':
+                    return jobDate.toDateString() === now.toDateString();
+                case 'week':
+                    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                    return jobDate >= weekAgo;
+                case 'month':
+                    const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                    return jobDate >= monthAgo;
+                default:
+                    return true;
+            }
+        }
+
+        // Enhanced Job Rendering
+        function renderJobs() {
+            const container = document.getElementById('jobsContainer');
+            
+            if (appState.filteredJobs.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <h3>No callouts found</h3>
+                        <p>Try adjusting your search or filter criteria, or create a new callout.</p>
+                        <button class="btn-add-job" onclick="openCreateModal()" style="margin-top: 20px;">
+                            Create New Callout
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            if (appState.currentView === 'grid') {
+                renderGridView(container);
+            } else {
+                renderListView(container);
+            }
+        }
+
+        function renderGridView(container) {
+            const jobsHTML = appState.filteredJobs.map(job => createJobCard(job)).join('');
+            container.innerHTML = `<div class="jobs-grid">${jobsHTML}</div>`;
+        }
+
+        function renderListView(container) {
+            const jobsHTML = appState.filteredJobs.map(job => createJobListItem(job)).join('');
+            container.innerHTML = `<div class="jobs-list">${jobsHTML}</div>`;
+        }
+
+        function createJobCard(job) {
+            const status = (job.Status || 'PENDING_APPROVAL').toLowerCase().replace(/\s+/g, '_');
+            const priority = job.Urgency || 'Normal';
+            const isUrgent = priority.toLowerCase() === 'urgent';
+            const isCompleted = status.includes('completed');
+            
+            const cardClasses = ['job-card'];
+            if (isUrgent) cardClasses.push('urgent');
+            if (isCompleted) cardClasses.push('completed');
+
+            return `
+                <div class="${cardClasses.join(' ')}" onclick="openJobModal('${job['Callout ID']}')">
+                    <div class="job-header">
+                        <div>
+                            <div class="job-id">${job['Callout ID'] || 'N/A'}</div>
+                            <div class="job-priority priority-${priority.toLowerCase()}">${priority}</div>
+                        </div>
+                        <div class="job-status status-${status}">${formatStatus(job.Status)}</div>
+                    </div>
+                    
+                    <div class="job-meta">
+                        <span>Created: ${formatDate(job.Timestamp)}</span>
+                        <span>Updated: ${formatDate(job['Last Updated'])}</span>
+                    </div>
+                    
+                    <div class="job-info">
+                        <div class="info-item">
+                            <div class="info-label">Customer</div>
+                            <div class="info-value">${job.Customer || 'N/A'}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">RIG</div>
+                            <div class="info-value">${job['RIG Number'] || 'N/A'}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Well</div>
+                            <div class="info-value">${job['Well Name'] || 'N/A'}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Service</div>
+                            <div class="info-value">${truncateText(job['Service Type'] || 'N/A', 20)}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">ROS Date</div>
+                            <div class="info-value">${job['ROS Date'] || 'TBD'}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Contact</div>
+                            <div class="info-value">${job['Callout Completed By'] || 'N/A'}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="job-actions" onclick="event.stopPropagation()">
+                        <button class="job-action-btn btn-details" onclick="openJobModal('${job['Callout ID']}')">
+                            Details
+                        </button>
+                        <button class="job-action-btn btn-edit" onclick="openEditModalForJob('${job['Callout ID']}')">
+                            Edit
+                        </button>
+                        <button class="job-action-btn btn-complete" onclick="completeJobFromCard('${job['Callout ID']}')">
+                            Complete
+                        </button>
+                        <button class="job-action-btn btn-delete" onclick="deleteCallout('${job['Callout ID']}')" title="Cancel Callout">
+                            ×
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createJobListItem(job) {
+            // Simplified list view implementation
+            return `
+                <div class="job-list-item" onclick="openJobModal('${job['Callout ID']}')">
+                    <div class="job-list-content">
+                        <span class="job-id">${job['Callout ID']}</span>
+                        <span class="job-customer">${job.Customer}</span>
+                        <span class="job-rig">${job['RIG Number']}</span>
+                        <span class="job-status status-${(job.Status || '').toLowerCase()}">${job.Status}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Enhanced Stats Calculation
+        function calculateEnhancedStats() {
+            const jobs = appState.allJobs;
+            const today = new Date();
+            const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+            
+            appState.stats = {
+                total: jobs.length,
+                pending: jobs.filter(j => j.Status === 'PENDING_APPROVAL').length,
+                approved: jobs.filter(j => ['APPROVED', 'UPDATED'].includes(j.Status)).length,
+                completed: jobs.filter(j => j.Status === 'COMPLETED').length,
+                todayAdded: jobs.filter(j => {
+                    const created = new Date(j.Timestamp);
+                    return created.toDateString() === today.toDateString();
+                }).length,
+                weeklyCompleted: jobs.filter(j => {
+                    const updated = new Date(j['Last Updated']);
+                    return j.Status === 'COMPLETED' && updated >= weekAgo;
+                }).length
+            };
+        }
+
+        function updateStats() {
+            document.getElementById('totalJobs').textContent = appState.stats.total;
+            document.getElementById('pendingJobs').textContent = appState.stats.pending;
+            document.getElementById('approvedJobs').textContent = appState.stats.approved;
+            document.getElementById('completedJobs').textContent = appState.stats.completed;
+            
+            // Update change indicators
+            document.getElementById('totalChange').textContent = `+${appState.stats.todayAdded} today`;
+            document.getElementById('pendingChange').textContent = `${appState.stats.pending} awaiting`;
+            document.getElementById('approvedChange').textContent = `${appState.stats.approved} approved`;
+            document.getElementById('completedChange').textContent = `${appState.stats.weeklyCompleted} this week`;
+        }
+
+        // Enhanced Modal Functions
+        function openJobModal(calloutId) {
+            const job = appState.allJobs.find(j => j['Callout ID'] === calloutId);
+            if (!job) return;
+
+            appState.currentJob = job;
+            
+            document.getElementById('modalTitle').textContent = `Callout Details - ${job['Callout ID']}`;
+            document.getElementById('modalBody').innerHTML = createDetailedJobView(job);
+            document.getElementById('jobModal').classList.add('show');
+        }
+
+        function createDetailedJobView(job) {
+            return `
+                <div class="detail-section">
+                    <div class="section-title">📋 Current Status & Priority</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Status</div>
+                            <div class="detail-value">${formatStatus(job.Status)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Priority</div>
+                            <div class="detail-value">${job.Urgency || 'Normal'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">ROS Date</div>
+                            <div class="detail-value">${job['ROS Date'] || 'TBD'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">ROS Status</div>
+                            <div class="detail-value">${job['ROS Status'] || 'Pending'}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">🏢 Basic Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Customer</div>
+                            <div class="detail-value">${job.Customer || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">RIG Number</div>
+                            <div class="detail-value">${job['RIG Number'] || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Well Name</div>
+                            <div class="detail-value">${job['Well Name'] || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Well ID</div>
+                            <div class="detail-value">${job['Well ID'] || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Field Name</div>
+                            <div class="detail-value">${job['Field Name'] || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Hole Section</div>
+                            <div class="detail-value">${job['Hole Section'] || 'N/A'}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">🔧 Service Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item" style="grid-column: 1 / -1;">
+                            <div class="detail-label">Service Type</div>
+                            <div class="detail-value">${job['Service Type'] || 'N/A'}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">📍 Location & Technical Details</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Latitude</div>
+                            <div class="detail-value">${job.Latitude || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Longitude</div>
+                            <div class="detail-value">${job.Longitude || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">UTM Northing</div>
+                            <div class="detail-value">${job['UTM Northing'] || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">UTM Easting</div>
+                            <div class="detail-value">${job['UTM Easting'] || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Casing Size</div>
+                            <div class="detail-value">${job['Casing Size'] || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Ground Elevation</div>
+                            <div class="detail-value">${job['Ground Elevation'] || 'N/A'}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">📊 Survey Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Survey Start Depth</div>
+                            <div class="detail-value">${job['Survey Start Depth'] || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Survey End Depth</div>
+                            <div class="detail-value">${job['Survey End Depth'] || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Survey Interval</div>
+                            <div class="detail-value">${job['Survey Interval'] || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Equipment Date</div>
+                            <div class="detail-value">${job['Equipment Required Date'] || 'TBD'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Equipment Time</div>
+                            <div class="detail-value">${job['Equipment Required Time'] || 'TBD'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Crew Date</div>
+                            <div class="detail-value">${job['Crew Required Date'] || 'TBD'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Crew Time</div>
+                            <div class="detail-value">${job['Crew Required Time'] || 'TBD'}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">👤 Contact Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Contact Person</div>
+                            <div class="detail-value">${job['Callout Completed By'] || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Designation</div>
+                            <div class="detail-value">${job.Designation || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Contact Number</div>
+                            <div class="detail-value">
+                                ${job['Contact Number'] ? 
+                                    `<a href="tel:${job['Contact Number']}" style="color: #f39c12;">${job['Contact Number']}</a>` : 
+                                    'N/A'
+                                }
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Authorization</div>
+                            <div class="detail-value">${job.Authorization || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item" style="grid-column: 1 / -1;">
+                            <div class="detail-label">Comments</div>
+                            <div class="detail-value">${job.Comments || 'No comments'}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <div class="section-title">⏰ Tracking Information</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Created</div>
+                            <div class="detail-value">${formatDateTime(job.Timestamp)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Last Updated</div>
+                            <div class="detail-value">${formatDateTime(job['Last Updated'])}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Data Source</div>
+                            <div class="detail-value">${job['Data Source'] || 'Dashboard'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Callout ID</div>
+                            <div class="detail-value" style="color: #f39c12; font-weight: bold;">${job['Callout ID']}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Enhanced Utility Functions
+        function generateCalloutId() {
+            const now = new Date();
+            const date = now.toISOString().slice(0, 10).replace(/-/g, '');
+            const time = now.toTimeString().slice(0, 8).replace(/:/g, '');
+            const random = Math.random().toString(36).substr(2, 4).toUpperCase();
+            return `TASK-${date}-${time}-${random}`;
+        }
+
+        function formDataToCalloutObject(formData) {
+            const obj = {};
+            
+            // Handle regular form fields
+            for (let [key, value] of formData.entries()) {
+                if (key !== 'serviceType') {
+                    obj[mapFormFieldToColumn(key)] = value;
+                }
+            }
+            
+            // Handle service types (checkboxes)
+            const serviceTypes = getSelectedServiceTypes();
+            if (serviceTypes.length > 0) {
+                obj['Service Type'] = serviceTypes.join(', ');
+            }
+            
+            return obj;
+        }
+
+        function mapFormFieldToColumn(fieldName) {
+            const mapping = {
+                'customer': 'Customer',
+                'rigNumber': 'RIG Number',
+                'wellName': 'Well Name',
+                'wellId': 'Well ID',
+                'fieldName': 'Field Name',
+                'holeSection': 'Hole Section',
+                'latitude': 'Latitude',
+                'longitude': 'Longitude',
+                'utmNorthing': 'UTM Northing',
+                'utmEasting': 'UTM Easting',
+                'casingSize': 'Casing Size',
+                'groundElevation': 'Ground Elevation',
+                'surveyStartDepth': 'Survey Start Depth',
+                'surveyEndDepth': 'Survey End Depth',
+                'surveyInterval': 'Survey Interval',
+                'equipmentRequiredDate': 'Equipment Required Date',
+                'equipmentRequiredTime': 'Equipment Required Time',
+                'crewRequiredDate': 'Crew Required Date',
+                'crewRequiredTime': 'Crew Required Time',
+                'calloutCompletedBy': 'Callout Completed By',
+                'designation': 'Designation',
+                'contactNumber': 'Contact Number',
+                'authorization': 'Authorization',
+                'comments': 'Comments',
+                'status': 'Status',
+                'urgency': 'Urgency',
+                'rosDate': 'ROS Date',
+                'rosStatus': 'ROS Status'
+            };
+            
+            return mapping[fieldName] || fieldName;
+        }
+
+        function getSelectedServiceTypes() {
+            const checkboxes = document.querySelectorAll('input[name="serviceType"]:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        function formatStatus(status) {
+            if (!status) return 'Pending';
+            return status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            try {
+                return new Date(dateString).toLocaleDateString();
+            } catch (error) {
+                return 'Invalid Date';
+            }
+        }
+
+        function formatDateTime(dateString) {
+            if (!dateString) return 'N/A';
+            try {
+                return new Date(dateString).toLocaleString();
+            } catch (error) {
+                return 'Invalid Date';
+            }
+        }
+
+        function truncateText(text, maxLength) {
+            if (!text || text.length <= maxLength) return text;
+            return text.substr(0, maxLength) + '...';
+        }
+
+        // Enhanced Network Functions
+        async function fetchWithRetry(url, options = {}, retries = CONFIG.RETRY_ATTEMPTS) {
+            let lastError;
+            let delay = CONFIG.RETRY_DELAY;
+            
+            for (let attempt = 1; attempt <= retries; attempt++) {
+                try {
+                    console.log(`🔄 Attempt ${attempt}/${retries}: ${url}`);
+                    
+                    const response = await fetch(url, {
+                        ...options,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...options.headers
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    return response;
+                    
+                } catch (error) {
+                    lastError = error;
+                    console.log(`❌ Attempt ${attempt} failed:`, error.message);
+                    
+                    if (attempt < retries) {
+                        console.log(`⏳ Retrying in ${delay}ms...`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        delay = Math.min(delay * 2, CONFIG.MAX_RETRY_DELAY); // Exponential backoff
+                    }
+                }
+            }
+            
+            throw lastError;
+        }
+
+        // Enhanced UI Functions
+        function updateLoadingState(isLoading) {
+            const container = document.getElementById('jobsContainer');
+            if (isLoading) {
+                container.innerHTML = `
+                    <div class="loading-container">
+                        <div class="loading-spinner"></div>
+                        <h3>Loading Callouts</h3>
+                        <p>Fetching latest data from Google Apps Script API...</p>
+                    </div>
+                `;
+            }
+        }
+
+        function showError(error) {
+            const container = document.getElementById('jobsContainer');
+            container.innerHTML = `
+                <div class="error-container">
+                    <h3>⚠️ Error Loading Data</h3>
+                    <p><strong>Message:</strong> ${error.message}</p>
+                    <p><strong>API URL:</strong> ${CONFIG.APPS_SCRIPT_URL}</p>
+                    <div style="margin-top: 20px;">
+                        <h4>🔧 Troubleshooting Steps:</h4>
+                        <ol style="text-align: left; display: inline-block;">
+                            <li>Check your internet connection</li>
+                            <li>Verify Google Apps Script deployment</li>
+                            <li>Ensure API permissions are correct</li>
+                            <li>Check browser console for detailed errors</li>
+                        </ol>
+                        <button class="btn-add-job" onclick="loadData()" style="margin-top: 15px;">
+                            🔄 Retry Loading
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showNotification(message, type = 'info', duration = 3000) {
+            // Remove existing notification
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
+
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            // Hide notification
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, duration);
+        }
+
+        function showSystemStatus(status, type) {
+            const statusElement = document.getElementById('systemStatus');
+            statusElement.textContent = status;
+            statusElement.className = `header-stat ${type}`;
+        }
+
+        // Additional Enhanced Functions
+        function openCreateModal() {
+            appState.isEditMode = false;
+            appState.currentJob = null;
+            
+            document.getElementById('editModalTitle').textContent = 'Create New Callout';
+            document.getElementById('saveButton').textContent = 'Create Callout';
+            document.getElementById('statusSection').style.display = 'none';
+            
+            // Reset form
+            document.getElementById('editForm').reset();
+            
+            // Clear service type selections
+            document.querySelectorAll('.service-item').forEach(item => {
+                item.classList.remove('selected');
+                item.querySelector('input').checked = false;
+            });
+            
+            document.getElementById('editModal').classList.add('show');
+        }
+
+        function openEditModalForJob(calloutId) {
+            const job = appState.allJobs.find(j => j['Callout ID'] === calloutId);
+            if (!job) return;
+
+            appState.isEditMode = true;
+            appState.currentJob = job;
+            
+            document.getElementById('editModalTitle').textContent = 'Edit Callout Details';
+            document.getElementById('saveButton').textContent = 'Update Callout';
+            document.getElementById('statusSection').style.display = 'block';
+            
+            populateEditForm(job);
+            document.getElementById('editModal').classList.add('show');
+        }
+
+        function populateEditForm(job) {
+            // Map and populate form fields
+            const fieldMappings = {
+                'Customer': 'customer',
+                'RIG Number': 'rigNumber',
+                'Well Name': 'wellName',
+                'Well ID': 'wellId',
+                'Field Name': 'fieldName',
+                'Hole Section': 'holeSection',
+                'Latitude': 'latitude',
+                'Longitude': 'longitude',
+                'UTM Northing': 'utmNorthing',
+                'UTM Easting': 'utmEasting',
+                'Casing Size': 'casingSize',
+                'Ground Elevation': 'groundElevation',
+                'Survey Start Depth': 'surveyStartDepth',
+                'Survey End Depth': 'surveyEndDepth',
+                'Survey Interval': 'surveyInterval',
+                'Equipment Required Date': 'equipmentRequiredDate',
+                'Equipment Required Time': 'equipmentRequiredTime',
+                'Crew Required Date': 'crewRequiredDate',
+                'Crew Required Time': 'crewRequiredTime',
+                'Callout Completed By': 'calloutCompletedBy',
+                'Designation': 'designation',
+                'Contact Number': 'contactNumber',
+                'Authorization': 'authorization',
+                'Comments': 'comments',
+                'Status': 'status',
+                'Urgency': 'urgency',
+                'ROS Date': 'rosDate',
+                'ROS Status': 'rosStatus'
+            };
+            
+            Object.entries(fieldMappings).forEach(([jobField, formField]) => {
+                const element = document.querySelector(`[name="${formField}"]`);
+                if (element && job[jobField]) {
+                    element.value = job[jobField];
+                }
+            });
+
+            // Handle service types
+            const serviceTypes = job['Service Type'] ? job['Service Type'].split(', ') : [];
+            document.querySelectorAll('input[name="serviceType"]').forEach(checkbox => {
+                const isSelected = serviceTypes.includes(checkbox.value);
+                checkbox.checked = isSelected;
+                checkbox.closest('.service-item').classList.toggle('selected', isSelected);
+            });
+        }
+
+        function openEditModal() {
+            if (!appState.currentJob) return;
+            closeModal();
+            openEditModalForJob(appState.currentJob['Callout ID']);
+        }
+
+        async function completeJob() {
+            if (!appState.currentJob) return;
+            
+            try {
+                const result = await updateCallout(appState.currentJob['Callout ID'], {
+                    'Status': 'COMPLETED',
+                    'ROS Status': 'Completed'
+                });
+                
+                if (result.success) {
+                    showNotification(`Job ${appState.currentJob['Callout ID']} completed!`, 'success');
+                    closeModal();
+                    await loadData();
+                } else {
+                    throw new Error(result.message || 'Failed to complete job');
+                }
+            } catch (error) {
+                showNotification(error.message || 'Failed to complete job', 'error');
+            }
+        }
+
+        async function completeJobFromCard(calloutId) {
+            try {
+                const result = await updateCallout(calloutId, {
+                    'Status': 'COMPLETED',
+                    'ROS Status': 'Completed'
+                });
+                
+                if (result.success) {
+                    showNotification(`Job ${calloutId} completed!`, 'success');
+                    await loadData();
+                } else {
+                    throw new Error(result.message || 'Failed to complete job');
+                }
+            } catch (error) {
+                showNotification(error.message || 'Failed to complete job', 'error');
+            }
+        }
+
+        function duplicateJob() {
+            if (!appState.currentJob) return;
+            
+            closeModal();
+            openCreateModal();
+            
+            // Populate with current job data but clear ID fields
+            setTimeout(() => {
+                populateEditForm(appState.currentJob);
+                // Clear fields that should be unique
+                document.querySelector('[name="status"]').value = 'PENDING_APPROVAL';
+                showNotification('Job data copied. Review and create duplicate.', 'info');
+            }, 100);
+        }
+
+        function closeModal() {
+            document.getElementById('jobModal').classList.remove('show');
+            appState.currentJob = null;
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('show');
+            appState.isEditMode = false;
+            appState.currentJob = null;
+        }
+
+        function setActiveFilter(activeBtn) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            activeBtn.classList.add('active');
+        }
+
+        function filterByStats(filter) {
+            // Update active stat card
+            document.querySelectorAll('.stat-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            document.querySelector(`[data-stat-filter="${filter}"]`).classList.add('active');
+            
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            let filterValue = filter;
+            if (filter === 'pending') filterValue = 'PENDING_APPROVAL';
+            if (filter === 'approved') filterValue = 'APPROVED';
+            if (filter === 'completed') filterValue = 'COMPLETED';
+            
+            const filterBtn = document.querySelector(`[data-filter="${filterValue}"]`) || 
+                              document.querySelector(`[data-filter="${filter}"]`);
+            if (filterBtn) filterBtn.classList.add('active');
+            
+            appState.currentFilter = filterValue;
+            applyFilters();
+        }
+
+        function setView(view) {
+            appState.currentView = view;
+            
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            renderJobs();
+        }
+
+        function toggleAdvancedFilters() {
+            const filters = document.getElementById('advancedFilters');
+            filters.classList.toggle('show');
+            
+            const button = event.target;
+            button.textContent = filters.classList.contains('show') ? 
+                '🔼 Hide Advanced Filters' : '🔧 Advanced Filters';
+        }
+
+        function updateJobsTitle() {
+            const title = document.getElementById('jobsTitle');
+            const count = appState.filteredJobs.length;
+            const total = appState.allJobs.length;
+            
+            if (appState.currentFilter === 'all' && !appState.searchTerm) {
+                title.textContent = `All Callouts (${total})`;
+            } else {
+                title.textContent = `Filtered Callouts (${count} of ${total})`;
+            }
+        }
+
+        function updateLastUpdated() {
+            const element = document.getElementById('lastUpdated');
+            if (appState.lastUpdated) {
+                element.textContent = `Last updated: ${appState.lastUpdated.toLocaleString()}`;
+            }
+        }
+
+        function startAutoRefresh() {
+            if (appState.refreshInterval) {
+                clearInterval(appState.refreshInterval);
+            }
+            
+            appState.refreshInterval = setInterval(() => {
+                console.log('🔄 Auto-refreshing data...');
+                loadData();
+            }, CONFIG.REFRESH_INTERVAL);
+            
+            document.getElementById('autoRefresh').textContent = 'Auto-Refresh: ON';
+        }
+
+        function autoSaveDraft() {
+            // Auto-save form data to localStorage as draft
+            const form = document.getElementById('editForm');
+            if (form && document.getElementById('editModal').classList.contains('show')) {
+                const formData = new FormData(form);
+                const draft = Object.fromEntries(formData.entries());
+                localStorage.setItem('callout_draft', JSON.stringify(draft));
+            }
+        }
+
+        // Enhanced Export Functions
+        function exportData() {
+            const csvContent = convertToCSV(appState.filteredJobs);
+            downloadCSV(csvContent, `callouts_export_${new Date().toISOString().slice(0, 10)}.csv`);
+            showNotification('Data exported successfully!', 'success');
+        }
+
+        function convertToCSV(data) {
+            if (data.length === 0) return '';
+            
+            const headers = Object.keys(data[0]);
+            const csvRows = [
+                headers.join(','),
+                ...data.map(row => headers.map(header => {
+                    const value = row[header] || '';
+                    return `"${value.toString().replace(/"/g, '""')}"`;
+                }).join(','))
+            ];
+            
+            return csvRows.join('\n');
+        }
+
+        function downloadCSV(content, filename) {
+            const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // System Information Functions
+        function showSystemInfo() {
+            showNotification(`Dashboard v2.0 | API: ${CONFIG.APPS_SCRIPT_URL.split('/')[5]} | Jobs: ${appState.allJobs.length}`, 'info', 5000);
+        }
+
+        function showApiStatus() {
+            const status = appState.isLoading ? 'Loading...' : 'Connected';
+            const lastUpdate = appState.lastUpdated ? appState.lastUpdated.toLocaleTimeString() : 'Never';
+            showNotification(`API Status: ${status} | Last Update: ${lastUpdate}`, 'info', 5000);
+        }
+
+        function downloadLogs() {
+            const logs = JSON.stringify({
+                timestamp: new Date().toISOString(),
+                config: CONFIG,
+                stats: appState.stats,
+                totalJobs: appState.allJobs.length,
+                filteredJobs: appState.filteredJobs.length,
+                lastUpdated: appState.lastUpdated
+            }, null, 2);
+            
+            const blob = new Blob([logs], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `dashboard_logs_${new Date().toISOString().slice(0, 10)}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Cleanup
+        window.addEventListener('beforeunload', function() {
+            if (appState.refreshInterval) {
+                clearInterval(appState.refreshInterval);
+            }
+        });
+
+        // Global error handler
+        window.addEventListener('error', function(event) {
+            console.error('Global error:', event.error);
+            showNotification('An unexpected error occurred. Please refresh the page.', 'error');
+        });
+
+        console.log('🎯 Enhanced TASK Energy Dashboard Ready!');
+    </script>
+</body>
+</html>

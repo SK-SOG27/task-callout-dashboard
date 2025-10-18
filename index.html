@@ -29,6 +29,16 @@
             text-align: center;
             margin-bottom: 25px;
             color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-content {
+            flex: 1;
+            text-align: center;
         }
 
         .header h1 {
@@ -41,6 +51,26 @@
         .header p {
             font-size: 1rem;
             opacity: 0.9;
+        }
+
+        .btn-add-job {
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+        }
+
+        .btn-add-job:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .controls {
@@ -189,7 +219,6 @@
             gap: 20px;
         }
 
-        /* OPTION 1 CARD STYLE - CONFIRMED SELECTION */
         .job-card {
             background: rgba(255,255,255,0.98);
             border-radius: 15px;
@@ -236,6 +265,8 @@
         .status-pending_approval { background: #fff3e0; color: #f57c00; }
         .status-completed { background: #f3e5f5; color: #7b1fa2; }
         .status-updated { background: #e8f5e8; color: #2e7d32; }
+        .status-approved { background: #e8f5e8; color: #2e7d32; }
+        .status-rejected { background: #ffebee; color: #c62828; }
 
         .job-info {
             display: grid;
@@ -288,6 +319,24 @@
             transform: translateY(-1px);
         }
 
+        .btn-edit {
+            flex: 1;
+            padding: 8px 16px;
+            background: #f39c12;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit:hover {
+            background: #e67e22;
+            transform: translateY(-1px);
+        }
+
         .btn-complete {
             flex: 1;
             padding: 8px 16px;
@@ -303,6 +352,23 @@
 
         .btn-complete:hover {
             background: #1b5e20;
+            transform: translateY(-1px);
+        }
+
+        .btn-delete {
+            padding: 8px 12px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-delete:hover {
+            background: #c82333;
             transform: translateY(-1px);
         }
 
@@ -355,7 +421,7 @@
             align-items: center;
         }
 
-        .btn-edit {
+        .btn-edit-modal {
             padding: 8px 16px;
             background: rgba(255,255,255,0.2);
             color: white;
@@ -367,7 +433,7 @@
             transition: all 0.3s ease;
         }
 
-        .btn-edit:hover {
+        .btn-edit-modal:hover {
             background: rgba(255,255,255,0.3);
         }
 
@@ -411,7 +477,97 @@
             padding: 30px;
         }
 
-        /* OPTION 6 MODAL SECTIONS - DARK THEME */
+        /* Create/Edit Form Styles */
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #8B0000;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-label.required::after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #8B0000;
+            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .service-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .service-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover {
+            border-color: #8B0000;
+            background: rgba(139, 0, 0, 0.05);
+        }
+
+        .service-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #8B0000;
+        }
+
+        /* Detail sections for view modal */
         .detail-section {
             background: #2c3e50;
             color: white;
@@ -422,35 +578,7 @@
             border-top: 3px solid #f39c12;
         }
 
-        .detail-section-1 {
-            /* Dark theme - no individual colors needed */
-        }
-
-        .detail-section-2 {
-            /* Dark theme - no individual colors needed */
-        }
-
-        .detail-section-3 {
-            /* Dark theme - no individual colors needed */
-        }
-
-        .detail-section-4 {
-            /* Dark theme - no individual colors needed */
-        }
-
-        .detail-section-5 {
-            /* Dark theme - no individual colors needed */
-        }
-
-        .detail-section-6 {
-            /* Dark theme - no individual colors needed */
-        }
-
-        .detail-section-7 {
-            /* Dark theme - no individual colors needed */
-        }
-
-        .section-title {
+        .detail-section .section-title {
             font-size: 1.1rem;
             font-weight: 700;
             color: #f39c12;
@@ -458,9 +586,10 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            border-bottom: 2px solid rgba(243, 156, 18, 0.3);
         }
 
-        .section-title::after {
+        .detail-section .section-title::after {
             content: '';
             height: 2px;
             background: linear-gradient(90deg, #f39c12, transparent);
@@ -497,37 +626,17 @@
             font-size: 0.95rem;
         }
 
-        /* Edit Modal Styles */
-        .edit-input, .edit-select, .edit-textarea {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .edit-input:focus, .edit-select:focus, .edit-textarea:focus {
-            outline: none;
-            border-color: #8B0000;
-        }
-
-        .edit-textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        .edit-actions {
+        .form-actions {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             justify-content: flex-end;
-            margin-top: 20px;
+            margin-top: 30px;
             padding-top: 20px;
             border-top: 2px solid #e9ecef;
         }
 
         .btn-save {
-            padding: 10px 20px;
+            padding: 12px 24px;
             background: #2e7d32;
             color: white;
             border: none;
@@ -539,10 +648,11 @@
 
         .btn-save:hover {
             background: #1b5e20;
+            transform: translateY(-2px);
         }
 
         .btn-cancel {
-            padding: 10px 20px;
+            padding: 12px 24px;
             background: #6c757d;
             color: white;
             border: none;
@@ -554,6 +664,7 @@
 
         .btn-cancel:hover {
             background: #5a6268;
+            transform: translateY(-2px);
         }
 
         .loading-container, .error-container, .no-results {
@@ -577,10 +688,45 @@
             font-size: 0.9rem;
         }
 
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: #2e7d32;
+        }
+
+        .notification.error {
+            background: #dc3545;
+        }
+
+        .notification.info {
+            background: #007bff;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
             }
 
             .header h1 {
@@ -612,6 +758,11 @@
                 gap: 8px;
             }
 
+            .job-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+
             .modal-content {
                 width: 98%;
                 margin: 1% auto;
@@ -625,14 +776,25 @@
                 grid-template-columns: 1fr;
                 gap: 10px;
             }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>TASK Energy - Job Dashboard</h1>
-            <p>Real-time Callout Management System</p>
+            <div class="header-content">
+                <h1>TASK Energy - Job Dashboard</h1>
+                <p>Real-time Callout Management System</p>
+            </div>
+            <button class="btn-add-job" onclick="openCreateModal()">+ New Callout</button>
         </div>
 
         <div class="controls">
@@ -642,10 +804,10 @@
             </div>
             <div class="filter-buttons">
                 <button class="filter-btn active" data-filter="all">All Jobs</button>
-                <button class="filter-btn" data-filter="new">New</button>
-                <button class="filter-btn" data-filter="approved">Approved</button>
-                <button class="filter-btn" data-filter="pending">Pending</button>
-                <button class="filter-btn" data-filter="completed">Completed</button>
+                <button class="filter-btn" data-filter="PENDING_APPROVAL">Pending</button>
+                <button class="filter-btn" data-filter="APPROVED">Approved</button>
+                <button class="filter-btn" data-filter="UPDATED">Updated</button>
+                <button class="filter-btn" data-filter="COMPLETED">Completed</button>
             </div>
             <button class="refresh-button" onclick="loadData()">🔄 Refresh</button>
         </div>
@@ -684,7 +846,7 @@
             <div class="modal-header">
                 <h2 class="modal-title" id="modalTitle">Job Details</h2>
                 <div class="modal-header-actions">
-                    <button class="btn-edit" onclick="openEditModal()">✎ Edit Job Details</button>
+                    <button class="btn-edit-modal" onclick="openEditModal()">✎ Edit Job Details</button>
                     <button class="btn-complete-modal" onclick="completeJob()">✓ Complete</button>
                     <button class="close-button" onclick="closeModal()">&times;</button>
                 </div>
@@ -695,34 +857,237 @@
         </div>
     </div>
 
-    <!-- Edit Job Modal -->
+    <!-- Create/Edit Job Modal -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Edit Job Details</h2>
+                <h2 class="modal-title" id="editModalTitle">Edit Job Details</h2>
                 <button class="close-button" onclick="closeEditModal()">&times;</button>
             </div>
-            <div class="modal-body" id="editModalBody">
-                <!-- Edit form will be inserted here -->
+            <div class="modal-body">
+                <form id="editForm">
+                    <!-- General Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">📋 General Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label required">Customer</label>
+                                <select class="form-select" name="customer" required>
+                                    <option value="">Select Customer</option>
+                                    <option value="PDO">PDO</option>
+                                    <option value="ADNOC">ADNOC</option>
+                                    <option value="Shell">Shell</option>
+                                    <option value="BP">BP</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">RIG Number</label>
+                                <input type="text" class="form-input" name="rigNumber" placeholder="e.g., RIG-45" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">Well Name</label>
+                                <input type="text" class="form-input" name="wellName" placeholder="e.g., BURHAAN W_COREWELL-37" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Well ID</label>
+                                <input type="text" class="form-input" name="wellId" placeholder="e.g., 32960">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Field Name</label>
+                                <input type="text" class="form-input" name="fieldName" placeholder="e.g., Burhaan Main">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Hole Section</label>
+                                <input type="text" class="form-input" name="holeSection" placeholder="e.g., 8.5">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Service Required -->
+                    <div class="form-section">
+                        <h3 class="section-title">🔧 Type of Service Required</h3>
+                        <div class="service-types">
+                            <div class="service-item">
+                                <input type="checkbox" name="serviceType" value="Wireline Casing Survey" id="wirelineCasing">
+                                <label for="wirelineCasing">Wireline Casing Survey</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" name="serviceType" value="Wireline Drillpipe Survey" id="wirelineDrillpipe">
+                                <label for="wirelineDrillpipe">Wireline Drillpipe Survey</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" name="serviceType" value="Wireline Pump-Down Survey" id="wirelinePumpDown">
+                                <label for="wirelinePumpDown">Wireline Pump-Down Survey</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" name="serviceType" value="Wireline Orientation Survey" id="wirelineOrientation">
+                                <label for="wirelineOrientation">Wireline Orientation Survey</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" name="serviceType" value="Memory Casing Survey - Slickline" id="memoryCasing">
+                                <label for="memoryCasing">Memory Casing Survey - Slickline</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" name="serviceType" value="Memory Drillpipe Survey - Slickline" id="memoryDrillpipe">
+                                <label for="memoryDrillpipe">Memory Drillpipe Survey - Slickline</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" name="serviceType" value="Drop Gyro Survey < 20° Inclination" id="dropGyro20">
+                                <label for="dropGyro20">Drop Gyro Survey &lt; 20°</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" name="serviceType" value="Drop Gyro Survey > 20° Inclination" id="dropGyro20Plus">
+                                <label for="dropGyro20Plus">Drop Gyro Survey &gt; 20°</label>
+                            </div>
+                            <div class="service-item">
+                                <input type="checkbox" name="serviceType" value="Dry Hole Drop Gyro System" id="dryHoleDropGyro">
+                                <label for="dryHoleDropGyro">Dry Hole Drop Gyro System</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Well Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">🗺️ Well Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Latitude</label>
+                                <input type="text" class="form-input" name="latitude" placeholder="e.g., 21° 46' 26.78'' N">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Longitude</label>
+                                <input type="text" class="form-input" name="longitude" placeholder="e.g., 57° 5' 50.01'' E">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">UTM Northing</label>
+                                <input type="text" class="form-input" name="utmNorthing" placeholder="e.g., 2407623.2130N">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">UTM Easting</label>
+                                <input type="text" class="form-input" name="utmEasting" placeholder="e.g., 510051.8270 E">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Casing Size</label>
+                                <input type="text" class="form-input" name="casingSize" placeholder="e.g., 9 5/8 Inch">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Ground Elevation</label>
+                                <input type="text" class="form-input" name="groundElevation" placeholder="e.g., 170.75 m">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Survey Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">📊 Survey Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Survey Start Depth</label>
+                                <input type="text" class="form-input" name="surveyStartDepth" placeholder="e.g., 6.77 m">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Survey End Depth</label>
+                                <input type="text" class="form-input" name="surveyEndDepth" placeholder="e.g., 420 m">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Survey Interval</label>
+                                <input type="text" class="form-input" name="surveyInterval" placeholder="e.g., 410 m">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">Equipment Required Date</label>
+                                <input type="date" class="form-input" name="equipmentRequiredDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Equipment Required Time</label>
+                                <input type="time" class="form-input" name="equipmentRequiredTime">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">Crew Required Date</label>
+                                <input type="date" class="form-input" name="crewRequiredDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Crew Required Time</label>
+                                <input type="time" class="form-input" name="crewRequiredTime">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">📞 Contact Information & Comments</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label required">Callout Completed By</label>
+                                <input type="text" class="form-input" name="calloutCompletedBy" placeholder="e.g., Abdullah" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Designation</label>
+                                <input type="text" class="form-input" name="designation" placeholder="e.g., ADSV">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Contact Number</label>
+                                <input type="tel" class="form-input" name="contactNumber" placeholder="e.g., 243-83412">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Authorization</label>
+                                <input type="text" class="form-input" name="authorization" placeholder="e.g., Mohammed Al Wahaibi">
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Comments</label>
+                                <textarea class="form-textarea" name="comments" placeholder="ROS will be updated later, special requirements, etc."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status (for edit mode only) -->
+                    <div class="form-section" id="statusSection" style="display: none;">
+                        <h3 class="section-title">📋 Status Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" name="status">
+                                    <option value="PENDING_APPROVAL">Pending Approval</option>
+                                    <option value="APPROVED">Approved</option>
+                                    <option value="UPDATED">Updated</option>
+                                    <option value="COMPLETED">Completed</option>
+                                    <option value="REJECTED">Rejected</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Priority</label>
+                                <select class="form-select" name="urgency">
+                                    <option value="Normal">Normal</option>
+                                    <option value="High">High</option>
+                                    <option value="Urgent">Urgent</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                        <button type="submit" class="btn-save" id="saveButton">Save Changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
     <script>
-        // Configuration
+        // Configuration - YOUR WORKING GOOGLE APPS SCRIPT URL
         const CONFIG = {
-            SHEET_ID: '1kS_vO8FfE94LHnv5ftsHqaHLm8Xum0l5W6NvXGlZB1A',
-            REFRESH_INTERVAL: 5 * 60 * 1000,
-            CSV_URL: null
+            APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycby4-ZhR9ioWjmih8gvhduZofpPSB9exfTOcij72yz4erXXLw6Y4rcEYQv4KWMSxGq9T/exec',
+            REFRESH_INTERVAL: 5 * 60 * 1000, // 5 minutes
+            RETRY_ATTEMPTS: 3,
+            RETRY_DELAY: 1000
         };
 
         let allJobs = [];
         let filteredJobs = [];
         let currentJob = null;
         let refreshInterval;
-
-        // Initialize CSV URL
-        CONFIG.CSV_URL = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/export?format=csv&gid=0`;
+        let isEditMode = false;
 
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
@@ -737,11 +1102,11 @@
             document.getElementById('searchInput').addEventListener('input', function() {
                 const searchTerm = this.value.toLowerCase();
                 filteredJobs = allJobs.filter(job => 
-                    (job.calloutId?.toLowerCase().includes(searchTerm)) ||
-                    (job.client?.toLowerCase().includes(searchTerm)) ||
-                    (job.rigNumber?.toLowerCase().includes(searchTerm)) ||
-                    (job.wellName?.toLowerCase().includes(searchTerm)) ||
-                    (job.serviceType?.toLowerCase().includes(searchTerm))
+                    (job['Callout ID']?.toLowerCase().includes(searchTerm)) ||
+                    (job.Customer?.toLowerCase().includes(searchTerm)) ||
+                    (job['RIG Number']?.toLowerCase().includes(searchTerm)) ||
+                    (job['Well Name']?.toLowerCase().includes(searchTerm)) ||
+                    (job['Service Type']?.toLowerCase().includes(searchTerm))
                 );
                 renderJobs();
             });
@@ -757,12 +1122,15 @@
                         filteredJobs = [...allJobs];
                     } else {
                         filteredJobs = allJobs.filter(job => 
-                            job.status?.toLowerCase().includes(filter.toLowerCase())
+                            job.Status === filter
                         );
                     }
                     renderJobs();
                 });
             });
+
+            // Form submission
+            document.getElementById('editForm').addEventListener('submit', handleFormSubmit);
 
             // Modal functionality
             window.addEventListener('click', function(event) {
@@ -775,26 +1143,38 @@
                     closeEditModal();
                 }
             });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                    closeEditModal();
+                }
+            });
         }
 
+        // CRUD OPERATIONS
+
+        // READ - Load data from Google Apps Script
         async function loadData() {
-            console.log('Loading jobs from Google Sheets...');
+            console.log('Loading jobs from Google Apps Script API...');
             
             try {
-                const response = await fetch(CONFIG.CSV_URL);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                const response = await fetchWithRetry(`${CONFIG.APPS_SCRIPT_URL}?action=read`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    allJobs = result.data.callouts || [];
+                    filteredJobs = [...allJobs];
+                    
+                    renderJobs();
+                    updateStats();
+                    updateLastUpdated();
+                    
+                    console.log(`Loaded ${allJobs.length} jobs successfully`);
+                } else {
+                    throw new Error(result.message || 'Failed to load data');
                 }
-                
-                const csvData = await response.text();
-                const jobs = parseCSV(csvData);
-                
-                allJobs = jobs;
-                filteredJobs = [...allJobs];
-                
-                renderJobs();
-                updateStats();
-                updateLastUpdated();
                 
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -805,88 +1185,117 @@
                         <button onclick="loadData()" style="margin-top: 15px; padding: 10px 20px; background: #8B0000; color: white; border: none; border-radius: 8px; cursor: pointer;">Retry</button>
                     </div>
                 `;
+                showNotification('Failed to load data', 'error');
             }
         }
 
-        function parseCSV(csvData) {
-            const lines = csvData.split('\n').filter(line => line.trim());
-            if (lines.length < 2) return [];
+        // CREATE/UPDATE - Handle form submission
+        async function handleFormSubmit(event) {
+            event.preventDefault();
             
-            const jobs = [];
+            const formData = new FormData(event.target);
+            const calloutData = formDataToObject(formData);
             
-            for (let i = 1; i < lines.length; i++) {
-                const row = parseCSVRow(lines[i]);
-                if (row.length < 10) continue;
+            // Process service types
+            const serviceTypes = getSelectedServiceTypes();
+            calloutData.serviceTypes = serviceTypes.join(', ');
+            
+            try {
+                let result;
                 
-                const job = {
-                    calloutId: row[0] || `JOB-${i}`,
-                    ticketNumber: row[1] || '',
-                    status: row[2] || 'Pending',
-                    timestamp: row[3] || '',
-                    client: row[8] || '',
-                    rigNumber: row[9] || '',
-                    wellName: row[10] || '',
-                    wellId: row[11] || '',
-                    fieldName: row[12] || '',
-                    serviceType: row[13] || '',
-                    holeSection: row[14] || '',
-                    casingSize: row[15] || '',
-                    wellProfile: row[18] || '',
-                    latitude: row[19] || '',
-                    longitude: row[20] || '',
-                    surveyStartDepth: row[28] || '',
-                    surveyEndDepth: row[29] || '',
-                    surveyInterval: row[30] || '',
-                    rosDate: row[31] || '',
-                    rosStatus: row[32] || '',
-                    equipmentDate: row[34] || '',
-                    equipmentTime: row[35] || '',
-                    crewDate: row[36] || '',
-                    crewTime: row[37] || '',
-                    contactPerson: row[38] || '',
-                    designation: row[39] || '',
-                    contactPhone: row[40] || '',
-                    comments: row[43] || '',
-                    authorization: row[44] || '',
-                    priority: row[45] || 'Normal',
-                    h2sLevel: row[27] || '0',
-                    rosHistory: row[33] || 'Initial callout received',
-                    lastUpdated: new Date().toLocaleString(),
-                    processingStep: 'Initial Review',
-                    workflowStatus: 'In Progress',
-                    nextStep: 'Awaiting Approval',
-                    assignedTo: 'Operations Team'
-                };
-                
-                if (job.calloutId && job.calloutId !== `JOB-${i}`) {
-                    jobs.push(job);
-                }
-            }
-            
-            return jobs;
-        }
-
-        function parseCSVRow(csvRow) {
-            const result = [];
-            let current = '';
-            let inQuotes = false;
-            
-            for (let i = 0; i < csvRow.length; i++) {
-                const char = csvRow[i];
-                
-                if (char === '"') {
-                    inQuotes = !inQuotes;
-                } else if (char === ',' && !inQuotes) {
-                    result.push(current.trim());
-                    current = '';
+                if (isEditMode && currentJob) {
+                    // UPDATE operation
+                    showNotification('Updating callout...', 'info');
+                    result = await updateCallout(currentJob['Callout ID'], calloutData);
                 } else {
-                    current += char;
+                    // CREATE operation
+                    showNotification('Creating callout...', 'info');
+                    result = await createCallout(calloutData);
                 }
+                
+                if (result.success) {
+                    showNotification(isEditMode ? 'Callout updated successfully!' : 'Callout created successfully!', 'success');
+                    closeEditModal();
+                    loadData(); // Refresh the list
+                } else {
+                    throw new Error(result.message || 'Operation failed');
+                }
+                
+            } catch (error) {
+                console.error('Form submission error:', error);
+                showNotification(error.message || 'Operation failed. Please try again.', 'error');
+            }
+        }
+
+        // CREATE - Create new callout
+        async function createCallout(calloutData) {
+            const response = await fetchWithRetry(CONFIG.APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'create',
+                    callout: calloutData
+                })
+            });
+            
+            return await response.json();
+        }
+
+        // UPDATE - Update existing callout
+        async function updateCallout(calloutId, updates) {
+            const response = await fetchWithRetry(CONFIG.APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'update',
+                    calloutId: calloutId,
+                    updates: updates
+                })
+            });
+            
+            return await response.json();
+        }
+
+        // DELETE - Delete/cancel callout
+        async function deleteCallout(calloutId) {
+            if (!confirm('Are you sure you want to cancel this callout? This action cannot be undone.')) {
+                return;
             }
             
-            result.push(current.trim());
-            return result.map(field => field.replace(/"/g, ''));
+            try {
+                showNotification('Cancelling callout...', 'info');
+                
+                const response = await fetchWithRetry(CONFIG.APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'delete',
+                        calloutId: calloutId
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('Callout cancelled successfully', 'success');
+                    loadData(); // Refresh the list
+                } else {
+                    throw new Error(result.message || 'Failed to cancel callout');
+                }
+                
+            } catch (error) {
+                console.error('Delete error:', error);
+                showNotification(error.message || 'Failed to cancel callout', 'error');
+            }
         }
+
+        // UI FUNCTIONS
 
         function renderJobs() {
             const container = document.getElementById('jobsContainer');
@@ -899,38 +1308,40 @@
             const jobsHTML = filteredJobs.map(job => `
                 <div class="job-card">
                     <div class="job-header">
-                        <div class="job-id">${job.calloutId}</div>
-                        <div class="job-status status-${getStatusClass(job.status)}">${job.status}</div>
+                        <div class="job-id">${job['Callout ID'] || 'N/A'}</div>
+                        <div class="job-status status-${getStatusClass(job.Status)}">${job.Status || 'Unknown'}</div>
                     </div>
                     <div class="job-info">
                         <div class="info-item">
                             <div class="info-label">Client</div>
-                            <div class="info-value">${job.client || 'N/A'}</div>
+                            <div class="info-value">${job.Customer || 'N/A'}</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">RIG</div>
-                            <div class="info-value">${job.rigNumber || 'N/A'}</div>
+                            <div class="info-value">${job['RIG Number'] || 'N/A'}</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Service</div>
-                            <div class="info-value">${job.serviceType || 'N/A'}</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Depth</div>
-                            <div class="info-value">${job.surveyStartDepth && job.surveyEndDepth ? `${job.surveyStartDepth} - ${job.surveyEndDepth}` : 'N/A'}</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Profile</div>
-                            <div class="info-value">${job.wellProfile || 'N/A'}</div>
+                            <div class="info-value">${job['Service Type'] || 'N/A'}</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Well</div>
-                            <div class="info-value">${job.wellName || 'N/A'}</div>
+                            <div class="info-value">${job['Well Name'] || 'N/A'}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">ROS Date</div>
+                            <div class="info-value">${job['ROS Date'] || 'TBD'}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Status</div>
+                            <div class="info-value">${job['ROS Status'] || 'Pending'}</div>
                         </div>
                     </div>
                     <div class="job-actions">
-                        <button class="btn-details" onclick="openJobModal('${job.calloutId}')">Details</button>
-                        <button class="btn-complete" onclick="completeJobFromCard('${job.calloutId}')">Complete</button>
+                        <button class="btn-details" onclick="openJobModal('${job['Callout ID']}')">Details</button>
+                        <button class="btn-edit" onclick="openEditModalForJob('${job['Callout ID']}')">Edit</button>
+                        <button class="btn-complete" onclick="completeJobFromCard('${job['Callout ID']}')">Complete</button>
+                        <button class="btn-delete" onclick="deleteCallout('${job['Callout ID']}')" title="Cancel Callout">✕</button>
                     </div>
                 </div>
             `).join('');
@@ -940,9 +1351,9 @@
 
         function updateStats() {
             const totalJobs = allJobs.length;
-            const pendingJobs = allJobs.filter(job => job.status?.toLowerCase().includes('pending')).length;
-            const approvedJobs = allJobs.filter(job => job.status?.toLowerCase().includes('confirmed') || job.status?.toLowerCase().includes('approved')).length;
-            const completedJobs = allJobs.filter(job => job.status?.toLowerCase().includes('completed')).length;
+            const pendingJobs = allJobs.filter(job => job.Status === 'PENDING_APPROVAL').length;
+            const approvedJobs = allJobs.filter(job => job.Status === 'APPROVED' || job.Status === 'UPDATED').length;
+            const completedJobs = allJobs.filter(job => job.Status === 'COMPLETED').length;
 
             document.getElementById('totalJobs').textContent = totalJobs;
             document.getElementById('pendingJobs').textContent = pendingJobs;
@@ -962,234 +1373,257 @@
             if (filter === 'all') {
                 filteredJobs = [...allJobs];
             } else if (filter === 'pending') {
-                filteredJobs = allJobs.filter(job => job.status?.toLowerCase().includes('pending'));
+                filteredJobs = allJobs.filter(job => job.Status === 'PENDING_APPROVAL');
             } else if (filter === 'approved') {
                 filteredJobs = allJobs.filter(job => 
-                    job.status?.toLowerCase().includes('confirmed') || 
-                    job.status?.toLowerCase().includes('approved') ||
-                    job.status?.toLowerCase().includes('updated')
+                    job.Status === 'APPROVED' || job.Status === 'UPDATED'
                 );
             } else if (filter === 'completed') {
-                filteredJobs = allJobs.filter(job => job.status?.toLowerCase().includes('completed'));
+                filteredJobs = allJobs.filter(job => job.Status === 'COMPLETED');
             }
             
             renderJobs();
-            
-            // Show filter info
-            showFilterInfo(filter);
         }
 
-        function showFilterInfo(filter) {
-            const container = document.getElementById('jobsContainer');
-            const filterInfo = document.createElement('div');
-            filterInfo.className = 'filter-info-banner';
-            filterInfo.style.cssText = `
-                background: rgba(139, 0, 0, 0.1);
-                border-left: 4px solid #8B0000;
-                padding: 10px 15px;
-                margin-bottom: 15px;
-                border-radius: 0 8px 8px 0;
-                font-size: 0.9rem;
-                color: #333;
-                font-weight: 600;
-            `;
+        // MODAL FUNCTIONS
+
+        function openCreateModal() {
+            isEditMode = false;
+            currentJob = null;
             
-            if (filter !== 'all') {
-                filterInfo.textContent = `Showing ${filteredJobs.length} ${filter} jobs out of ${allJobs.length} total jobs`;
-                container.insertBefore(filterInfo, container.firstChild);
-                
-                // Remove after 3 seconds
-                setTimeout(() => {
-                    if (filterInfo.parentNode) {
-                        filterInfo.remove();
+            document.getElementById('editModalTitle').textContent = 'Create New Callout';
+            document.getElementById('saveButton').textContent = 'Create Callout';
+            document.getElementById('statusSection').style.display = 'none';
+            
+            // Reset form
+            document.getElementById('editForm').reset();
+            
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function openEditModalForJob(calloutId) {
+            const job = allJobs.find(j => j['Callout ID'] === calloutId);
+            if (!job) return;
+
+            isEditMode = true;
+            currentJob = job;
+            
+            document.getElementById('editModalTitle').textContent = 'Edit Callout Details';
+            document.getElementById('saveButton').textContent = 'Update Callout';
+            document.getElementById('statusSection').style.display = 'block';
+            
+            populateEditForm(job);
+            
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function populateEditForm(job) {
+            // Map Google Sheets column names to form field names
+            const fieldMapping = {
+                'Customer': 'customer',
+                'RIG Number': 'rigNumber', 
+                'Well Name': 'wellName',
+                'Well ID': 'wellId',
+                'Field Name': 'fieldName',
+                'Hole Section': 'holeSection',
+                'Service Type': 'serviceType',
+                'Latitude': 'latitude',
+                'Longitude': 'longitude',
+                'UTM Northing': 'utmNorthing',
+                'UTM Easting': 'utmEasting',
+                'Casing Size': 'casingSize',
+                'Ground Elevation': 'groundElevation',
+                'Survey Start Depth': 'surveyStartDepth',
+                'Survey End Depth': 'surveyEndDepth',
+                'Survey Interval': 'surveyInterval',
+                'Equipment Required Date': 'equipmentRequiredDate',
+                'Equipment Required Time': 'equipmentRequiredTime',
+                'Crew Required Date': 'crewRequiredDate',
+                'Crew Required Time': 'crewRequiredTime',
+                'Callout Completed By': 'calloutCompletedBy',
+                'Designation': 'designation',
+                'Contact Number': 'contactNumber',
+                'Authorization': 'authorization',
+                'Comments': 'comments',
+                'Status': 'status',
+                'Urgency': 'urgency'
+            };
+            
+            // Populate form fields
+            Object.keys(fieldMapping).forEach(sheetColumn => {
+                const formFieldName = fieldMapping[sheetColumn];
+                const input = document.querySelector(`[name="${formFieldName}"]`);
+                if (input && job[sheetColumn]) {
+                    if (input.type === 'checkbox') {
+                        input.checked = job[sheetColumn] === input.value;
+                    } else if (input.type === 'date' && job[sheetColumn]) {
+                        // Convert date format if needed
+                        const dateValue = convertDateForInput(job[sheetColumn]);
+                        input.value = dateValue;
+                    } else {
+                        input.value = job[sheetColumn] || '';
                     }
-                }, 3000);
-            }
+                }
+            });
+
+            // Handle service types (checkboxes)
+            const serviceTypes = job['Service Type'] ? job['Service Type'].split(', ') : [];
+            document.querySelectorAll('input[name="serviceType"]').forEach(checkbox => {
+                checkbox.checked = serviceTypes.includes(checkbox.value);
+            });
         }
 
         function openJobModal(calloutId) {
-            const job = allJobs.find(j => j.calloutId === calloutId);
+            const job = allJobs.find(j => j['Callout ID'] === calloutId);
             if (!job) return;
 
             currentJob = job;
             
-            document.getElementById('modalTitle').textContent = `Job Details - ${job.calloutId}`;
+            document.getElementById('modalTitle').textContent = `Job Details - ${job['Callout ID']}`;
             
             const modalBody = document.getElementById('modalBody');
             modalBody.innerHTML = `
-                <!-- 1. ROS Details -->
-                <div class="detail-section detail-section-1">
+                <!-- Job details sections with your existing styling -->
+                <div class="detail-section">
                     <div class="section-title">1. ROS Details</div>
                     <div class="detail-grid">
                         <div class="detail-item">
                             <div class="detail-label">ROS Date</div>
-                            <div class="detail-value">${job.rosDate || 'TBD'}</div>
+                            <div class="detail-value">${job['ROS Date'] || 'TBD'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">ROS Status</div>
-                            <div class="detail-value">${job.rosStatus || 'Pending'}</div>
+                            <div class="detail-value">${job['ROS Status'] || 'Pending'}</div>
                         </div>
                         <div class="detail-item" style="grid-column: 1 / -1;">
-                            <div class="detail-label">ROS History</div>
-                            <div class="detail-value">${job.rosHistory || 'Initial callout received'}</div>
+                            <div class="detail-label">All ROS Dates</div>
+                            <div class="detail-value">${job['All ROS Dates'] || 'No history'}</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 2. Survey Information -->
-                <div class="detail-section detail-section-2">
+                <div class="detail-section">
                     <div class="section-title">2. Survey Information</div>
                     <div class="detail-grid">
                         <div class="detail-item">
                             <div class="detail-label">Survey Start Depth</div>
-                            <div class="detail-value">${job.surveyStartDepth || 'N/A'}</div>
+                            <div class="detail-value">${job['Survey Start Depth'] || 'N/A'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Survey End Depth</div>
-                            <div class="detail-value">${job.surveyEndDepth || 'N/A'}</div>
+                            <div class="detail-value">${job['Survey End Depth'] || 'N/A'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Survey Interval</div>
-                            <div class="detail-value">${job.surveyInterval || 'N/A'}</div>
+                            <div class="detail-value">${job['Survey Interval'] || 'N/A'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Equipment Date</div>
-                            <div class="detail-value">${job.equipmentDate || 'TBD'}</div>
+                            <div class="detail-value">${job['Equipment Required Date'] || 'TBD'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Equipment Time</div>
-                            <div class="detail-value">${job.equipmentTime || 'TBD'}</div>
+                            <div class="detail-value">${job['Equipment Required Time'] || 'TBD'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Crew Date</div>
-                            <div class="detail-value">${job.crewDate || 'TBD'}</div>
+                            <div class="detail-value">${job['Crew Required Date'] || 'TBD'}</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 3. Contact Information & Comments -->
-                <div class="detail-section detail-section-3">
-                    <div class="section-title">3. Contact Information & Comments</div>
+                <div class="detail-section">
+                    <div class="section-title">3. Contact Information</div>
                     <div class="detail-grid">
                         <div class="detail-item">
                             <div class="detail-label">Contact Person</div>
-                            <div class="detail-value">${job.contactPerson || 'N/A'}</div>
+                            <div class="detail-value">${job['Callout Completed By'] || 'N/A'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Designation</div>
-                            <div class="detail-value">${job.designation || 'N/A'}</div>
+                            <div class="detail-value">${job.Designation || 'N/A'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Contact Phone</div>
-                            <div class="detail-value">${job.contactPhone || 'N/A'}</div>
+                            <div class="detail-value">${job['Contact Number'] || 'N/A'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Authorization</div>
-                            <div class="detail-value">${job.authorization || 'N/A'}</div>
+                            <div class="detail-value">${job.Authorization || 'N/A'}</div>
                         </div>
                         <div class="detail-item" style="grid-column: 1 / -1;">
                             <div class="detail-label">Comments</div>
-                            <div class="detail-value">${job.comments || 'No comments'}</div>
+                            <div class="detail-value">${job.Comments || 'No comments'}</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 4. Type of Service Required -->
-                <div class="detail-section detail-section-4">
-                    <div class="section-title">4. Type of Service Required</div>
+                <div class="detail-section">
+                    <div class="section-title">4. Service Information</div>
                     <div class="detail-grid">
                         <div class="detail-item">
                             <div class="detail-label">Service Type</div>
-                            <div class="detail-value">${job.serviceType || 'N/A'}</div>
+                            <div class="detail-value">${job['Service Type'] || 'N/A'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Priority</div>
-                            <div class="detail-value">${job.priority || 'Normal'}</div>
+                            <div class="detail-value">${job.Urgency || 'Normal'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Data Completeness</div>
+                            <div class="detail-value">${job['Data Completeness'] || 'N/A'}%</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 5. General Information -->
-                <div class="detail-section detail-section-5">
+                <div class="detail-section">
                     <div class="section-title">5. General Information</div>
                     <div class="detail-grid">
                         <div class="detail-item">
                             <div class="detail-label">Customer</div>
-                            <div class="detail-value">${job.client || 'N/A'}</div>
+                            <div class="detail-value">${job.Customer || 'N/A'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">RIG Number</div>
-                            <div class="detail-value">${job.rigNumber || 'N/A'}</div>
+                            <div class="detail-value">${job['RIG Number'] || 'N/A'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Well Name</div>
-                            <div class="detail-value">${job.wellName || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Hole Section</div>
-                            <div class="detail-value">${job.holeSection || 'N/A'}</div>
+                            <div class="detail-value">${job['Well Name'] || 'N/A'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Well ID</div>
-                            <div class="detail-value">${job.wellId || 'N/A'}</div>
+                            <div class="detail-value">${job['Well ID'] || 'N/A'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Field Name</div>
-                            <div class="detail-value">${job.fieldName || 'N/A'}</div>
+                            <div class="detail-value">${job['Field Name'] || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Hole Section</div>
+                            <div class="detail-value">${job['Hole Section'] || 'N/A'}</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 6. Well Information -->
-                <div class="detail-section detail-section-6">
-                    <div class="section-title">6. Well Information</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">Coordinates</div>
-                            <div class="detail-value">${job.latitude && job.longitude ? `${job.latitude}, ${job.longitude}` : 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Casing Size</div>
-                            <div class="detail-value">${job.casingSize || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Well Profile</div>
-                            <div class="detail-value">${job.wellProfile || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">H2S Level</div>
-                            <div class="detail-value">${job.h2sLevel || '0'}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 7. Job Status & Tracking -->
-                <div class="detail-section detail-section-7">
-                    <div class="section-title">7. Job Status & Tracking</div>
+                <div class="detail-section">
+                    <div class="section-title">6. Status & Tracking</div>
                     <div class="detail-grid">
                         <div class="detail-item">
                             <div class="detail-label">Current Status</div>
-                            <div class="detail-value">${job.status || 'Pending'}</div>
+                            <div class="detail-value">${job.Status || 'Pending'}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Last Updated</div>
-                            <div class="detail-value">${job.lastUpdated || 'Recently'}</div>
+                            <div class="detail-value">${job['Last Updated'] || 'Recently'}</div>
                         </div>
                         <div class="detail-item">
-                            <div class="detail-label">Processing Step</div>
-                            <div class="detail-value">${job.processingStep || 'Initial Review'}</div>
+                            <div class="detail-label">Data Source</div>
+                            <div class="detail-value">${job['Data Source'] || 'Unknown'}</div>
                         </div>
                         <div class="detail-item">
-                            <div class="detail-label">Workflow Status</div>
-                            <div class="detail-value">${job.workflowStatus || 'In Progress'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Next Step</div>
-                            <div class="detail-value">${job.nextStep || 'Awaiting Approval'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Assigned To</div>
-                            <div class="detail-value">${job.assignedTo || 'Operations Team'}</div>
+                            <div class="detail-label">Ticket Number</div>
+                            <div class="detail-value">${job['Ticket Number'] || 'N/A'}</div>
                         </div>
                     </div>
                 </div>
@@ -1200,252 +1634,45 @@
 
         function openEditModal() {
             if (!currentJob) return;
-
-            const editModalBody = document.getElementById('editModalBody');
-            editModalBody.innerHTML = `
-                <form id="editForm">
-                    <!-- 1. ROS Details -->
-                    <div class="detail-section detail-section-1">
-                        <div class="section-title">1. ROS Details</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">ROS Date</div>
-                                <input type="date" class="edit-input" name="rosDate" value="${currentJob.rosDate ? currentJob.rosDate.split('/').reverse().join('-') : ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">ROS Status</div>
-                                <select class="edit-select" name="rosStatus">
-                                    <option value="CONFIRMED" ${currentJob.rosStatus === 'CONFIRMED' ? 'selected' : ''}>CONFIRMED</option>
-                                    <option value="TBC" ${currentJob.rosStatus === 'TBC' ? 'selected' : ''}>TBC</option>
-                                    <option value="PENDING" ${currentJob.rosStatus === 'PENDING' ? 'selected' : ''}>PENDING</option>
-                                    <option value="CANCELLED" ${currentJob.rosStatus === 'CANCELLED' ? 'selected' : ''}>CANCELLED</option>
-                                </select>
-                            </div>
-                            <div class="detail-item" style="grid-column: 1 / -1;">
-                                <div class="detail-label">ROS History</div>
-                                <textarea class="edit-textarea" name="rosHistory">${currentJob.rosHistory || ''}</textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 2. Survey Information -->
-                    <div class="detail-section detail-section-2">
-                        <div class="section-title">2. Survey Information</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Survey Start Depth</div>
-                                <input type="text" class="edit-input" name="surveyStartDepth" value="${currentJob.surveyStartDepth || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Survey End Depth</div>
-                                <input type="text" class="edit-input" name="surveyEndDepth" value="${currentJob.surveyEndDepth || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Survey Interval</div>
-                                <input type="text" class="edit-input" name="surveyInterval" value="${currentJob.surveyInterval || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Equipment Date</div>
-                                <input type="date" class="edit-input" name="equipmentDate" value="${currentJob.equipmentDate || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Equipment Time</div>
-                                <input type="time" class="edit-input" name="equipmentTime" value="${currentJob.equipmentTime || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Crew Date</div>
-                                <input type="date" class="edit-input" name="crewDate" value="${currentJob.crewDate || ''}">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 3. Contact Information & Comments -->
-                    <div class="detail-section detail-section-3">
-                        <div class="section-title">3. Contact Information & Comments</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Contact Person</div>
-                                <input type="text" class="edit-input" name="contactPerson" value="${currentJob.contactPerson || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Designation</div>
-                                <input type="text" class="edit-input" name="designation" value="${currentJob.designation || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Contact Phone</div>
-                                <input type="tel" class="edit-input" name="contactPhone" value="${currentJob.contactPhone || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Authorization</div>
-                                <input type="text" class="edit-input" name="authorization" value="${currentJob.authorization || ''}">
-                            </div>
-                            <div class="detail-item" style="grid-column: 1 / -1;">
-                                <div class="detail-label">Comments</div>
-                                <textarea class="edit-textarea" name="comments">${currentJob.comments || ''}</textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 4. Type of Service Required -->
-                    <div class="detail-section detail-section-4">
-                        <div class="section-title">4. Type of Service Required</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Service Type</div>
-                                <select class="edit-select" name="serviceType">
-                                    <option value="Wireline Casing Survey" ${currentJob.serviceType === 'Wireline Casing Survey' ? 'selected' : ''}>Wireline Casing Survey</option>
-                                    <option value="Gyro Survey - Inside Casing" ${currentJob.serviceType === 'Gyro Survey - Inside Casing' ? 'selected' : ''}>Gyro Survey - Inside Casing</option>
-                                    <option value="Memory Gyro Survey" ${currentJob.serviceType === 'Memory Gyro Survey' ? 'selected' : ''}>Memory Gyro Survey</option>
-                                    <option value="Wireline Orientation Survey" ${currentJob.serviceType === 'Wireline Orientation Survey' ? 'selected' : ''}>Wireline Orientation Survey</option>
-                                    <option value="Gyro Survey" ${currentJob.serviceType === 'Gyro Survey' ? 'selected' : ''}>Gyro Survey</option>
-                                </select>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Priority</div>
-                                <select class="edit-select" name="priority">
-                                    <option value="Normal" ${currentJob.priority === 'Normal' ? 'selected' : ''}>Normal</option>
-                                    <option value="High" ${currentJob.priority === 'High' ? 'selected' : ''}>High</option>
-                                    <option value="Urgent" ${currentJob.priority === 'Urgent' ? 'selected' : ''}>Urgent</option>
-                                    <option value="Low" ${currentJob.priority === 'Low' ? 'selected' : ''}>Low</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 5. General Information -->
-                    <div class="detail-section detail-section-5">
-                        <div class="section-title">5. General Information</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Customer</div>
-                                <input type="text" class="edit-input" name="client" value="${currentJob.client || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">RIG Number</div>
-                                <input type="text" class="edit-input" name="rigNumber" value="${currentJob.rigNumber || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Well Name</div>
-                                <input type="text" class="edit-input" name="wellName" value="${currentJob.wellName || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Hole Section</div>
-                                <input type="text" class="edit-input" name="holeSection" value="${currentJob.holeSection || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Well ID</div>
-                                <input type="text" class="edit-input" name="wellId" value="${currentJob.wellId || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Field Name</div>
-                                <input type="text" class="edit-input" name="fieldName" value="${currentJob.fieldName || ''}">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 6. Well Information -->
-                    <div class="detail-section detail-section-6">
-                        <div class="section-title">6. Well Information</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Latitude</div>
-                                <input type="text" class="edit-input" name="latitude" value="${currentJob.latitude || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Longitude</div>
-                                <input type="text" class="edit-input" name="longitude" value="${currentJob.longitude || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Casing Size</div>
-                                <input type="text" class="edit-input" name="casingSize" value="${currentJob.casingSize || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Well Profile</div>
-                                <select class="edit-select" name="wellProfile">
-                                    <option value="Vertical" ${currentJob.wellProfile === 'Vertical' ? 'selected' : ''}>Vertical</option>
-                                    <option value="Horizontal" ${currentJob.wellProfile === 'Horizontal' ? 'selected' : ''}>Horizontal</option>
-                                    <option value="Directional" ${currentJob.wellProfile === 'Directional' ? 'selected' : ''}>Directional</option>
-                                    <option value="Deviated" ${currentJob.wellProfile === 'Deviated' ? 'selected' : ''}>Deviated</option>
-                                </select>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">H2S Level</div>
-                                <input type="number" class="edit-input" name="h2sLevel" value="${currentJob.h2sLevel || '0'}" min="0">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Job Status</div>
-                                <select class="edit-select" name="status">
-                                    <option value="New Callout" ${currentJob.status === 'New Callout' ? 'selected' : ''}>New Callout</option>
-                                    <option value="Approved" ${currentJob.status === 'Approved' ? 'selected' : ''}>Approved</option>
-                                    <option value="Pending" ${currentJob.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                                    <option value="PENDING_APPROVAL" ${currentJob.status === 'PENDING_APPROVAL' ? 'selected' : ''}>Pending Approval</option>
-                                    <option value="UPDATED" ${currentJob.status === 'UPDATED' ? 'selected' : ''}>Updated</option>
-                                    <option value="Rejected" ${currentJob.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
-                                    <option value="Completed" ${currentJob.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="edit-actions">
-                        <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
-                        <button type="button" class="btn-save" onclick="saveChanges()">Save Changes</button>
-                    </div>
-                </form>
-            `;
-
-            document.getElementById('editModal').style.display = 'block';
+            closeModal();
+            openEditModalForJob(currentJob['Callout ID']);
         }
 
-        function saveChanges() {
-            const form = document.getElementById('editForm');
-            const formData = new FormData(form);
-            const updates = Object.fromEntries(formData);
-            
-            console.log('Saving changes:', updates);
-            
-            // Update current job (in production, this would save to backend)
-            Object.assign(currentJob, updates);
-            
-            // Update display
-            const jobIndex = allJobs.findIndex(j => j.calloutId === currentJob.calloutId);
-            if (jobIndex !== -1) {
-                allJobs[jobIndex] = currentJob;
-            }
-            
-            // Refresh displays
-            renderJobs();
-            openJobModal(currentJob.calloutId); // Refresh modal
-            closeEditModal();
-            
-            alert('Changes saved successfully!');
-        }
-
-        function completeJob() {
+        async function completeJob() {
             if (!currentJob) return;
             
-            currentJob.status = 'Completed';
-            const jobIndex = allJobs.findIndex(j => j.calloutId === currentJob.calloutId);
-            if (jobIndex !== -1) {
-                allJobs[jobIndex] = currentJob;
+            try {
+                const result = await updateCallout(currentJob['Callout ID'], {
+                    'Status': 'COMPLETED'
+                });
+                
+                if (result.success) {
+                    showNotification(`Job ${currentJob['Callout ID']} marked as completed!`, 'success');
+                    closeModal();
+                    loadData();
+                } else {
+                    throw new Error(result.message || 'Failed to complete job');
+                }
+            } catch (error) {
+                showNotification(error.message || 'Failed to complete job', 'error');
             }
-            
-            renderJobs();
-            updateStats();
-            closeModal();
-            
-            alert(`Job ${currentJob.calloutId} marked as completed!`);
         }
 
-        function completeJobFromCard(calloutId) {
-            const job = allJobs.find(j => j.calloutId === calloutId);
-            if (!job) return;
-            
-            job.status = 'Completed';
-            renderJobs();
-            updateStats();
-            
-            alert(`Job ${calloutId} marked as completed!`);
+        async function completeJobFromCard(calloutId) {
+            try {
+                const result = await updateCallout(calloutId, {
+                    'Status': 'COMPLETED'
+                });
+                
+                if (result.success) {
+                    showNotification(`Job ${calloutId} marked as completed!`, 'success');
+                    loadData();
+                } else {
+                    throw new Error(result.message || 'Failed to complete job');
+                }
+            } catch (error) {
+                showNotification(error.message || 'Failed to complete job', 'error');
+            }
         }
 
         function closeModal() {
@@ -1455,17 +1682,55 @@
 
         function closeEditModal() {
             document.getElementById('editModal').style.display = 'none';
+            isEditMode = false;
+            currentJob = null;
+        }
+
+        // UTILITY FUNCTIONS
+
+        function formDataToObject(formData) {
+            const obj = {};
+            for (let [key, value] of formData.entries()) {
+                obj[key] = value;
+            }
+            return obj;
+        }
+
+        function getSelectedServiceTypes() {
+            const checkboxes = document.querySelectorAll('input[name="serviceType"]:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
         }
 
         function getStatusClass(status) {
             if (!status) return 'pending';
             const s = status.toLowerCase();
-            if (s.includes('new')) return 'new';
-            if (s.includes('confirmed') || s.includes('approved')) return 'confirmed';
             if (s.includes('completed')) return 'completed';
-            if (s.includes('pending_approval')) return 'pending_approval';
+            if (s.includes('approved')) return 'approved';
             if (s.includes('updated')) return 'updated';
+            if (s.includes('pending_approval')) return 'pending_approval';
+            if (s.includes('rejected')) return 'rejected';
             return 'pending';
+        }
+
+        function convertDateForInput(dateString) {
+            if (!dateString) return '';
+            
+            // Handle various date formats
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) {
+                    // Try parsing DD/MM/YYYY format
+                    const parts = dateString.split('/');
+                    if (parts.length === 3) {
+                        const newDate = new Date(parts[2], parts[1] - 1, parts[0]);
+                        return newDate.toISOString().split('T')[0];
+                    }
+                    return '';
+                }
+                return date.toISOString().split('T')[0];
+            } catch (error) {
+                return '';
+            }
         }
 
         function updateLastUpdated() {
@@ -1481,13 +1746,49 @@
             }, CONFIG.REFRESH_INTERVAL);
         }
 
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-                closeEditModal();
+        // Network utility with retry logic
+        async function fetchWithRetry(url, options = {}, retries = CONFIG.RETRY_ATTEMPTS) {
+            try {
+                const response = await fetch(url, options);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                return response;
+            } catch (error) {
+                if (retries > 0) {
+                    console.log(`Request failed, retrying... (${retries} attempts left)`);
+                    await new Promise(resolve => setTimeout(resolve, CONFIG.RETRY_DELAY));
+                    return fetchWithRetry(url, options, retries - 1);
+                } else {
+                    throw error;
+                }
             }
-        });
+        }
+
+        function showNotification(message, type = 'info') {
+            // Remove existing notification
+            const existing = document.querySelector('.notification');
+            if (existing) {
+                existing.remove();
+            }
+
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
 
         // Cleanup on page unload
         window.addEventListener('beforeunload', function() {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TASK Energy - Enhanced Callout Management Dashboard</title>
+    <title>TASK Energy - Callout Management Dashboard</title>
     <style>
         :root {
             --primary-color: #8B0000;
@@ -42,7 +42,7 @@
             padding: 20px;
         }
 
-        /* Enhanced Header with Actions */
+        /* Enhanced Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -247,55 +247,6 @@
             box-shadow: 0 8px 25px rgba(25, 118, 210, 0.4);
         }
 
-        /* Advanced Filters */
-        .advanced-filters {
-            display: none;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            padding-top: 20px;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .advanced-filters.show {
-            display: grid;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .filter-label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #666;
-            margin-bottom: 8px;
-        }
-
-        .filter-select {
-            padding: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            background: white;
-            font-size: 14px;
-            transition: var(--transition);
-        }
-
-        .filter-select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-
-        .toggle-filters {
-            background: none;
-            border: none;
-            color: var(--primary-color);
-            cursor: pointer;
-            font-weight: 600;
-            text-decoration: underline;
-            padding: 8px 0;
-        }
-
         /* Enhanced Stats Grid */
         .stats-grid {
             display: grid;
@@ -424,12 +375,6 @@
             gap: 20px;
         }
 
-        .jobs-list {
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-        }
-
         .job-card {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
@@ -490,30 +435,6 @@
             text-decoration: none;
         }
 
-        .job-priority {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .priority-urgent {
-            background: rgba(244, 67, 54, 0.1);
-            color: var(--danger-color);
-        }
-
-        .priority-high {
-            background: rgba(255, 152, 0, 0.1);
-            color: var(--warning-color);
-        }
-
-        .priority-normal {
-            background: rgba(76, 175, 80, 0.1);
-            color: var(--success-color);
-        }
-
         .job-status {
             padding: 8px 16px;
             border-radius: 20px;
@@ -525,11 +446,7 @@
         }
 
         /* Enhanced Status Colors */
-        .status-new, .status-new_callout { 
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb); 
-            color: #1565c0; 
-        }
-        .status-pending, .status-pending_approval { 
+        .status-pending_approval { 
             background: linear-gradient(135deg, #fff3e0, #ffcc02); 
             color: #e65100; 
         }
@@ -544,10 +461,6 @@
         .status-updated { 
             background: linear-gradient(135deg, #e1f5fe, #03a9f4); 
             color: #01579b; 
-        }
-        .status-rejected, .status-cancelled { 
-            background: linear-gradient(135deg, #ffebee, #f44336); 
-            color: #b71c1c; 
         }
 
         .job-info {
@@ -800,151 +713,6 @@
             word-break: break-word;
         }
 
-        /* Enhanced Forms */
-        .form-container {
-            background: white;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-        }
-
-        .form-section {
-            margin-bottom: 30px;
-            padding: 25px;
-            border-radius: var(--border-radius);
-            background: rgba(0,0,0,0.02);
-        }
-
-        .section-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 3px solid #e9ecef;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: var(--dark-color);
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-        }
-
-        .form-label.required::after {
-            content: " *";
-            color: var(--danger-color);
-        }
-
-        .form-input, .form-select, .form-textarea {
-            padding: 14px 16px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: var(--transition);
-            background: white;
-        }
-
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .service-types {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 12px;
-            margin-top: 15px;
-        }
-
-        .service-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: var(--transition);
-            background: white;
-        }
-
-        .service-item:hover {
-            border-color: var(--primary-color);
-            background: rgba(139, 0, 0, 0.05);
-            transform: translateY(-1px);
-        }
-
-        .service-item.selected {
-            border-color: var(--primary-color);
-            background: rgba(139, 0, 0, 0.1);
-        }
-
-        .service-item input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--primary-color);
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-            margin-top: 30px;
-            padding-top: 25px;
-            border-top: 2px solid #e9ecef;
-        }
-
-        .form-action-btn {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: var(--transition);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-save {
-            background: linear-gradient(135deg, var(--success-color), #66bb6a);
-            color: white;
-        }
-
-        .btn-cancel {
-            background: linear-gradient(135deg, #6c757d, #868e96);
-            color: white;
-        }
-
-        .form-action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-
         /* Loading and Error States */
         .loading-container, .error-container, .no-results {
             text-align: center;
@@ -1066,11 +834,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             .container {
@@ -1135,15 +898,6 @@
                 gap: 15px;
             }
 
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .form-actions {
-                flex-direction: column;
-            }
-
             .notification {
                 top: 20px;
                 right: 20px;
@@ -1196,9 +950,9 @@
                 </div>
             </div>
             <div class="header-actions">
-                <button class="btn-export" onclick="exportData()">📊 Export Data</button>
+                <button class="btn-export" onclick="exportData()">Export Data</button>
                 <button class="btn-add-job" onclick="openCreateModal()">
-                    <span>✚</span> New Callout
+                    <span>+</span> New Callout
                 </button>
             </div>
         </div>
@@ -1221,48 +975,6 @@
                     <button class="refresh-button" onclick="loadData()">🔄 Refresh</button>
                 </div>
             </div>
-            
-            <button class="toggle-filters" onclick="toggleAdvancedFilters()">🔧 Advanced Filters</button>
-            
-            <div class="advanced-filters" id="advancedFilters">
-                <div class="filter-group">
-                    <label class="filter-label">Customer</label>
-                    <select class="filter-select" id="customerFilter">
-                        <option value="">All Customers</option>
-                        <option value="PDO">PDO</option>
-                        <option value="ADNOC">ADNOC</option>
-                        <option value="Shell">Shell</option>
-                        <option value="BP">BP</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label class="filter-label">Service Type</label>
-                    <select class="filter-select" id="serviceFilter">
-                        <option value="">All Services</option>
-                        <option value="Drop Gyro">Drop Gyro</option>
-                        <option value="Directional Gyro">Directional Gyro</option>
-                        <option value="Wireline">Wireline</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label class="filter-label">Priority</label>
-                    <select class="filter-select" id="priorityFilter">
-                        <option value="">All Priorities</option>
-                        <option value="Urgent">Urgent</option>
-                        <option value="High">High</option>
-                        <option value="Normal">Normal</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label class="filter-label">Date Range</label>
-                    <select class="filter-select" id="dateFilter">
-                        <option value="">All Dates</option>
-                        <option value="today">Today</option>
-                        <option value="week">This Week</option>
-                        <option value="month">This Month</option>
-                    </select>
-                </div>
-            </div>
         </div>
 
         <!-- Enhanced Stats Grid -->
@@ -1282,10 +994,10 @@
                 <div class="stat-label">Approved</div>
                 <div class="stat-change positive" id="approvedChange">0 this week</div>
             </div>
-            <div class="stat-card" data-stat-filter="completed" onclick="filterByStats('completed')">
-                <div class="stat-number" id="completedJobs">0</div>
-                <div class="stat-label">Completed</div>
-                <div class="stat-change positive" id="completedChange">0 finished</div>
+            <div class="stat-card" data-stat-filter="urgent" onclick="filterByStats('urgent')">
+                <div class="stat-number" id="urgentJobs">0</div>
+                <div class="stat-label">Urgent</div>
+                <div class="stat-change positive" id="urgentChange">0 high priority</div>
             </div>
         </div>
 
@@ -1325,7 +1037,6 @@
             <div class="modal-header">
                 <h2 class="modal-title" id="modalTitle">Callout Details</h2>
                 <div class="modal-header-actions">
-                    <button class="modal-action-btn" onclick="openEditModal()">✎ Edit</button>
                     <button class="modal-action-btn" onclick="completeJob()">✓ Complete</button>
                     <button class="modal-action-btn" onclick="duplicateJob()">📋 Duplicate</button>
                     <button class="close-button" onclick="closeModal()">&times;</button>
@@ -1337,258 +1048,24 @@
         </div>
     </div>
 
-    <!-- Enhanced Create/Edit Modal -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="editModalTitle">Create New Callout</h2>
-                <button class="close-button" onclick="closeEditModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-container">
-                    <form id="editForm">
-                        <!-- General Information -->
-                        <div class="form-section">
-                            <h3 class="section-title">📋 General Information</h3>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label class="form-label required">Customer</label>
-                                    <select class="form-select" name="customer" required>
-                                        <option value="">Select Customer</option>
-                                        <option value="PDO">PDO - Petroleum Development Oman</option>
-                                        <option value="ADNOC">ADNOC - Abu Dhabi National Oil Company</option>
-                                        <option value="Shell">Shell</option>
-                                        <option value="BP">BP</option>
-                                        <option value="Total">Total</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label required">RIG Number</label>
-                                    <input type="text" class="form-input" name="rigNumber" placeholder="e.g., RIG-146" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label required">Well Name</label>
-                                    <input type="text" class="form-input" name="wellName" placeholder="e.g., HABUR_9 HOP" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Well ID</label>
-                                    <input type="text" class="form-input" name="wellId" placeholder="e.g., 32960">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Field Name</label>
-                                    <input type="text" class="form-input" name="fieldName" placeholder="e.g., Burhaan Main">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Hole Section</label>
-                                    <input type="text" class="form-input" name="holeSection" placeholder="e.g., 8.5">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Service Required -->
-                        <div class="form-section">
-                            <h3 class="section-title">🔧 Type of Service Required</h3>
-                            <div class="service-types">
-                                <div class="service-item">
-                                    <input type="checkbox" name="serviceType" value="Wireline Casing Survey" id="wirelineCasing">
-                                    <label for="wirelineCasing">Wireline Casing Survey</label>
-                                </div>
-                                <div class="service-item">
-                                    <input type="checkbox" name="serviceType" value="Wireline Drillpipe Survey" id="wirelineDrillpipe">
-                                    <label for="wirelineDrillpipe">Wireline Drillpipe Survey</label>
-                                </div>
-                                <div class="service-item">
-                                    <input type="checkbox" name="serviceType" value="Wireline Pump-Down Survey" id="wirelinePumpDown">
-                                    <label for="wirelinePumpDown">Wireline Pump-Down Survey</label>
-                                </div>
-                                <div class="service-item">
-                                    <input type="checkbox" name="serviceType" value="Wireline Orientation Survey" id="wirelineOrientation">
-                                    <label for="wirelineOrientation">Wireline Orientation Survey</label>
-                                </div>
-                                <div class="service-item">
-                                    <input type="checkbox" name="serviceType" value="Memory Casing Survey - Slickline" id="memoryCasing">
-                                    <label for="memoryCasing">Memory Casing Survey - Slickline</label>
-                                </div>
-                                <div class="service-item">
-                                    <input type="checkbox" name="serviceType" value="Memory Drillpipe Survey - Slickline" id="memoryDrillpipe">
-                                    <label for="memoryDrillpipe">Memory Drillpipe Survey - Slickline</label>
-                                </div>
-                                <div class="service-item">
-                                    <input type="checkbox" name="serviceType" value="Drop Gyro Survey < 20° Inclination" id="dropGyro20">
-                                    <label for="dropGyro20">Drop Gyro Survey &lt; 20°</label>
-                                </div>
-                                <div class="service-item">
-                                    <input type="checkbox" name="serviceType" value="Drop Gyro Survey > 20° Inclination" id="dropGyro20Plus">
-                                    <label for="dropGyro20Plus">Drop Gyro Survey &gt; 20°</label>
-                                </div>
-                                <div class="service-item">
-                                    <input type="checkbox" name="serviceType" value="Dry Hole Drop Gyro System" id="dryHoleDropGyro">
-                                    <label for="dryHoleDropGyro">Dry Hole Drop Gyro System</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Well Information -->
-                        <div class="form-section">
-                            <h3 class="section-title">🗺️ Well Location & Technical Details</h3>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label class="form-label">Latitude</label>
-                                    <input type="text" class="form-input" name="latitude" placeholder="e.g., 21° 46' 26.78'' N">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Longitude</label>
-                                    <input type="text" class="form-input" name="longitude" placeholder="e.g., 57° 5' 50.01'' E">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">UTM Northing</label>
-                                    <input type="text" class="form-input" name="utmNorthing" placeholder="e.g., 2407623.2130N">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">UTM Easting</label>
-                                    <input type="text" class="form-input" name="utmEasting" placeholder="e.g., 510051.8270 E">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Casing Size</label>
-                                    <input type="text" class="form-input" name="casingSize" placeholder="e.g., 9 5/8 Inch">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Ground Elevation</label>
-                                    <input type="text" class="form-input" name="groundElevation" placeholder="e.g., 170.75 m">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Survey Information -->
-                        <div class="form-section">
-                            <h3 class="section-title">📊 Survey & Schedule Information</h3>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label class="form-label">Survey Start Depth</label>
-                                    <input type="text" class="form-input" name="surveyStartDepth" placeholder="e.g., 6.77 m">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Survey End Depth</label>
-                                    <input type="text" class="form-input" name="surveyEndDepth" placeholder="e.g., 420 m">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Survey Interval</label>
-                                    <input type="text" class="form-input" name="surveyInterval" placeholder="e.g., 410 m">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label required">Equipment Required Date</label>
-                                    <input type="date" class="form-input" name="equipmentRequiredDate" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Equipment Required Time</label>
-                                    <input type="time" class="form-input" name="equipmentRequiredTime">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Crew Required Date</label>
-                                    <input type="date" class="form-input" name="crewRequiredDate">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Crew Required Time</label>
-                                    <input type="time" class="form-input" name="crewRequiredTime">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Contact Information -->
-                        <div class="form-section">
-                            <h3 class="section-title">👤 Contact Information & Authorization</h3>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label class="form-label required">Callout Completed By</label>
-                                    <input type="text" class="form-input" name="calloutCompletedBy" placeholder="e.g., Abdullah Al Rashid" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Designation</label>
-                                    <input type="text" class="form-input" name="designation" placeholder="e.g., ADSV, Engineer">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Contact Number</label>
-                                    <input type="tel" class="form-input" name="contactNumber" placeholder="e.g., +968 243-83412">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Authorization</label>
-                                    <input type="text" class="form-input" name="authorization" placeholder="e.g., Mohammed Al Wahaibi">
-                                </div>
-                                <div class="form-group full-width">
-                                    <label class="form-label">Comments & Special Requirements</label>
-                                    <textarea class="form-textarea" name="comments" placeholder="ROS will be updated later, special safety requirements, equipment specifications, etc."></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Status & Priority (for edit mode only) -->
-                        <div class="form-section" id="statusSection" style="display: none;">
-                            <h3 class="section-title">⚡ Status & Priority Management</h3>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label class="form-label">Current Status</label>
-                                    <select class="form-select" name="status">
-                                        <option value="PENDING_APPROVAL">Pending Approval</option>
-                                        <option value="APPROVED">Approved</option>
-                                        <option value="UPDATED">Updated</option>
-                                        <option value="COMPLETED">Completed</option>
-                                        <option value="REJECTED">Rejected</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Priority Level</label>
-                                    <select class="form-select" name="urgency">
-                                        <option value="Normal">Normal</option>
-                                        <option value="High">High Priority</option>
-                                        <option value="Urgent">Urgent</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">ROS Date</label>
-                                    <input type="date" class="form-input" name="rosDate">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">ROS Status</label>
-                                    <select class="form-select" name="rosStatus">
-                                        <option value="TBD">To Be Determined</option>
-                                        <option value="Confirmed">Confirmed</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Cancelled">Cancelled</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="button" class="form-action-btn btn-cancel" onclick="closeEditModal()">Cancel</button>
-                            <button type="submit" class="form-action-btn btn-save" id="saveButton">Create Callout</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // Enhanced Configuration
+        // Configuration with your working API URL
         const CONFIG = {
-            APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwmD-4ZaWpcQTb3Jkv2PlF9wNaxOG2EC2Ty1iXEP_M/exec',
+            APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbykzhDXooowUcriodaVDjTLaztMS41Q4l3Bx-VRRUoeCaeAVfq47PMdHZ7hljx3abu1/exec',
             REFRESH_INTERVAL: 300000, // 5 minutes
             RETRY_ATTEMPTS: 3,
             RETRY_DELAY: 1000,
             MAX_RETRY_DELAY: 5000,
-            AUTO_SAVE_INTERVAL: 30000, // 30 seconds for draft saving
+            AUTO_SAVE_INTERVAL: 30000,
             PAGINATION_SIZE: 50,
             SEARCH_DEBOUNCE_DELAY: 300
         };
 
-        // Enhanced Application State
+        // Application State
         let appState = {
             allJobs: [],
             filteredJobs: [],
             currentJob: null,
-            isEditMode: false,
             currentView: 'grid',
             currentFilter: 'all',
             searchTerm: '',
@@ -1599,21 +1076,13 @@
                 total: 0,
                 pending: 0,
                 approved: 0,
-                completed: 0,
-                todayAdded: 0,
-                weeklyCompleted: 0
-            },
-            advancedFilters: {
-                customer: '',
-                serviceType: '',
-                priority: '',
-                dateRange: ''
+                urgent: 0
             }
         };
 
-        // Enhanced Application Initialization
+        // Initialize Dashboard
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 TASK Energy Enhanced Dashboard Loading...');
+            console.log('🚀 TASK Energy Dashboard Loading...');
             initializeApp();
         });
 
@@ -1621,10 +1090,8 @@
             try {
                 showSystemStatus('Initializing...', 'info');
                 setupEventListeners();
-                setupAdvancedFilters();
                 await loadData();
                 startAutoRefresh();
-                setupKeyboardShortcuts();
                 showSystemStatus('System Online', 'success');
                 console.log('✅ Dashboard initialized successfully');
             } catch (error) {
@@ -1634,7 +1101,7 @@
             }
         }
 
-        // Enhanced Event Listeners
+        // Event Listeners
         function setupEventListeners() {
             // Enhanced search with debouncing
             let searchTimeout;
@@ -1655,96 +1122,22 @@
                 });
             });
 
-            // Advanced filters
-            ['customerFilter', 'serviceFilter', 'priorityFilter', 'dateFilter'].forEach(filterId => {
-                document.getElementById(filterId).addEventListener('change', function() {
-                    appState.advancedFilters[filterId.replace('Filter', '')] = this.value;
-                    applyFilters();
-                });
-            });
-
-            // Form submission
-            document.getElementById('editForm').addEventListener('submit', handleFormSubmit);
-
-            // Service type checkboxes
-            document.querySelectorAll('.service-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const checkbox = item.querySelector('input[type="checkbox"]');
-                    checkbox.checked = !checkbox.checked;
-                    item.classList.toggle('selected', checkbox.checked);
-                });
-            });
-
             // Modal close events
             window.addEventListener('click', function(event) {
                 if (event.target.classList.contains('modal')) {
                     closeModal();
-                    closeEditModal();
                 }
             });
 
-            // Auto-save draft functionality
-            setInterval(autoSaveDraft, CONFIG.AUTO_SAVE_INTERVAL);
-        }
-
-        function setupAdvancedFilters() {
-            // Populate filter options based on current data
-            const updateFilterOptions = () => {
-                if (appState.allJobs.length === 0) return;
-
-                const customers = [...new Set(appState.allJobs.map(job => job.Customer).filter(Boolean))];
-                const services = [...new Set(appState.allJobs.map(job => job['Service Type']).filter(Boolean))];
-                
-                updateSelectOptions('customerFilter', customers);
-                updateSelectOptions('serviceFilter', services);
-            };
-
-            // Update when data loads
-            setTimeout(updateFilterOptions, 1000);
-        }
-
-        function updateSelectOptions(selectId, options) {
-            const select = document.getElementById(selectId);
-            const currentValue = select.value;
-            
-            // Clear existing options except first
-            while (select.children.length > 1) {
-                select.removeChild(select.lastChild);
-            }
-            
-            // Add new options
-            options.forEach(option => {
-                const optionElement = document.createElement('option');
-                optionElement.value = option;
-                optionElement.textContent = option;
-                select.appendChild(optionElement);
-            });
-            
-            // Restore selection
-            select.value = currentValue;
-        }
-
-        function setupKeyboardShortcuts() {
+            // Keyboard shortcuts
             document.addEventListener('keydown', function(e) {
-                // Ctrl/Cmd + N: New callout
-                if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
-                    e.preventDefault();
-                    openCreateModal();
-                }
-                
-                // Ctrl/Cmd + R: Refresh
                 if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
                     e.preventDefault();
                     loadData();
                 }
-                
-                // Escape: Close modals
                 if (e.key === 'Escape') {
                     closeModal();
-                    closeEditModal();
                 }
-                
-                // Ctrl/Cmd + F: Focus search
                 if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
                     e.preventDefault();
                     document.getElementById('searchInput').focus();
@@ -1752,7 +1145,7 @@
             });
         }
 
-        // Enhanced Data Loading with Progress Tracking
+        // Data Loading
         async function loadData() {
             if (appState.isLoading) return;
             
@@ -1769,14 +1162,11 @@
                     appState.allJobs = result.data.callouts || [];
                     appState.lastUpdated = new Date();
                     
-                    // Calculate enhanced stats
-                    calculateEnhancedStats();
-                    
                     // Apply current filters
                     applyFilters();
                     
                     // Update UI
-                    updateStats();
+                    updateStats(result.data.stats);
                     updateLastUpdated();
                     
                     showSystemStatus('Data loaded successfully', 'success');
@@ -1795,108 +1185,7 @@
             }
         }
 
-        // Enhanced CRUD Operations
-        async function handleFormSubmit(event) {
-            event.preventDefault();
-            
-            const formData = new FormData(event.target);
-            const calloutData = formDataToCalloutObject(formData);
-            
-            try {
-                showNotification('Processing request...', 'info');
-                
-                let result;
-                if (appState.isEditMode && appState.currentJob) {
-                    result = await updateCallout(appState.currentJob['Callout ID'], calloutData);
-                } else {
-                    result = await createCallout(calloutData);
-                }
-                
-                if (result.success) {
-                    const action = appState.isEditMode ? 'updated' : 'created';
-                    showNotification(`Callout ${action} successfully!`, 'success');
-                    closeEditModal();
-                    await loadData();
-                } else {
-                    throw new Error(result.message || 'Operation failed');
-                }
-                
-            } catch (error) {
-                console.error('Form submission error:', error);
-                showNotification(error.message || 'Operation failed. Please try again.', 'error');
-            }
-        }
-
-        async function createCallout(calloutData) {
-            // Add system fields
-            calloutData['Timestamp'] = new Date().toISOString();
-            calloutData['Status'] = 'PENDING_APPROVAL';
-            calloutData['Callout ID'] = generateCalloutId();
-            calloutData['Created By'] = 'Dashboard User';
-            calloutData['Last Updated'] = new Date().toISOString();
-            
-            const response = await fetchWithRetry(CONFIG.APPS_SCRIPT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    action: 'create',
-                    callout: calloutData
-                })
-            });
-            
-            return await response.json();
-        }
-
-        async function updateCallout(calloutId, updates) {
-            updates['Last Updated'] = new Date().toISOString();
-            updates['Updated By'] = 'Dashboard User';
-            
-            const response = await fetchWithRetry(CONFIG.APPS_SCRIPT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    action: 'update',
-                    calloutId: calloutId,
-                    updates: updates
-                })
-            });
-            
-            return await response.json();
-        }
-
-        async function deleteCallout(calloutId) {
-            if (!confirm('Are you sure you want to cancel this callout? This action cannot be undone.')) {
-                return;
-            }
-            
-            try {
-                showNotification('Cancelling callout...', 'info');
-                
-                const response = await fetchWithRetry(CONFIG.APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'delete',
-                        calloutId: calloutId
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showNotification('Callout cancelled successfully', 'success');
-                    await loadData();
-                } else {
-                    throw new Error(result.message || 'Failed to cancel callout');
-                }
-                
-            } catch (error) {
-                console.error('Delete error:', error);
-                showNotification(error.message || 'Failed to cancel callout', 'error');
-            }
-        }
-
-        // Enhanced Filtering System
+        // Enhanced Filtering
         function applyFilters() {
             let filtered = [...appState.allJobs];
             
@@ -1905,8 +1194,7 @@
                 filtered = filtered.filter(job => {
                     const searchableFields = [
                         job['Callout ID'], job.Customer, job['RIG Number'], 
-                        job['Well Name'], job['Service Type'], job['Field Name'],
-                        job['Callout Completed By'], job.Designation
+                        job['Well Name'], job['Service Type'], job.Summary
                     ];
                     
                     return searchableFields.some(field => 
@@ -1921,16 +1209,12 @@
                     const status = job.Status || '';
                     
                     switch (appState.currentFilter) {
-                        case 'pending':
                         case 'PENDING_APPROVAL':
-                            return status === 'PENDING_APPROVAL' || status.includes('PENDING');
-                        case 'approved':
+                            return status === 'PENDING_APPROVAL';
                         case 'APPROVED':
                             return status === 'APPROVED';
-                        case 'updated':
                         case 'UPDATED':
                             return status === 'UPDATED';
-                        case 'completed':
                         case 'COMPLETED':
                             return status === 'COMPLETED';
                         default:
@@ -1939,50 +1223,12 @@
                 });
             }
             
-            // Apply advanced filters
-            Object.entries(appState.advancedFilters).forEach(([key, value]) => {
-                if (!value) return;
-                
-                filtered = filtered.filter(job => {
-                    switch (key) {
-                        case 'customer':
-                            return job.Customer === value;
-                        case 'serviceType':
-                            return job['Service Type'] && job['Service Type'].includes(value);
-                        case 'priority':
-                            return job.Urgency === value;
-                        case 'dateRange':
-                            return filterByDateRange(job, value);
-                        default:
-                            return true;
-                    }
-                });
-            });
-            
             appState.filteredJobs = filtered;
             renderJobs();
             updateJobsTitle();
         }
 
-        function filterByDateRange(job, range) {
-            const jobDate = new Date(job['Equipment Required Date'] || job['Timestamp']);
-            const now = new Date();
-            
-            switch (range) {
-                case 'today':
-                    return jobDate.toDateString() === now.toDateString();
-                case 'week':
-                    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                    return jobDate >= weekAgo;
-                case 'month':
-                    const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-                    return jobDate >= monthAgo;
-                default:
-                    return true;
-            }
-        }
-
-        // Enhanced Job Rendering
+        // Job Rendering
         function renderJobs() {
             const container = document.getElementById('jobsContainer');
             
@@ -1999,46 +1245,27 @@
                 return;
             }
 
-            if (appState.currentView === 'grid') {
-                renderGridView(container);
-            } else {
-                renderListView(container);
-            }
-        }
-
-        function renderGridView(container) {
             const jobsHTML = appState.filteredJobs.map(job => createJobCard(job)).join('');
             container.innerHTML = `<div class="jobs-grid">${jobsHTML}</div>`;
         }
 
-        function renderListView(container) {
-            const jobsHTML = appState.filteredJobs.map(job => createJobListItem(job)).join('');
-            container.innerHTML = `<div class="jobs-list">${jobsHTML}</div>`;
-        }
-
         function createJobCard(job) {
             const status = (job.Status || 'PENDING_APPROVAL').toLowerCase().replace(/\s+/g, '_');
-            const priority = job.Urgency || 'Normal';
-            const isUrgent = priority.toLowerCase() === 'urgent';
             const isCompleted = status.includes('completed');
             
             const cardClasses = ['job-card'];
-            if (isUrgent) cardClasses.push('urgent');
             if (isCompleted) cardClasses.push('completed');
 
             return `
                 <div class="${cardClasses.join(' ')}" onclick="openJobModal('${job['Callout ID']}')">
                     <div class="job-header">
-                        <div>
-                            <div class="job-id">${job['Callout ID'] || 'N/A'}</div>
-                            <div class="job-priority priority-${priority.toLowerCase()}">${priority}</div>
-                        </div>
+                        <div class="job-id">${job['Callout ID'] || 'N/A'}</div>
                         <div class="job-status status-${status}">${formatStatus(job.Status)}</div>
                     </div>
                     
                     <div class="job-meta">
                         <span>Created: ${formatDate(job.Timestamp)}</span>
-                        <span>Updated: ${formatDate(job['Last Updated'])}</span>
+                        <span>Ticket: ${job['Ticket Number'] || 'N/A'}</span>
                     </div>
                     
                     <div class="job-info">
@@ -2058,22 +1285,15 @@
                             <div class="info-label">Service</div>
                             <div class="info-value">${truncateText(job['Service Type'] || 'N/A', 20)}</div>
                         </div>
-                        <div class="info-item">
-                            <div class="info-label">ROS Date</div>
-                            <div class="info-value">${job['ROS Date'] || 'TBD'}</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Contact</div>
-                            <div class="info-value">${job['Callout Completed By'] || 'N/A'}</div>
+                        <div class="info-item" style="grid-column: 1 / -1;">
+                            <div class="info-label">Summary</div>
+                            <div class="info-value">${truncateText(job.Summary || 'No summary', 60)}</div>
                         </div>
                     </div>
                     
                     <div class="job-actions" onclick="event.stopPropagation()">
                         <button class="job-action-btn btn-details" onclick="openJobModal('${job['Callout ID']}')">
                             Details
-                        </button>
-                        <button class="job-action-btn btn-edit" onclick="openEditModalForJob('${job['Callout ID']}')">
-                            Edit
                         </button>
                         <button class="job-action-btn btn-complete" onclick="completeJobFromCard('${job['Callout ID']}')">
                             Complete
@@ -2086,56 +1306,7 @@
             `;
         }
 
-        function createJobListItem(job) {
-            // Simplified list view implementation
-            return `
-                <div class="job-list-item" onclick="openJobModal('${job['Callout ID']}')">
-                    <div class="job-list-content">
-                        <span class="job-id">${job['Callout ID']}</span>
-                        <span class="job-customer">${job.Customer}</span>
-                        <span class="job-rig">${job['RIG Number']}</span>
-                        <span class="job-status status-${(job.Status || '').toLowerCase()}">${job.Status}</span>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Enhanced Stats Calculation
-        function calculateEnhancedStats() {
-            const jobs = appState.allJobs;
-            const today = new Date();
-            const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-            
-            appState.stats = {
-                total: jobs.length,
-                pending: jobs.filter(j => j.Status === 'PENDING_APPROVAL').length,
-                approved: jobs.filter(j => ['APPROVED', 'UPDATED'].includes(j.Status)).length,
-                completed: jobs.filter(j => j.Status === 'COMPLETED').length,
-                todayAdded: jobs.filter(j => {
-                    const created = new Date(j.Timestamp);
-                    return created.toDateString() === today.toDateString();
-                }).length,
-                weeklyCompleted: jobs.filter(j => {
-                    const updated = new Date(j['Last Updated']);
-                    return j.Status === 'COMPLETED' && updated >= weekAgo;
-                }).length
-            };
-        }
-
-        function updateStats() {
-            document.getElementById('totalJobs').textContent = appState.stats.total;
-            document.getElementById('pendingJobs').textContent = appState.stats.pending;
-            document.getElementById('approvedJobs').textContent = appState.stats.approved;
-            document.getElementById('completedJobs').textContent = appState.stats.completed;
-            
-            // Update change indicators
-            document.getElementById('totalChange').textContent = `+${appState.stats.todayAdded} today`;
-            document.getElementById('pendingChange').textContent = `${appState.stats.pending} awaiting`;
-            document.getElementById('approvedChange').textContent = `${appState.stats.approved} approved`;
-            document.getElementById('completedChange').textContent = `${appState.stats.weeklyCompleted} this week`;
-        }
-
-        // Enhanced Modal Functions
+        // Modal Functions
         function openJobModal(calloutId) {
             const job = appState.allJobs.find(j => j['Callout ID'] === calloutId);
             if (!job) return;
@@ -2150,29 +1321,29 @@
         function createDetailedJobView(job) {
             return `
                 <div class="detail-section">
-                    <div class="section-title">📋 Current Status & Priority</div>
+                    <div class="section-title">📋 Current Status & Information</div>
                     <div class="detail-grid">
                         <div class="detail-item">
                             <div class="detail-label">Status</div>
                             <div class="detail-value">${formatStatus(job.Status)}</div>
                         </div>
                         <div class="detail-item">
-                            <div class="detail-label">Priority</div>
-                            <div class="detail-value">${job.Urgency || 'Normal'}</div>
+                            <div class="detail-label">Ticket Number</div>
+                            <div class="detail-value">${job['Ticket Number'] || 'N/A'}</div>
                         </div>
                         <div class="detail-item">
-                            <div class="detail-label">ROS Date</div>
-                            <div class="detail-value">${job['ROS Date'] || 'TBD'}</div>
+                            <div class="detail-label">Data Source</div>
+                            <div class="detail-value">${job['Data Source'] || 'N/A'}</div>
                         </div>
                         <div class="detail-item">
-                            <div class="detail-label">ROS Status</div>
-                            <div class="detail-value">${job['ROS Status'] || 'Pending'}</div>
+                            <div class="detail-label">Created</div>
+                            <div class="detail-value">${formatDateTime(job.Timestamp)}</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="detail-section">
-                    <div class="section-title">🏢 Basic Information</div>
+                    <div class="section-title">🏢 Job Information</div>
                     <div class="detail-grid">
                         <div class="detail-item">
                             <div class="detail-label">Customer</div>
@@ -2187,215 +1358,197 @@
                             <div class="detail-value">${job['Well Name'] || 'N/A'}</div>
                         </div>
                         <div class="detail-item">
-                            <div class="detail-label">Well ID</div>
-                            <div class="detail-value">${job['Well ID'] || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Field Name</div>
-                            <div class="detail-value">${job['Field Name'] || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Hole Section</div>
-                            <div class="detail-value">${job['Hole Section'] || 'N/A'}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="detail-section">
-                    <div class="section-title">🔧 Service Information</div>
-                    <div class="detail-grid">
-                        <div class="detail-item" style="grid-column: 1 / -1;">
                             <div class="detail-label">Service Type</div>
                             <div class="detail-value">${job['Service Type'] || 'N/A'}</div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="detail-section">
-                    <div class="section-title">📍 Location & Technical Details</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">Latitude</div>
-                            <div class="detail-value">${job.Latitude || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Longitude</div>
-                            <div class="detail-value">${job.Longitude || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">UTM Northing</div>
-                            <div class="detail-value">${job['UTM Northing'] || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">UTM Easting</div>
-                            <div class="detail-value">${job['UTM Easting'] || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Casing Size</div>
-                            <div class="detail-value">${job['Casing Size'] || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Ground Elevation</div>
-                            <div class="detail-value">${job['Ground Elevation'] || 'N/A'}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="detail-section">
-                    <div class="section-title">📊 Survey Information</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">Survey Start Depth</div>
-                            <div class="detail-value">${job['Survey Start Depth'] || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Survey End Depth</div>
-                            <div class="detail-value">${job['Survey End Depth'] || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Survey Interval</div>
-                            <div class="detail-value">${job['Survey Interval'] || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Equipment Date</div>
-                            <div class="detail-value">${job['Equipment Required Date'] || 'TBD'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Equipment Time</div>
-                            <div class="detail-value">${job['Equipment Required Time'] || 'TBD'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Crew Date</div>
-                            <div class="detail-value">${job['Crew Required Date'] || 'TBD'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Crew Time</div>
-                            <div class="detail-value">${job['Crew Required Time'] || 'TBD'}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="detail-section">
-                    <div class="section-title">👤 Contact Information</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">Contact Person</div>
-                            <div class="detail-value">${job['Callout Completed By'] || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Designation</div>
-                            <div class="detail-value">${job.Designation || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Contact Number</div>
-                            <div class="detail-value">
-                                ${job['Contact Number'] ? 
-                                    `<a href="tel:${job['Contact Number']}" style="color: #f39c12;">${job['Contact Number']}</a>` : 
-                                    'N/A'
-                                }
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Authorization</div>
-                            <div class="detail-value">${job.Authorization || 'N/A'}</div>
+                        <div class="detail-item" style="grid-column: 1 / -1;">
+                            <div class="detail-label">Summary</div>
+                            <div class="detail-value">${job.Summary || 'No summary available'}</div>
                         </div>
                         <div class="detail-item" style="grid-column: 1 / -1;">
-                            <div class="detail-label">Comments</div>
-                            <div class="detail-value">${job.Comments || 'No comments'}</div>
+                            <div class="detail-label">Original Subject</div>
+                            <div class="detail-value">${job['Original Subject'] || 'N/A'}</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="detail-section">
-                    <div class="section-title">⏰ Tracking Information</div>
+                    <div class="section-title">📧 Contact & Communication</div>
                     <div class="detail-grid">
                         <div class="detail-item">
-                            <div class="detail-label">Created</div>
-                            <div class="detail-value">${formatDateTime(job.Timestamp)}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Last Updated</div>
-                            <div class="detail-value">${formatDateTime(job['Last Updated'])}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Data Source</div>
-                            <div class="detail-value">${job['Data Source'] || 'Dashboard'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Callout ID</div>
-                            <div class="detail-value" style="color: #f39c12; font-weight: bold;">${job['Callout ID']}</div>
+                            <div class="detail-label">Email ID</div>
+                            <div class="detail-value" style="word-break: break-all; font-size: 0.8rem;">${job['Email ID'] || 'N/A'}</div>
                         </div>
                     </div>
                 </div>
             `;
         }
 
-        // Enhanced Utility Functions
-        function generateCalloutId() {
-            const now = new Date();
-            const date = now.toISOString().slice(0, 10).replace(/-/g, '');
-            const time = now.toTimeString().slice(0, 8).replace(/:/g, '');
-            const random = Math.random().toString(36).substr(2, 4).toUpperCase();
-            return `TASK-${date}-${time}-${random}`;
+        async function completeJob() {
+            if (!appState.currentJob) return;
+            
+            try {
+                const result = await updateCallout(appState.currentJob.rowIndex, {
+                    'Status': 'COMPLETED'
+                });
+                
+                if (result.success) {
+                    showNotification(`Job ${appState.currentJob['Callout ID']} completed!`, 'success');
+                    closeModal();
+                    await loadData();
+                } else {
+                    throw new Error(result.message || 'Failed to complete job');
+                }
+            } catch (error) {
+                showNotification(error.message || 'Failed to complete job', 'error');
+            }
         }
 
-        function formDataToCalloutObject(formData) {
-            const obj = {};
+        async function completeJobFromCard(calloutId) {
+            const job = appState.allJobs.find(j => j['Callout ID'] === calloutId);
+            if (!job) return;
             
-            // Handle regular form fields
-            for (let [key, value] of formData.entries()) {
-                if (key !== 'serviceType') {
-                    obj[mapFormFieldToColumn(key)] = value;
+            try {
+                const result = await updateCallout(job.rowIndex, {
+                    'Status': 'COMPLETED'
+                });
+                
+                if (result.success) {
+                    showNotification(`Job ${calloutId} completed!`, 'success');
+                    await loadData();
+                } else {
+                    throw new Error(result.message || 'Failed to complete job');
+                }
+            } catch (error) {
+                showNotification(error.message || 'Failed to complete job', 'error');
+            }
+        }
+
+        async function deleteCallout(calloutId) {
+            if (!confirm('Are you sure you want to cancel this callout? This action cannot be undone.')) {
+                return;
+            }
+            
+            const job = appState.allJobs.find(j => j['Callout ID'] === calloutId);
+            if (!job) return;
+            
+            try {
+                showNotification('Cancelling callout...', 'info');
+                
+                const result = await updateCallout(job.rowIndex, {
+                    'Status': 'CANCELLED'
+                });
+                
+                if (result.success) {
+                    showNotification('Callout cancelled successfully', 'success');
+                    await loadData();
+                } else {
+                    throw new Error(result.message || 'Failed to cancel callout');
+                }
+                
+            } catch (error) {
+                console.error('Delete error:', error);
+                showNotification(error.message || 'Failed to cancel callout', 'error');
+            }
+        }
+
+        function duplicateJob() {
+            if (!appState.currentJob) return;
+            
+            closeModal();
+            showNotification('Duplicate feature available in create modal', 'info');
+        }
+
+        function openCreateModal() {
+            showNotification('Create new callout feature coming soon', 'info');
+        }
+
+        function closeModal() {
+            document.getElementById('jobModal').classList.remove('show');
+            appState.currentJob = null;
+        }
+
+        // API Functions
+        async function updateCallout(rowIndex, updates) {
+            const response = await fetchWithRetry(CONFIG.APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'update',
+                    calloutId: rowIndex,
+                    updates: updates
+                })
+            });
+            
+            return await response.json();
+        }
+
+        async function fetchWithRetry(url, options = {}, retries = CONFIG.RETRY_ATTEMPTS) {
+            let lastError;
+            let delay = CONFIG.RETRY_DELAY;
+            
+            for (let attempt = 1; attempt <= retries; attempt++) {
+                try {
+                    console.log(`🔄 Attempt ${attempt}/${retries}: ${url}`);
+                    
+                    const response = await fetch(url, {
+                        ...options,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...options.headers
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    return response;
+                    
+                } catch (error) {
+                    lastError = error;
+                    console.log(`❌ Attempt ${attempt} failed:`, error.message);
+                    
+                    if (attempt < retries) {
+                        console.log(`⏳ Retrying in ${delay}ms...`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        delay = Math.min(delay * 2, CONFIG.MAX_RETRY_DELAY);
+                    }
                 }
             }
             
-            // Handle service types (checkboxes)
-            const serviceTypes = getSelectedServiceTypes();
-            if (serviceTypes.length > 0) {
-                obj['Service Type'] = serviceTypes.join(', ');
+            throw lastError;
+        }
+
+        // Utility Functions
+        function updateStats(stats) {
+            if (!stats) {
+                stats = calculateStats(appState.allJobs);
             }
             
-            return obj;
-        }
-
-        function mapFormFieldToColumn(fieldName) {
-            const mapping = {
-                'customer': 'Customer',
-                'rigNumber': 'RIG Number',
-                'wellName': 'Well Name',
-                'wellId': 'Well ID',
-                'fieldName': 'Field Name',
-                'holeSection': 'Hole Section',
-                'latitude': 'Latitude',
-                'longitude': 'Longitude',
-                'utmNorthing': 'UTM Northing',
-                'utmEasting': 'UTM Easting',
-                'casingSize': 'Casing Size',
-                'groundElevation': 'Ground Elevation',
-                'surveyStartDepth': 'Survey Start Depth',
-                'surveyEndDepth': 'Survey End Depth',
-                'surveyInterval': 'Survey Interval',
-                'equipmentRequiredDate': 'Equipment Required Date',
-                'equipmentRequiredTime': 'Equipment Required Time',
-                'crewRequiredDate': 'Crew Required Date',
-                'crewRequiredTime': 'Crew Required Time',
-                'calloutCompletedBy': 'Callout Completed By',
-                'designation': 'Designation',
-                'contactNumber': 'Contact Number',
-                'authorization': 'Authorization',
-                'comments': 'Comments',
-                'status': 'Status',
-                'urgency': 'Urgency',
-                'rosDate': 'ROS Date',
-                'rosStatus': 'ROS Status'
-            };
+            document.getElementById('totalJobs').textContent = stats.total || 0;
+            document.getElementById('pendingJobs').textContent = stats.pending || 0;
+            document.getElementById('approvedJobs').textContent = stats.approved || 0;
+            document.getElementById('urgentJobs').textContent = stats.urgent || 0;
             
-            return mapping[fieldName] || fieldName;
+            // Update change indicators
+            document.getElementById('totalChange').textContent = `${stats.total} total`;
+            document.getElementById('pendingChange').textContent = `${stats.pending} awaiting`;
+            document.getElementById('approvedChange').textContent = `${stats.approved} processed`;
+            document.getElementById('urgentChange').textContent = `${stats.urgent} urgent`;
         }
 
-        function getSelectedServiceTypes() {
-            const checkboxes = document.querySelectorAll('input[name="serviceType"]:checked');
-            return Array.from(checkboxes).map(cb => cb.value);
+        function calculateStats(jobs) {
+            if (!jobs || jobs.length === 0) {
+                return { total: 0, pending: 0, approved: 0, urgent: 0 };
+            }
+
+            return {
+                total: jobs.length,
+                pending: jobs.filter(j => j.Status === 'PENDING_APPROVAL').length,
+                approved: jobs.filter(j => ['APPROVED', 'UPDATED', 'COMPLETED'].includes(j.Status)).length,
+                urgent: jobs.filter(j => (j.Priority || '').toLowerCase().includes('urgent')).length
+            };
         }
 
         function formatStatus(status) {
@@ -2426,45 +1579,60 @@
             return text.substr(0, maxLength) + '...';
         }
 
-        // Enhanced Network Functions
-        async function fetchWithRetry(url, options = {}, retries = CONFIG.RETRY_ATTEMPTS) {
-            let lastError;
-            let delay = CONFIG.RETRY_DELAY;
-            
-            for (let attempt = 1; attempt <= retries; attempt++) {
-                try {
-                    console.log(`🔄 Attempt ${attempt}/${retries}: ${url}`);
-                    
-                    const response = await fetch(url, {
-                        ...options,
-                        headers: {
-                            'Content-Type': 'application/json',
-                            ...options.headers
-                        }
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                    }
-                    
-                    return response;
-                    
-                } catch (error) {
-                    lastError = error;
-                    console.log(`❌ Attempt ${attempt} failed:`, error.message);
-                    
-                    if (attempt < retries) {
-                        console.log(`⏳ Retrying in ${delay}ms...`);
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        delay = Math.min(delay * 2, CONFIG.MAX_RETRY_DELAY); // Exponential backoff
-                    }
-                }
-            }
-            
-            throw lastError;
+        function setActiveFilter(activeBtn) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            activeBtn.classList.add('active');
         }
 
-        // Enhanced UI Functions
+        function filterByStats(filter) {
+            // Update active stat card
+            document.querySelectorAll('.stat-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            document.querySelector(`[data-stat-filter="${filter}"]`).classList.add('active');
+            
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            let filterValue = filter;
+            if (filter === 'pending') filterValue = 'PENDING_APPROVAL';
+            if (filter === 'approved') filterValue = 'UPDATED';
+            
+            const filterBtn = document.querySelector(`[data-filter="${filterValue}"]`) || 
+                              document.querySelector(`[data-filter="${filter}"]`);
+            if (filterBtn) filterBtn.classList.add('active');
+            
+            appState.currentFilter = filterValue;
+            applyFilters();
+        }
+
+        function setView(view) {
+            appState.currentView = view;
+            
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            renderJobs();
+        }
+
+        function updateJobsTitle() {
+            const title = document.getElementById('jobsTitle');
+            const count = appState.filteredJobs.length;
+            const total = appState.allJobs.length;
+            
+            if (appState.currentFilter === 'all' && !appState.searchTerm) {
+                title.textContent = `All Callouts (${total})`;
+            } else {
+                title.textContent = `Filtered Callouts (${count} of ${total})`;
+            }
+        }
+
         function updateLoadingState(isLoading) {
             const container = document.getElementById('jobsContainer');
             if (isLoading) {
@@ -2528,226 +1696,6 @@
             statusElement.className = `header-stat ${type}`;
         }
 
-        // Additional Enhanced Functions
-        function openCreateModal() {
-            appState.isEditMode = false;
-            appState.currentJob = null;
-            
-            document.getElementById('editModalTitle').textContent = 'Create New Callout';
-            document.getElementById('saveButton').textContent = 'Create Callout';
-            document.getElementById('statusSection').style.display = 'none';
-            
-            // Reset form
-            document.getElementById('editForm').reset();
-            
-            // Clear service type selections
-            document.querySelectorAll('.service-item').forEach(item => {
-                item.classList.remove('selected');
-                item.querySelector('input').checked = false;
-            });
-            
-            document.getElementById('editModal').classList.add('show');
-        }
-
-        function openEditModalForJob(calloutId) {
-            const job = appState.allJobs.find(j => j['Callout ID'] === calloutId);
-            if (!job) return;
-
-            appState.isEditMode = true;
-            appState.currentJob = job;
-            
-            document.getElementById('editModalTitle').textContent = 'Edit Callout Details';
-            document.getElementById('saveButton').textContent = 'Update Callout';
-            document.getElementById('statusSection').style.display = 'block';
-            
-            populateEditForm(job);
-            document.getElementById('editModal').classList.add('show');
-        }
-
-        function populateEditForm(job) {
-            // Map and populate form fields
-            const fieldMappings = {
-                'Customer': 'customer',
-                'RIG Number': 'rigNumber',
-                'Well Name': 'wellName',
-                'Well ID': 'wellId',
-                'Field Name': 'fieldName',
-                'Hole Section': 'holeSection',
-                'Latitude': 'latitude',
-                'Longitude': 'longitude',
-                'UTM Northing': 'utmNorthing',
-                'UTM Easting': 'utmEasting',
-                'Casing Size': 'casingSize',
-                'Ground Elevation': 'groundElevation',
-                'Survey Start Depth': 'surveyStartDepth',
-                'Survey End Depth': 'surveyEndDepth',
-                'Survey Interval': 'surveyInterval',
-                'Equipment Required Date': 'equipmentRequiredDate',
-                'Equipment Required Time': 'equipmentRequiredTime',
-                'Crew Required Date': 'crewRequiredDate',
-                'Crew Required Time': 'crewRequiredTime',
-                'Callout Completed By': 'calloutCompletedBy',
-                'Designation': 'designation',
-                'Contact Number': 'contactNumber',
-                'Authorization': 'authorization',
-                'Comments': 'comments',
-                'Status': 'status',
-                'Urgency': 'urgency',
-                'ROS Date': 'rosDate',
-                'ROS Status': 'rosStatus'
-            };
-            
-            Object.entries(fieldMappings).forEach(([jobField, formField]) => {
-                const element = document.querySelector(`[name="${formField}"]`);
-                if (element && job[jobField]) {
-                    element.value = job[jobField];
-                }
-            });
-
-            // Handle service types
-            const serviceTypes = job['Service Type'] ? job['Service Type'].split(', ') : [];
-            document.querySelectorAll('input[name="serviceType"]').forEach(checkbox => {
-                const isSelected = serviceTypes.includes(checkbox.value);
-                checkbox.checked = isSelected;
-                checkbox.closest('.service-item').classList.toggle('selected', isSelected);
-            });
-        }
-
-        function openEditModal() {
-            if (!appState.currentJob) return;
-            closeModal();
-            openEditModalForJob(appState.currentJob['Callout ID']);
-        }
-
-        async function completeJob() {
-            if (!appState.currentJob) return;
-            
-            try {
-                const result = await updateCallout(appState.currentJob['Callout ID'], {
-                    'Status': 'COMPLETED',
-                    'ROS Status': 'Completed'
-                });
-                
-                if (result.success) {
-                    showNotification(`Job ${appState.currentJob['Callout ID']} completed!`, 'success');
-                    closeModal();
-                    await loadData();
-                } else {
-                    throw new Error(result.message || 'Failed to complete job');
-                }
-            } catch (error) {
-                showNotification(error.message || 'Failed to complete job', 'error');
-            }
-        }
-
-        async function completeJobFromCard(calloutId) {
-            try {
-                const result = await updateCallout(calloutId, {
-                    'Status': 'COMPLETED',
-                    'ROS Status': 'Completed'
-                });
-                
-                if (result.success) {
-                    showNotification(`Job ${calloutId} completed!`, 'success');
-                    await loadData();
-                } else {
-                    throw new Error(result.message || 'Failed to complete job');
-                }
-            } catch (error) {
-                showNotification(error.message || 'Failed to complete job', 'error');
-            }
-        }
-
-        function duplicateJob() {
-            if (!appState.currentJob) return;
-            
-            closeModal();
-            openCreateModal();
-            
-            // Populate with current job data but clear ID fields
-            setTimeout(() => {
-                populateEditForm(appState.currentJob);
-                // Clear fields that should be unique
-                document.querySelector('[name="status"]').value = 'PENDING_APPROVAL';
-                showNotification('Job data copied. Review and create duplicate.', 'info');
-            }, 100);
-        }
-
-        function closeModal() {
-            document.getElementById('jobModal').classList.remove('show');
-            appState.currentJob = null;
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').classList.remove('show');
-            appState.isEditMode = false;
-            appState.currentJob = null;
-        }
-
-        function setActiveFilter(activeBtn) {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            activeBtn.classList.add('active');
-        }
-
-        function filterByStats(filter) {
-            // Update active stat card
-            document.querySelectorAll('.stat-card').forEach(card => {
-                card.classList.remove('active');
-            });
-            document.querySelector(`[data-stat-filter="${filter}"]`).classList.add('active');
-            
-            // Update filter buttons
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            let filterValue = filter;
-            if (filter === 'pending') filterValue = 'PENDING_APPROVAL';
-            if (filter === 'approved') filterValue = 'APPROVED';
-            if (filter === 'completed') filterValue = 'COMPLETED';
-            
-            const filterBtn = document.querySelector(`[data-filter="${filterValue}"]`) || 
-                              document.querySelector(`[data-filter="${filter}"]`);
-            if (filterBtn) filterBtn.classList.add('active');
-            
-            appState.currentFilter = filterValue;
-            applyFilters();
-        }
-
-        function setView(view) {
-            appState.currentView = view;
-            
-            document.querySelectorAll('.view-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            event.target.classList.add('active');
-            renderJobs();
-        }
-
-        function toggleAdvancedFilters() {
-            const filters = document.getElementById('advancedFilters');
-            filters.classList.toggle('show');
-            
-            const button = event.target;
-            button.textContent = filters.classList.contains('show') ? 
-                '🔼 Hide Advanced Filters' : '🔧 Advanced Filters';
-        }
-
-        function updateJobsTitle() {
-            const title = document.getElementById('jobsTitle');
-            const count = appState.filteredJobs.length;
-            const total = appState.allJobs.length;
-            
-            if (appState.currentFilter === 'all' && !appState.searchTerm) {
-                title.textContent = `All Callouts (${total})`;
-            } else {
-                title.textContent = `Filtered Callouts (${count} of ${total})`;
-            }
-        }
-
         function updateLastUpdated() {
             const element = document.getElementById('lastUpdated');
             if (appState.lastUpdated) {
@@ -2768,17 +1716,7 @@
             document.getElementById('autoRefresh').textContent = 'Auto-Refresh: ON';
         }
 
-        function autoSaveDraft() {
-            // Auto-save form data to localStorage as draft
-            const form = document.getElementById('editForm');
-            if (form && document.getElementById('editModal').classList.contains('show')) {
-                const formData = new FormData(form);
-                const draft = Object.fromEntries(formData.entries());
-                localStorage.setItem('callout_draft', JSON.stringify(draft));
-            }
-        }
-
-        // Enhanced Export Functions
+        // Export Functions
         function exportData() {
             const csvContent = convertToCSV(appState.filteredJobs);
             downloadCSV(csvContent, `callouts_export_${new Date().toISOString().slice(0, 10)}.csv`);
@@ -2817,7 +1755,7 @@
 
         // System Information Functions
         function showSystemInfo() {
-            showNotification(`Dashboard v2.0 | API: ${CONFIG.APPS_SCRIPT_URL.split('/')[5]} | Jobs: ${appState.allJobs.length}`, 'info', 5000);
+            showNotification(`Dashboard v2.0 | API: Working | Jobs: ${appState.allJobs.length}`, 'info', 5000);
         }
 
         function showApiStatus() {
@@ -2852,13 +1790,7 @@
             }
         });
 
-        // Global error handler
-        window.addEventListener('error', function(event) {
-            console.error('Global error:', event.error);
-            showNotification('An unexpected error occurred. Please refresh the page.', 'error');
-        });
-
-        console.log('🎯 Enhanced TASK Energy Dashboard Ready!');
+        console.log('🎯 Complete TASK Energy Dashboard Ready!');
     </script>
 </body>
 </html>

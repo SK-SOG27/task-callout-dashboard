@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TASK Energy - Advanced Callout Management</title>
+    <title>TASK Energy - Callout Management Dashboard</title>
     <style>
         :root {
             --primary-color: #8B0000;
@@ -42,12 +42,11 @@
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
 
-        /* Enhanced Header with Real-time Indicators */
         .header {
             display: flex;
             justify-content: space-between;
@@ -131,28 +130,6 @@
             flex-wrap: wrap;
         }
 
-        .btn-primary {
-            padding: 14px 28px;
-            background: var(--gradient-success);
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 16px;
-            transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4);
-        }
-
         .btn-secondary {
             padding: 12px 20px;
             background: var(--glass-bg);
@@ -173,7 +150,6 @@
             transform: translateY(-1px);
         }
 
-        /* Enhanced Controls with Advanced Filtering */
         .controls {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
@@ -225,7 +201,7 @@
             font-size: 18px;
         }
 
-        .advanced-filters {
+        .filters {
             display: flex;
             gap: 15px;
             align-items: center;
@@ -262,27 +238,6 @@
             outline: none;
         }
 
-        .date-range-container {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .date-input {
-            padding: 10px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            background: white;
-            font-size: 14px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .date-input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
-
         .filter-buttons {
             display: flex;
             gap: 8px;
@@ -304,7 +259,6 @@
             font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            position: relative;
         }
 
         .filter-btn:hover {
@@ -316,22 +270,6 @@
             background: var(--gradient-primary);
             color: white;
             border-color: var(--primary-color);
-        }
-
-        .filter-btn .badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: var(--danger-color);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
         }
 
         .controls-actions {
@@ -376,7 +314,6 @@
             box-shadow: 0 8px 25px rgba(245, 124, 0, 0.4);
         }
 
-        /* Enhanced Stats Grid with Interactive Charts */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -428,7 +365,6 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 8px;
-            position: relative;
         }
 
         .stat-label {
@@ -447,42 +383,10 @@
             border-radius: 15px;
             font-weight: 600;
             display: inline-block;
-        }
-
-        .stat-change.positive {
-            background: rgba(76, 175, 80, 0.1);
-            color: var(--success-color);
-        }
-
-        .stat-change.negative {
-            background: rgba(244, 67, 54, 0.1);
-            color: var(--danger-color);
-        }
-
-        .stat-change.neutral {
             background: rgba(96, 125, 139, 0.1);
             color: #607d8b;
         }
 
-        .mini-chart {
-            height: 40px;
-            margin-top: 15px;
-            background: rgba(0,0,0,0.05);
-            border-radius: 8px;
-            display: flex;
-            align-items: end;
-            justify-content: space-around;
-            padding: 5px;
-        }
-
-        .chart-bar {
-            background: var(--gradient-primary);
-            border-radius: 2px;
-            width: 12px;
-            transition: var(--transition);
-        }
-
-        /* Enhanced Job Cards with Advanced Features */
         .jobs-container {
             margin-bottom: 30px;
         }
@@ -560,12 +464,6 @@
             gap: 20px;
         }
 
-        .jobs-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
         .job-card {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
@@ -601,28 +499,6 @@
             border-left-color: var(--secondary-color);
         }
 
-        .job-card.priority-high {
-            border-left-color: var(--danger-color);
-            background: rgba(244, 67, 54, 0.02);
-        }
-
-        .job-card.priority-critical {
-            border-left-color: #d32f2f;
-            background: rgba(211, 47, 47, 0.05);
-            animation: pulse-urgent 3s infinite;
-        }
-
-        .job-card.status-completed {
-            border-left-color: var(--success-color);
-            background: rgba(76, 175, 80, 0.02);
-            opacity: 0.85;
-        }
-
-        @keyframes pulse-urgent {
-            0%, 100% { box-shadow: var(--box-shadow); }
-            50% { box-shadow: 0 4px 20px rgba(211, 47, 47, 0.3); }
-        }
-
         .job-header {
             display: flex;
             justify-content: space-between;
@@ -636,20 +512,7 @@
             font-weight: 800;
             color: var(--primary-color);
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
-
-        .job-priority-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--info-color);
-        }
-
-        .job-priority-indicator.high { background: var(--warning-color); }
-        .job-priority-indicator.critical { background: var(--danger-color); animation: pulse 2s infinite; }
 
         .job-status {
             padding: 8px 16px;
@@ -659,7 +522,6 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             white-space: nowrap;
-            position: relative;
         }
 
         .status-pending_approval { 
@@ -677,10 +539,6 @@
         .status-updated { 
             background: linear-gradient(135deg, #e1f5fe, #03a9f4); 
             color: #01579b; 
-        }
-        .status-cancelled {
-            background: linear-gradient(135deg, #ffebee, #f44336);
-            color: #b71c1c;
         }
 
         .job-info {
@@ -715,7 +573,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             padding: 12px;
             background: rgba(0,0,0,0.02);
             border-radius: 8px;
@@ -733,305 +591,6 @@
             font-weight: 600;
         }
 
-        .job-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .job-action-btn {
-            flex: 1;
-            min-width: 80px;
-            padding: 10px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: var(--transition);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            text-decoration: none;
-        }
-
-        .btn-details {
-            background: var(--gradient-info);
-            color: white;
-        }
-
-        .btn-edit {
-            background: var(--gradient-warning);
-            color: white;
-        }
-
-        .btn-complete {
-            background: var(--gradient-success);
-            color: white;
-        }
-
-        .btn-delete {
-            background: var(--gradient-danger);
-            color: white;
-            flex: 0;
-            padding: 10px 12px;
-        }
-
-        .job-action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-        }
-
-        /* Enhanced Modals with Tabbed Interface */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(8px);
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal.show {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            width: 95%;
-            max-width: 1000px;
-            max-height: 90vh;
-            overflow: hidden;
-            animation: slideIn 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .modal-header {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            flex-shrink: 0;
-        }
-
-        .modal-title {
-            margin: 0;
-            font-size: 1.6rem;
-            font-weight: 700;
-        }
-
-        .modal-header-actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .modal-action-btn {
-            padding: 10px 18px;
-            background: rgba(255,255,255,0.15);
-            color: white;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .modal-action-btn:hover {
-            background: rgba(255,255,255,0.25);
-            border-color: rgba(255,255,255,0.5);
-        }
-
-        .close-button {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 8px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .close-button:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        .modal-tabs {
-            display: flex;
-            background: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-            flex-shrink: 0;
-        }
-
-        .tab-btn {
-            padding: 15px 25px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            color: #666;
-            transition: var(--transition);
-            border-bottom: 3px solid transparent;
-        }
-
-        .tab-btn.active {
-            color: var(--primary-color);
-            border-bottom-color: var(--primary-color);
-            background: white;
-        }
-
-        .modal-body {
-            padding: 30px;
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Enhanced Detail Sections */
-        .detail-section {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
-            color: white;
-            border-radius: var(--border-radius);
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .detail-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #f39c12, #e74c3c);
-        }
-
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #f39c12;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .detail-item {
-            background: rgba(255,255,255,0.08);
-            padding: 16px;
-            border-radius: 10px;
-            border-left: 4px solid #f39c12;
-            transition: var(--transition);
-        }
-
-        .detail-item:hover {
-            background: rgba(255,255,255,0.12);
-            transform: translateY(-2px);
-        }
-
-        .detail-label {
-            font-size: 0.8rem;
-            color: #bdc3c7;
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        .detail-value {
-            font-weight: 600;
-            color: white;
-            font-size: 1rem;
-            word-break: break-word;
-        }
-
-        /* Activity Timeline */
-        .activity-timeline {
-            position: relative;
-            padding-left: 30px;
-        }
-
-        .timeline-item {
-            position: relative;
-            padding: 15px 0;
-            border-left: 2px solid #e0e0e0;
-            padding-left: 25px;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -6px;
-            top: 20px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--primary-color);
-        }
-
-        .timeline-content {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .timeline-time {
-            font-size: 0.8rem;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .timeline-description {
-            font-weight: 600;
-            color: var(--dark-color);
-        }
-
-        /* Enhanced Loading and Error States */
         .loading-container, .error-container, .no-results {
             text-align: center;
             padding: 60px 40px;
@@ -1064,91 +623,6 @@
             animation: spin 1s linear infinite;
         }
 
-        /* Enhanced Notifications */
-        .notification {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            padding: 18px 24px;
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-            z-index: 10000;
-            transform: translateX(400px);
-            transition: var(--transition);
-            max-width: 350px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification.success {
-            background: var(--gradient-success);
-        }
-
-        .notification.error {
-            background: var(--gradient-danger);
-        }
-
-        .notification.info {
-            background: var(--gradient-info);
-        }
-
-        .notification.warning {
-            background: var(--gradient-warning);
-        }
-
-        .notification-icon {
-            font-size: 20px;
-        }
-
-        /* Progress Bars */
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(0,0,0,0.1);
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--gradient-primary);
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-
-        /* Floating Action Button */
-        .fab {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 8px 25px rgba(139, 0, 0, 0.3);
-            transition: var(--transition);
-            z-index: 999;
-        }
-
-        .fab:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(139, 0, 0, 0.4);
-        }
-
-        /* Footer */
         .footer {
             text-align: center;
             margin-top: 40px;
@@ -1190,15 +664,9 @@
             background: rgba(139, 0, 0, 0.1);
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         @keyframes spin {
@@ -1206,12 +674,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        /* Enhanced Responsive Design */
         @media (max-width: 1024px) {
             .jobs-grid {
                 grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -1247,7 +709,7 @@
                 max-width: unset;
             }
 
-            .advanced-filters {
+            .filters {
                 justify-content: center;
             }
 
@@ -1265,59 +727,6 @@
                 grid-template-columns: 1fr;
                 gap: 12px;
             }
-
-            .job-actions {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .modal-content {
-                width: 98%;
-                margin: 1% auto;
-            }
-
-            .modal-header {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .modal-tabs {
-                flex-wrap: wrap;
-            }
-
-            .tab-btn {
-                flex: 1;
-                min-width: 120px;
-            }
-
-            .modal-body {
-                padding: 20px;
-            }
-
-            .detail-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .notification {
-                top: 20px;
-                right: 20px;
-                left: 20px;
-                transform: translateY(-100px);
-                max-width: unset;
-            }
-
-            .notification.show {
-                transform: translateY(0);
-            }
-
-            .fab {
-                bottom: 20px;
-                right: 20px;
-                width: 56px;
-                height: 56px;
-                font-size: 20px;
-            }
         }
 
         @media (max-width: 480px) {
@@ -1333,14 +742,6 @@
                 padding: 20px;
             }
 
-            .modal-header {
-                padding: 20px;
-            }
-
-            .modal-body {
-                padding: 15px;
-            }
-
             .filter-buttons {
                 padding: 8px;
             }
@@ -1354,11 +755,10 @@
 </head>
 <body>
     <div class="container">
-        <!-- Enhanced Header -->
         <div class="header">
             <div class="header-content">
-                <h1>TASK Energy - Advanced Callout Management</h1>
-                <p>Next-Generation Real-time Dashboard & CRUD System with AI Analytics</p>
+                <h1>TASK Energy - Callout Management Dashboard</h1>
+                <p>Real-time callout monitoring and tracking system</p>
                 <div class="header-stats">
                     <div class="header-stat online" id="systemStatus">System Online</div>
                     <div class="header-stat" id="autoRefresh">Auto-Refresh: ON</div>
@@ -1366,22 +766,17 @@
                 </div>
             </div>
             <div class="header-actions">
-                <a href="#" class="btn-secondary" onclick="exportData()">📊 Export</a>
-                <a href="#" class="btn-secondary" onclick="generateReport()">📋 Report</a>
-                <a href="#" class="btn-primary" onclick="openCreateModal()">
-                    ➕ New Callout
-                </a>
+                <a href="#" class="btn-secondary" onclick="exportData()">Export Data</a>
             </div>
         </div>
 
-        <!-- Enhanced Controls -->
         <div class="controls">
             <div class="controls-row">
                 <div class="search-container">
-                    <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search by ID, customer, rig, well, service type...">
-                    <span class="search-icon">⚡</span>
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search by ID, customer, rig, well, service type...">
+                    <span class="search-icon">🔍</span>
                 </div>
-                <div class="advanced-filters">
+                <div class="filters">
                     <div class="filter-group">
                         <div class="filter-label">Status</div>
                         <select id="statusFilter" class="filter-select">
@@ -1390,7 +785,6 @@
                             <option value="APPROVED">Approved</option>
                             <option value="UPDATED">Updated</option>
                             <option value="COMPLETED">Completed</option>
-                            <option value="CANCELLED">Cancelled</option>
                         </select>
                     </div>
                     <div class="filter-group">
@@ -1403,74 +797,50 @@
                             <option value="Critical">Critical</option>
                         </select>
                     </div>
-                    <div class="filter-group">
-                        <div class="filter-label">Date Range</div>
-                        <div class="date-range-container">
-                            <input type="date" id="startDate" class="date-input">
-                            <span>-</span>
-                            <input type="date" id="endDate" class="date-input">
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="controls-row">
                 <div class="filter-buttons">
-                    <button class="filter-btn active" data-filter="all">
-                        All <span class="badge" id="allBadge">0</span>
-                    </button>
-                    <button class="filter-btn" data-filter="PENDING_APPROVAL">
-                        Pending <span class="badge" id="pendingBadge">0</span>
-                    </button>
-                    <button class="filter-btn" data-filter="APPROVED">
-                        Approved <span class="badge" id="approvedBadge">0</span>
-                    </button>
-                    <button class="filter-btn" data-filter="UPDATED">
-                        Updated <span class="badge" id="updatedBadge">0</span>
-                    </button>
-                    <button class="filter-btn" data-filter="COMPLETED">
-                        Completed <span class="badge" id="completedBadge">0</span>
-                    </button>
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="PENDING_APPROVAL">Pending</button>
+                    <button class="filter-btn" data-filter="APPROVED">Approved</button>
+                    <button class="filter-btn" data-filter="UPDATED">Updated</button>
+                    <button class="filter-btn" data-filter="COMPLETED">Completed</button>
                 </div>
                 <div class="controls-actions">
                     <button class="action-btn btn-refresh" onclick="loadData()">
                         🔄 Refresh
                     </button>
-                    <button class="action-btn btn-export" onclick="bulkExport()">
-                        📤 Bulk Export
+                    <button class="action-btn btn-export" onclick="exportData()">
+                        📤 Export
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Enhanced Stats Grid -->
         <div class="stats-grid">
             <div class="stat-card active" data-stat-filter="all" onclick="filterByStats('all')">
                 <div class="stat-number" id="totalJobs">0</div>
                 <div class="stat-label">Total Jobs</div>
-                <div class="stat-change positive" id="totalChange">+0 today</div>
-                <div class="mini-chart" id="totalChart"></div>
+                <div class="stat-change" id="totalChange">Loading...</div>
             </div>
             <div class="stat-card" data-stat-filter="pending" onclick="filterByStats('pending')">
                 <div class="stat-number" id="pendingJobs">0</div>
                 <div class="stat-label">Pending</div>
-                <div class="stat-change neutral" id="pendingChange">0 awaiting</div>
-                <div class="mini-chart" id="pendingChart"></div>
+                <div class="stat-change" id="pendingChange">Loading...</div>
             </div>
             <div class="stat-card" data-stat-filter="approved" onclick="filterByStats('approved')">
                 <div class="stat-number" id="approvedJobs">0</div>
                 <div class="stat-label">Approved</div>
-                <div class="stat-change positive" id="approvedChange">0 this week</div>
-                <div class="mini-chart" id="approvedChart"></div>
+                <div class="stat-change" id="approvedChange">Loading...</div>
             </div>
             <div class="stat-card" data-stat-filter="urgent" onclick="filterByStats('urgent')">
                 <div class="stat-number" id="urgentJobs">0</div>
-                <div class="stat-label">Urgent</div>
-                <div class="stat-change negative" id="urgentChange">0 critical</div>
-                <div class="mini-chart" id="urgentChart"></div>
+                <div class="stat-label">High Priority</div>
+                <div class="stat-change" id="urgentChange">Loading...</div>
             </div>
         </div>
 
-        <!-- Enhanced Jobs Container -->
         <div class="jobs-container">
             <div class="jobs-header">
                 <h2 class="jobs-title" id="jobsTitle">
@@ -1483,7 +853,6 @@
                             <option value="timestamp-desc">📅 Newest First</option>
                             <option value="timestamp-asc">📅 Oldest First</option>
                             <option value="priority-desc">⚡ Priority High</option>
-                            <option value="priority-asc">⚡ Priority Low</option>
                             <option value="status-asc">📊 Status A-Z</option>
                             <option value="customer-asc">🏢 Customer A-Z</option>
                         </select>
@@ -1504,14 +873,10 @@
                     <div class="loading-spinner"></div>
                     <h3>🚀 Loading Callouts</h3>
                     <p>Fetching data from Google Apps Script API...</p>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 0%" id="loadingProgress"></div>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Footer -->
         <div class="footer">
             <div class="last-updated" id="lastUpdated">
                 🕐 System initializing...
@@ -1520,258 +885,89 @@
                 <a href="#" class="footer-link" onclick="showSystemInfo()">📊 System Info</a>
                 <a href="#" class="footer-link" onclick="showApiStatus()">🔗 API Status</a>
                 <a href="#" class="footer-link" onclick="downloadLogs()">📁 Download Logs</a>
-                <a href="#" class="footer-link" onclick="showAnalytics()">📈 Analytics</a>
             </div>
         </div>
     </div>
-
-    <!-- Enhanced Job Details Modal -->
-    <div id="jobModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">📋 Callout Details</h2>
-                <div class="modal-header-actions">
-                    <button class="modal-action-btn" onclick="completeJob()">
-                        ✅ Complete
-                    </button>
-                    <button class="modal-action-btn" onclick="duplicateJob()">
-                        📋 Duplicate
-                    </button>
-                    <button class="modal-action-btn" onclick="printJob()">
-                        🖨️ Print
-                    </button>
-                    <button class="close-button" onclick="closeModal()">&times;</button>
-                </div>
-            </div>
-            
-            <div class="modal-tabs">
-                <button class="tab-btn active" onclick="switchTab('details')">📋 Details</button>
-                <button class="tab-btn" onclick="switchTab('timeline')">📈 Timeline</button>
-                <button class="tab-btn" onclick="switchTab('analytics')">📊 Analytics</button>
-                <button class="tab-btn" onclick="switchTab('notes')">📝 Notes</button>
-            </div>
-            
-            <div class="modal-body">
-                <div id="detailsTab" class="tab-content active">
-                    <!-- Job details will be inserted here -->
-                </div>
-                <div id="timelineTab" class="tab-content">
-                    <div class="activity-timeline" id="activityTimeline">
-                        <!-- Timeline will be generated here -->
-                    </div>
-                </div>
-                <div id="analyticsTab" class="tab-content">
-                    <div class="detail-section">
-                        <div class="section-title">📊 Performance Analytics</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Processing Time</div>
-                                <div class="detail-value" id="processingTime">Calculating...</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Priority Score</div>
-                                <div class="detail-value" id="priorityScore">Analyzing...</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Efficiency Rating</div>
-                                <div class="detail-value" id="efficiencyRating">Processing...</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Similar Jobs</div>
-                                <div class="detail-value" id="similarJobs">Searching...</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="notesTab" class="tab-content">
-                    <div class="detail-section">
-                        <div class="section-title">📝 Notes & Comments</div>
-                        <textarea placeholder="Add notes about this callout..." rows="10" style="width: 100%; padding: 15px; border-radius: 8px; border: 2px solid #e0e0e0; resize: vertical;"></textarea>
-                        <button class="btn-primary" style="margin-top: 15px;">💾 Save Notes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Floating Action Button -->
-    <button class="fab" onclick="quickActions()" title="Quick Actions">
-        ⚡
-    </button>
 
     <script>
-        // Enhanced Configuration
         const CONFIG = {
             APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbykzhDXooowUcriodaVDjTLaztMS41Q4l3Bx-VRRUoeCaeAVfq47PMdHZ7hljx3abu1/exec',
-            REFRESH_INTERVAL: 300000, // 5 minutes
+            REFRESH_INTERVAL: 300000,
             RETRY_ATTEMPTS: 3,
             RETRY_DELAY: 1000,
             MAX_RETRY_DELAY: 5000,
-            AUTO_SAVE_INTERVAL: 30000,
-            PAGINATION_SIZE: 50,
-            SEARCH_DEBOUNCE_DELAY: 300,
-            ANIMATION_DURATION: 300,
-            CHART_UPDATE_INTERVAL: 5000,
-            LOCAL_STORAGE_KEY: 'taskEnergyDashboard'
+            SEARCH_DEBOUNCE_DELAY: 300
         };
 
-        // Enhanced Application State
         let appState = {
             allJobs: [],
             filteredJobs: [],
-            currentJob: null,
-            currentView: 'grid',
             currentFilter: 'all',
             currentSort: 'timestamp-desc',
             searchTerm: '',
             refreshInterval: null,
             isLoading: false,
             lastUpdated: null,
-            selectedJobIds: new Set(),
-            chartData: {},
             stats: {
                 total: 0,
                 pending: 0,
                 approved: 0,
-                urgent: 0,
-                completed: 0,
-                updated: 0,
-                cancelled: 0
-            },
-            filters: {
-                status: '',
-                priority: '',
-                startDate: '',
-                endDate: ''
-            },
-            performance: {
-                loadTime: 0,
-                apiCalls: 0,
-                errors: 0
+                urgent: 0
             }
         };
 
-        // Initialize Enhanced Dashboard
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 TASK Energy Enhanced Dashboard Loading...');
+            console.log('🚀 TASK Energy Dashboard Loading...');
             initializeApp();
         });
 
         async function initializeApp() {
             try {
                 showSystemStatus('Initializing...', 'info');
-                showProgressBar(0);
-                
-                // Load saved state
-                loadSavedState();
-                showProgressBar(20);
-                
-                // Setup event listeners
                 setupEventListeners();
-                showProgressBar(40);
-                
-                // Load data
                 await loadData();
-                showProgressBar(80);
-                
-                // Start auto refresh
                 startAutoRefresh();
-                showProgressBar(100);
-                
-                // Initialize charts
-                initializeCharts();
-                
                 showSystemStatus('System Online', 'success');
-                hideProgressBar();
-                console.log('✅ Enhanced Dashboard initialized successfully');
-                
-                showNotification('🚀 Dashboard loaded successfully!', 'success');
-                
+                console.log('✅ Dashboard initialized successfully');
             } catch (error) {
                 console.error('❌ Failed to initialize dashboard:', error);
                 showSystemStatus('System Error', 'error');
-                showNotification('Failed to initialize dashboard', 'error');
-                hideProgressBar();
             }
         }
 
-        // Enhanced Event Listeners
         function setupEventListeners() {
-            // Enhanced search with real-time suggestions
             let searchTimeout;
             document.getElementById('searchInput').addEventListener('input', function() {
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(() => {
                     appState.searchTerm = this.value.toLowerCase();
                     applyFilters();
-                    saveState();
                 }, CONFIG.SEARCH_DEBOUNCE_DELAY);
             });
 
-            // Advanced filter functionality
-            ['statusFilter', 'priorityFilter', 'startDate', 'endDate'].forEach(id => {
-                document.getElementById(id).addEventListener('change', function() {
-                    appState.filters[id.replace('Filter', '').replace('Date', '')] = this.value;
-                    applyFilters();
-                    saveState();
-                });
+            ['statusFilter', 'priorityFilter'].forEach(id => {
+                document.getElementById(id).addEventListener('change', applyFilters);
             });
 
-            // Sort functionality
             document.getElementById('sortBy').addEventListener('change', function() {
                 appState.currentSort = this.value;
                 applyFilters();
-                saveState();
             });
 
-            // Filter buttons with badges
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     setActiveFilter(this);
                     appState.currentFilter = this.dataset.filter;
                     applyFilters();
-                    saveState();
                 });
             });
-
-            // Modal close events
-            window.addEventListener('click', function(event) {
-                if (event.target.classList.contains('modal')) {
-                    closeModal();
-                }
-            });
-
-            // Enhanced keyboard shortcuts
-            document.addEventListener('keydown', function(e) {
-                if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
-                    e.preventDefault();
-                    loadData();
-                }
-                if (e.key === 'Escape') {
-                    closeModal();
-                }
-                if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
-                    e.preventDefault();
-                    document.getElementById('searchInput').focus();
-                }
-                if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
-                    e.preventDefault();
-                    openCreateModal();
-                }
-            });
-
-            // Auto-save functionality
-            setInterval(saveState, CONFIG.AUTO_SAVE_INTERVAL);
         }
 
-        // Enhanced Data Loading with Progress
         async function loadData() {
             if (appState.isLoading) return;
             
             try {
                 appState.isLoading = true;
-                const startTime = performance.now();
-                
                 showSystemStatus('Loading data...', 'info');
                 updateLoadingState(true);
                 
@@ -1779,49 +975,31 @@
                 const response = await fetchWithRetry(`${CONFIG.APPS_SCRIPT_URL}?action=read`);
                 const result = await response.json();
                 
-                appState.performance.apiCalls++;
-                
                 if (result.success) {
                     appState.allJobs = result.data || [];
                     appState.lastUpdated = new Date();
                     
-                    // Process and enhance data
                     enhanceJobData();
-                    
-                    // Apply current filters and sorting
                     applyFilters();
-                    
-                    // Update UI components
                     updateStats();
-                    updateBadges();
-                    updateCharts();
                     updateLastUpdated();
                     
-                    // Calculate performance metrics
-                    appState.performance.loadTime = performance.now() - startTime;
-                    
                     showSystemStatus('Data loaded successfully', 'success');
-                    console.log(`✅ Loaded ${appState.allJobs.length} callouts in ${appState.performance.loadTime.toFixed(2)}ms`);
-                    
-                    showNotification(`📊 Loaded ${appState.allJobs.length} callouts`, 'success', 2000);
-                    
+                    console.log(`✅ Loaded ${appState.allJobs.length} callouts`);
                 } else {
                     throw new Error(result.message || 'Failed to load data');
                 }
                 
             } catch (error) {
                 console.error('❌ Error loading data:', error);
-                appState.performance.errors++;
                 showError(error);
                 showSystemStatus('Load failed', 'error');
-                showNotification('Failed to load data', 'error');
             } finally {
                 appState.isLoading = false;
                 updateLoadingState(false);
             }
         }
 
-        // Enhanced Job Data Processing
         function enhanceJobData() {
             appState.allJobs = appState.allJobs.map((job, index) => {
                 return {
@@ -1829,11 +1007,8 @@
                     id: job['Callout ID'] || `job-${index}`,
                     displayName: job['Callout ID'] || `Job ${index + 1}`,
                     priority: determinePriority(job),
-                    urgencyScore: calculateUrgencyScore(job),
                     createdAt: new Date(job.Timestamp || Date.now()),
-                    searchableText: createSearchableText(job),
-                    tags: extractTags(job),
-                    estimatedDuration: estimateDuration(job)
+                    searchableText: createSearchableText(job)
                 };
             });
         }
@@ -1852,26 +1027,6 @@
             return 'Medium';
         }
 
-        function calculateUrgencyScore(job) {
-            let score = 0;
-            const priority = job.priority || 'Medium';
-            const age = Date.now() - new Date(job.Timestamp || Date.now()).getTime();
-            const ageHours = age / (1000 * 60 * 60);
-            
-            // Priority scoring
-            switch (priority) {
-                case 'Critical': score += 100; break;
-                case 'High': score += 75; break;
-                case 'Medium': score += 50; break;
-                case 'Low': score += 25; break;
-            }
-            
-            // Age scoring
-            score += Math.min(ageHours * 2, 50);
-            
-            return Math.round(score);
-        }
-
         function createSearchableText(job) {
             return [
                 job['Callout ID'], job.Customer, job['RIG Number'],
@@ -1880,75 +1035,35 @@
             ].filter(Boolean).join(' ').toLowerCase();
         }
 
-        function extractTags(job) {
-            const tags = [];
-            if (job.Status) tags.push(job.Status.toLowerCase());
-            if (job.priority) tags.push(job.priority.toLowerCase());
-            if (job.Customer) tags.push(job.Customer.toLowerCase());
-            return tags;
-        }
-
-        function estimateDuration(job) {
-            const serviceType = (job['Service Type'] || '').toLowerCase();
-            
-            if (serviceType.includes('maintenance')) return '2-4 hours';
-            if (serviceType.includes('inspection')) return '1-2 hours';
-            if (serviceType.includes('repair')) return '4-8 hours';
-            if (serviceType.includes('emergency')) return '1-6 hours';
-            
-            return '2-6 hours';
-        }
-
-        // Enhanced Filtering with Advanced Options
         function applyFilters() {
             let filtered = [...appState.allJobs];
             
-            // Search filter
             if (appState.searchTerm) {
                 filtered = filtered.filter(job => 
                     job.searchableText.includes(appState.searchTerm)
                 );
             }
             
-            // Status filter
-            if (appState.filters.status) {
-                filtered = filtered.filter(job => job.Status === appState.filters.status);
+            const statusFilter = document.getElementById('statusFilter').value;
+            if (statusFilter) {
+                filtered = filtered.filter(job => job.Status === statusFilter);
             }
             
-            // Priority filter
-            if (appState.filters.priority) {
-                filtered = filtered.filter(job => job.priority === appState.filters.priority);
+            const priorityFilter = document.getElementById('priorityFilter').value;
+            if (priorityFilter) {
+                filtered = filtered.filter(job => job.priority === priorityFilter);
             }
             
-            // Date range filter
-            if (appState.filters.startDate) {
-                const startDate = new Date(appState.filters.startDate);
-                filtered = filtered.filter(job => job.createdAt >= startDate);
-            }
-            
-            if (appState.filters.endDate) {
-                const endDate = new Date(appState.filters.endDate);
-                endDate.setHours(23, 59, 59, 999);
-                filtered = filtered.filter(job => job.createdAt <= endDate);
-            }
-            
-            // Current filter (status buttons)
             if (appState.currentFilter !== 'all') {
-                filtered = filtered.filter(job => {
-                    const status = job.Status || '';
-                    return status === appState.currentFilter;
-                });
+                filtered = filtered.filter(job => job.Status === appState.currentFilter);
             }
             
-            // Apply sorting
             filtered = applySorting(filtered);
-            
             appState.filteredJobs = filtered;
             renderJobs();
             updateJobsTitle();
         }
 
-        // Enhanced Sorting Function
         function applySorting(jobs) {
             const [field, order] = appState.currentSort.split('-');
             
@@ -1986,7 +1101,6 @@
             });
         }
 
-        // Enhanced Job Rendering with Advanced Cards
         function renderJobs() {
             const container = document.getElementById('jobsContainer');
             
@@ -1994,11 +1108,8 @@
                 container.innerHTML = `
                     <div class="no-results">
                         <h3>No callouts found</h3>
-                        <p>Try adjusting your search or filter criteria, or create a new callout.</p>
-                        <button class="btn-primary" onclick="openCreateModal()" style="margin-top: 20px;">
-                            Create New Callout
-                        </button>
-                        <button class="btn-secondary" onclick="clearAllFilters()" style="margin-top: 10px;">
+                        <p>Try adjusting your search or filter criteria.</p>
+                        <button class="action-btn btn-refresh" onclick="clearAllFilters()" style="margin-top: 20px;">
                             Clear All Filters
                         </button>
                     </div>
@@ -2006,32 +1117,18 @@
                 return;
             }
 
-            const containerClass = appState.currentView === 'grid' ? 'jobs-grid' : 'jobs-list';
-            const jobsHTML = appState.filteredJobs.map(job => createEnhancedJobCard(job)).join('');
-            container.innerHTML = `<div class="${containerClass}">${jobsHTML}</div>`;
+            const jobsHTML = appState.filteredJobs.map(job => createJobCard(job)).join('');
+            container.innerHTML = `<div class="jobs-grid">${jobsHTML}</div>`;
         }
 
-        function createEnhancedJobCard(job) {
+        function createJobCard(job) {
             const status = (job.Status || 'PENDING_APPROVAL').toLowerCase().replace(/\s+/g, '_');
-            const priority = job.priority || 'Medium';
-            const isCompleted = status.includes('completed');
-            const isCancelled = status.includes('cancelled');
-            
-            const cardClasses = ['job-card'];
-            if (priority === 'High') cardClasses.push('priority-high');
-            if (priority === 'Critical') cardClasses.push('priority-critical');
-            if (isCompleted) cardClasses.push('status-completed');
-
             const timeAgo = getTimeAgo(job.createdAt);
-            const urgencyScore = job.urgencyScore || 50;
             
             return `
-                <div class="${cardClasses.join(' ')}" onclick="openJobModal('${job.id}')" data-job-id="${job.id}">
+                <div class="job-card">
                     <div class="job-header">
-                        <div class="job-id">
-                            <div class="job-priority-indicator ${priority.toLowerCase()}"></div>
-                            ${job.displayName}
-                        </div>
+                        <div class="job-id">${job.displayName}</div>
                         <div class="job-status status-${status}">
                             ${formatStatus(job.Status)}
                         </div>
@@ -2040,8 +1137,7 @@
                     <div class="job-meta">
                         <span class="meta-badge">📅 ${timeAgo}</span>
                         <span class="meta-badge">🎯 ${job['Ticket Number'] || 'N/A'}</span>
-                        <span class="meta-badge">⚡ Score: ${urgencyScore}</span>
-                        <span class="meta-badge">⏱️ Est: ${job.estimatedDuration}</span>
+                        <span class="meta-badge">⚡ ${job.priority}</span>
                     </div>
                     
                     <div class="job-info">
@@ -2065,201 +1161,13 @@
                             <div class="info-label">Summary</div>
                             <div class="info-value">${truncateText(job.Summary || 'No summary', 80)}</div>
                         </div>
-                        ${job.tags && job.tags.length > 0 ? `
-                        <div class="info-item" style="grid-column: 1 / -1;">
-                            <div class="info-label">Tags</div>
-                            <div class="info-value">${job.tags.slice(0, 3).map(tag => `<span style="background: rgba(139,0,0,0.1); padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; margin-right: 5px;">${tag}</span>`).join('')}</div>
-                        </div>
-                        ` : ''}
-                    </div>
-                    
-                    <div class="job-actions" onclick="event.stopPropagation()">
-                        <button class="job-action-btn btn-details" onclick="openJobModal('${job.id}')" title="View Details">
-                            📋 Details
-                        </button>
-                        ${!isCompleted && !isCancelled ? `
-                        <button class="job-action-btn btn-complete" onclick="completeJobFromCard('${job.id}')" title="Mark Complete">
-                            ✅ Complete
-                        </button>
-                        ` : ''}
-                        <button class="job-action-btn btn-edit" onclick="editJob('${job.id}')" title="Edit Job">
-                            ✏️ Edit
-                        </button>
-                        <button class="job-action-btn btn-delete" onclick="deleteCallout('${job.id}')" title="Cancel Callout">
-                            ❌
-                        </button>
                     </div>
                 </div>
             `;
         }
 
-        // Enhanced Modal Functions with Tabbed Interface
-        function openJobModal(jobId) {
-            const job = appState.allJobs.find(j => j.id === jobId || j['Callout ID'] === jobId);
-            if (!job) return;
-
-            appState.currentJob = job;
-            
-            document.getElementById('modalTitle').textContent = `Callout Details - ${job.displayName}`;
-            
-            // Load different tab contents
-            loadDetailsTab(job);
-            loadTimelineTab(job);
-            loadAnalyticsTab(job);
-            
-            document.getElementById('jobModal').classList.add('show');
-        }
-
-        function loadDetailsTab(job) {
-            document.getElementById('detailsTab').innerHTML = createDetailedJobView(job);
-        }
-
-        function loadTimelineTab(job) {
-            const timeline = generateJobTimeline(job);
-            document.getElementById('activityTimeline').innerHTML = timeline;
-        }
-
-        function loadAnalyticsTab(job) {
-            // Update analytics in real-time
-            setTimeout(() => {
-                document.getElementById('processingTime').textContent = calculateProcessingTime(job);
-                document.getElementById('priorityScore').textContent = `${job.urgencyScore}/150`;
-                document.getElementById('efficiencyRating').textContent = calculateEfficiencyRating(job);
-                document.getElementById('similarJobs').textContent = findSimilarJobs(job).length + ' found';
-            }, 500);
-        }
-
-        function switchTab(tabName) {
-            // Remove active class from all tabs
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            // Add active class to selected tab
-            event.target.classList.add('active');
-            document.getElementById(tabName + 'Tab').classList.add('active');
-        }
-
-        function createDetailedJobView(job) {
-            return `
-                <div class="detail-section">
-                    <div class="section-title">📋 Current Status & Information</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">Status</div>
-                            <div class="detail-value">${formatStatus(job.Status)}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Priority</div>
-                            <div class="detail-value">${job.priority}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Urgency Score</div>
-                            <div class="detail-value">${job.urgencyScore}/150</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Ticket Number</div>
-                            <div class="detail-value">${job['Ticket Number'] || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Data Source</div>
-                            <div class="detail-value">${job['Data Source'] || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Created</div>
-                            <div class="detail-value">${formatDateTime(job.Timestamp)}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Estimated Duration</div>
-                            <div class="detail-value">${job.estimatedDuration}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Time Since Created</div>
-                            <div class="detail-value">${getTimeAgo(job.createdAt)}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="detail-section">
-                    <div class="section-title">🏢 Job Information</div>
-                    <div class="detail-grid">
-                        <div class="detail-item">
-                            <div class="detail-label">Customer</div>
-                            <div class="detail-value">${job.Customer || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">RIG Number</div>
-                            <div class="detail-value">${job['RIG Number'] || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Well Name</div>
-                            <div class="detail-value">${job['Well Name'] || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Service Type</div>
-                            <div class="detail-value">${job['Service Type'] || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item" style="grid-column: 1 / -1;">
-                            <div class="detail-label">Summary</div>
-                            <div class="detail-value">${job.Summary || 'No summary available'}</div>
-                        </div>
-                        <div class="detail-item" style="grid-column: 1 / -1;">
-                            <div class="detail-label">Original Subject</div>
-                            <div class="detail-value">${job['Original Subject'] || 'N/A'}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="detail-section">
-                    <div class="section-title">📧 Contact & Communication</div>
-                    <div class="detail-grid">
-                        <div class="detail-item" style="grid-column: 1 / -1;">
-                            <div class="detail-label">Email ID</div>
-                            <div class="detail-value" style="word-break: break-all; font-size: 0.9rem;">${job['Email ID'] || 'N/A'}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function generateJobTimeline(job) {
-            const events = [
-                {
-                    time: job.createdAt,
-                    description: `Callout created - ${job['Callout ID']}`,
-                    type: 'created'
-                }
-            ];
-            
-            // Add status changes (simulated based on current status)
-            if (job.Status === 'APPROVED' || job.Status === 'COMPLETED') {
-                events.push({
-                    time: new Date(job.createdAt.getTime() + 30 * 60 * 1000), // 30 min later
-                    description: 'Callout approved for processing',
-                    type: 'approved'
-                });
-            }
-            
-            if (job.Status === 'COMPLETED') {
-                events.push({
-                    time: new Date(job.createdAt.getTime() + 4 * 60 * 60 * 1000), // 4 hours later
-                    description: 'Callout marked as completed',
-                    type: 'completed'
-                });
-            }
-            
-            return events.map(event => `
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <div class="timeline-time">${formatDateTime(event.time)}</div>
-                        <div class="timeline-description">${event.description}</div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Enhanced Stats and Analytics
         function updateStats() {
-            const stats = calculateEnhancedStats(appState.allJobs);
+            const stats = calculateStats(appState.allJobs);
             appState.stats = stats;
             
             document.getElementById('totalJobs').textContent = stats.total;
@@ -2267,118 +1175,25 @@
             document.getElementById('approvedJobs').textContent = stats.approved;
             document.getElementById('urgentJobs').textContent = stats.urgent;
             
-            // Update change indicators
             document.getElementById('totalChange').textContent = `${stats.total} total`;
             document.getElementById('pendingChange').textContent = `${stats.pending} awaiting`;
             document.getElementById('approvedChange').textContent = `${stats.approved} processed`;
-            document.getElementById('urgentChange').textContent = `${stats.urgent} critical`;
-            
-            // Update change indicators style
-            updateChangeIndicators(stats);
+            document.getElementById('urgentChange').textContent = `${stats.urgent} high priority`;
         }
 
-        function calculateEnhancedStats(jobs) {
+        function calculateStats(jobs) {
             if (!jobs || jobs.length === 0) {
-                return { total: 0, pending: 0, approved: 0, urgent: 0, completed: 0, updated: 0, cancelled: 0 };
+                return { total: 0, pending: 0, approved: 0, urgent: 0 };
             }
 
             return {
                 total: jobs.length,
                 pending: jobs.filter(j => j.Status === 'PENDING_APPROVAL').length,
-                approved: jobs.filter(j => ['APPROVED', 'UPDATED'].includes(j.Status)).length,
-                completed: jobs.filter(j => j.Status === 'COMPLETED').length,
-                updated: jobs.filter(j => j.Status === 'UPDATED').length,
-                cancelled: jobs.filter(j => j.Status === 'CANCELLED').length,
+                approved: jobs.filter(j => ['APPROVED', 'UPDATED', 'COMPLETED'].includes(j.Status)).length,
                 urgent: jobs.filter(j => (j.priority === 'Critical' || j.priority === 'High')).length
             };
         }
 
-        function updateChangeIndicators(stats) {
-            const indicators = [
-                { id: 'totalChange', value: stats.total, threshold: 10 },
-                { id: 'pendingChange', value: stats.pending, threshold: 5 },
-                { id: 'approvedChange', value: stats.approved, threshold: 8 },
-                { id: 'urgentChange', value: stats.urgent, threshold: 3 }
-            ];
-            
-            indicators.forEach(indicator => {
-                const element = document.getElementById(indicator.id);
-                element.className = 'stat-change';
-                
-                if (indicator.value > indicator.threshold) {
-                    element.classList.add('positive');
-                } else if (indicator.value < indicator.threshold / 2) {
-                    element.classList.add('negative');
-                } else {
-                    element.classList.add('neutral');
-                }
-            });
-        }
-
-        function updateBadges() {
-            const stats = appState.stats;
-            document.getElementById('allBadge').textContent = stats.total;
-            document.getElementById('pendingBadge').textContent = stats.pending;
-            document.getElementById('approvedBadge').textContent = stats.approved;
-            document.getElementById('updatedBadge').textContent = stats.updated;
-            document.getElementById('completedBadge').textContent = stats.completed;
-        }
-
-        // Enhanced Chart Functions
-        function initializeCharts() {
-            updateCharts();
-            setInterval(updateCharts, CONFIG.CHART_UPDATE_INTERVAL);
-        }
-
-        function updateCharts() {
-            createMiniChart('totalChart', generateChartData('total'));
-            createMiniChart('pendingChart', generateChartData('pending'));
-            createMiniChart('approvedChart', generateChartData('approved'));
-            createMiniChart('urgentChart', generateChartData('urgent'));
-        }
-
-        function generateChartData(type) {
-            // Generate sample data for the last 7 days
-            const data = [];
-            for (let i = 6; i >= 0; i--) {
-                const date = new Date();
-                date.setDate(date.getDate() - i);
-                
-                // Simulate data based on current stats
-                let value = 0;
-                switch (type) {
-                    case 'total':
-                        value = Math.max(0, appState.stats.total - Math.random() * 10);
-                        break;
-                    case 'pending':
-                        value = Math.max(0, appState.stats.pending - Math.random() * 5);
-                        break;
-                    case 'approved':
-                        value = Math.max(0, appState.stats.approved - Math.random() * 8);
-                        break;
-                    case 'urgent':
-                        value = Math.max(0, appState.stats.urgent - Math.random() * 3);
-                        break;
-                }
-                data.push(Math.round(value));
-            }
-            return data;
-        }
-
-        function createMiniChart(elementId, data) {
-            const container = document.getElementById(elementId);
-            if (!container) return;
-            
-            const maxValue = Math.max(...data, 1);
-            const bars = data.map(value => {
-                const height = (value / maxValue) * 100;
-                return `<div class="chart-bar" style="height: ${height}%"></div>`;
-            }).join('');
-            
-            container.innerHTML = bars;
-        }
-
-        // Enhanced Utility Functions
         function getTimeAgo(date) {
             const now = new Date();
             const diffMs = now - date;
@@ -2392,368 +1207,9 @@
             return date.toLocaleDateString();
         }
 
-        function calculateProcessingTime(job) {
-            const created = job.createdAt;
-            const now = new Date();
-            const diffHours = Math.floor((now - created) / 3600000);
-            
-            if (job.Status === 'COMPLETED') {
-                return `${diffHours} hours (completed)`;
-            }
-            return `${diffHours} hours (in progress)`;
-        }
-
-        function calculateEfficiencyRating(job) {
-            const urgencyScore = job.urgencyScore || 50;
-            const ageHours = Math.floor((new Date() - job.createdAt) / 3600000);
-            
-            let rating = 100;
-            if (urgencyScore > 100 && ageHours > 24) rating -= 30;
-            if (urgencyScore > 75 && ageHours > 8) rating -= 20;
-            if (job.Status === 'PENDING_APPROVAL' && ageHours > 4) rating -= 15;
-            
-            return `${Math.max(rating, 0)}%`;
-        }
-
-        function findSimilarJobs(job) {
-            return appState.allJobs.filter(j => 
-                j.id !== job.id && 
-                (j.Customer === job.Customer || 
-                 j['Service Type'] === job['Service Type'] ||
-                 j['RIG Number'] === job['RIG Number'])
-            );
-        }
-
-        // Enhanced Action Functions
-        async function completeJobFromCard(jobId) {
-            const job = appState.allJobs.find(j => j.id === jobId);
-            if (!job) return;
-            
-            try {
-                showNotification('Completing callout...', 'info');
-                
-                const result = await updateCallout(job.rowIndex, {
-                    'Status': 'COMPLETED'
-                });
-                
-                if (result.success) {
-                    showNotification(`Callout ${job.displayName} completed!`, 'success');
-                    await loadData();
-                } else {
-                    throw new Error(result.message || 'Failed to complete job');
-                }
-            } catch (error) {
-                showNotification(error.message || 'Failed to complete job', 'error');
-            }
-        }
-
-        async function deleteCallout(jobId) {
-            if (!confirm('Are you sure you want to cancel this callout? This action cannot be undone.')) {
-                return;
-            }
-            
-            const job = appState.allJobs.find(j => j.id === jobId);
-            if (!job) return;
-            
-            try {
-                showNotification('Cancelling callout...', 'info');
-                
-                const result = await updateCallout(job.rowIndex, {
-                    'Status': 'CANCELLED'
-                });
-                
-                if (result.success) {
-                    showNotification('Callout cancelled successfully', 'success');
-                    await loadData();
-                } else {
-                    throw new Error(result.message || 'Failed to cancel callout');
-                }
-                
-            } catch (error) {
-                console.error('Delete error:', error);
-                showNotification(error.message || 'Failed to cancel callout', 'error');
-            }
-        }
-
-        function editJob(jobId) {
-            showNotification('Edit functionality coming soon!', 'info');
-        }
-
-        function completeJob() {
-            if (!appState.currentJob) return;
-            
-            completeJobFromCard(appState.currentJob.id);
-            closeModal();
-        }
-
-        function duplicateJob() {
-            if (!appState.currentJob) return;
-            
-            closeModal();
-            showNotification('Duplicate feature coming soon!', 'info');
-        }
-
-        function printJob() {
-            if (!appState.currentJob) return;
-            
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                    <head><title>Callout Details - ${appState.currentJob.displayName}</title></head>
-                    <body>${document.getElementById('detailsTab').innerHTML}</body>
-                </html>
-            `);
-            printWindow.print();
-        }
-
-        function closeModal() {
-            document.getElementById('jobModal').classList.remove('show');
-            appState.currentJob = null;
-        }
-
-        // Enhanced Export and Report Functions
-        function generateReport() {
-            const reportData = {
-                timestamp: new Date().toISOString(),
-                stats: appState.stats,
-                totalJobs: appState.allJobs.length,
-                filteredJobs: appState.filteredJobs.length,
-                performance: appState.performance,
-                topCustomers: getTopCustomers(),
-                urgentJobs: getUrgentJobs(),
-                completionRate: calculateCompletionRate()
-            };
-            
-            const reportContent = JSON.stringify(reportData, null, 2);
-            downloadFile(reportContent, `callout_report_${new Date().toISOString().slice(0, 10)}.json`, 'application/json');
-            showNotification('Report generated successfully!', 'success');
-        }
-
-        function bulkExport() {
-            if (appState.filteredJobs.length === 0) {
-                showNotification('No data to export', 'warning');
-                return;
-            }
-            
-            const csvContent = convertToCSV(appState.filteredJobs);
-            downloadFile(csvContent, `callouts_bulk_export_${new Date().toISOString().slice(0, 10)}.csv`, 'text/csv');
-            showNotification(`Exported ${appState.filteredJobs.length} callouts`, 'success');
-        }
-
-        function exportData() {
-            const csvContent = convertToCSV(appState.filteredJobs);
-            downloadFile(csvContent, `callouts_export_${new Date().toISOString().slice(0, 10)}.csv`, 'text/csv');
-            showNotification('Data exported successfully!', 'success');
-        }
-
-        // Enhanced Utility Functions
-        function getTopCustomers() {
-            const customerCounts = {};
-            appState.allJobs.forEach(job => {
-                const customer = job.Customer || 'Unknown';
-                customerCounts[customer] = (customerCounts[customer] || 0) + 1;
-            });
-            
-            return Object.entries(customerCounts)
-                .sort(([,a], [,b]) => b - a)
-                .slice(0, 5)
-                .map(([customer, count]) => ({ customer, count }));
-        }
-
-        function getUrgentJobs() {
-            return appState.allJobs
-                .filter(job => job.priority === 'Critical' || job.urgencyScore > 100)
-                .sort((a, b) => b.urgencyScore - a.urgencyScore)
-                .slice(0, 10);
-        }
-
-        function calculateCompletionRate() {
-            if (appState.allJobs.length === 0) return 0;
-            const completed = appState.allJobs.filter(job => job.Status === 'COMPLETED').length;
-            return Math.round((completed / appState.allJobs.length) * 100);
-        }
-
-        // Enhanced UI Functions
-        function clearAllFilters() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('statusFilter').value = '';
-            document.getElementById('priorityFilter').value = '';
-            document.getElementById('startDate').value = '';
-            document.getElementById('endDate').value = '';
-            
-            appState.searchTerm = '';
-            appState.currentFilter = 'all';
-            appState.filters = { status: '', priority: '', startDate: '', endDate: '' };
-            
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector('[data-filter="all"]').classList.add('active');
-            
-            applyFilters();
-            saveState();
-            showNotification('All filters cleared', 'info');
-        }
-
-        function quickActions() {
-            const actions = [
-                'Refresh Data',
-                'Export All',
-                'Generate Report',
-                'Clear Filters',
-                'Create Callout'
-            ];
-            
-            const action = prompt('Quick Actions:\n' + actions.map((a, i) => `${i + 1}. ${a}`).join('\n') + '\n\nEnter number:');
-            
-            switch (action) {
-                case '1': loadData(); break;
-                case '2': exportData(); break;
-                case '3': generateReport(); break;
-                case '4': clearAllFilters(); break;
-                case '5': openCreateModal(); break;
-                default: showNotification('Invalid selection', 'warning');
-            }
-        }
-
-        function openCreateModal() {
-            showNotification('Create new callout feature coming soon!', 'info');
-        }
-
-        // Enhanced State Management
-        function saveState() {
-            const state = {
-                currentFilter: appState.currentFilter,
-                currentSort: appState.currentSort,
-                currentView: appState.currentView,
-                filters: appState.filters,
-                searchTerm: appState.searchTerm
-            };
-            
-            try {
-                localStorage.setItem(CONFIG.LOCAL_STORAGE_KEY, JSON.stringify(state));
-            } catch (error) {
-                console.warn('Failed to save state:', error);
-            }
-        }
-
-        function loadSavedState() {
-            try {
-                const saved = localStorage.getItem(CONFIG.LOCAL_STORAGE_KEY);
-                if (saved) {
-                    const state = JSON.parse(saved);
-                    appState.currentFilter = state.currentFilter || 'all';
-                    appState.currentSort = state.currentSort || 'timestamp-desc';
-                    appState.currentView = state.currentView || 'grid';
-                    appState.filters = state.filters || {};
-                    appState.searchTerm = state.searchTerm || '';
-                    
-                    // Restore UI state
-                    if (appState.searchTerm) {
-                        document.getElementById('searchInput').value = appState.searchTerm;
-                    }
-                    
-                    if (appState.filters.status) {
-                        document.getElementById('statusFilter').value = appState.filters.status;
-                    }
-                    
-                    if (appState.filters.priority) {
-                        document.getElementById('priorityFilter').value = appState.filters.priority;
-                    }
-                }
-            } catch (error) {
-                console.warn('Failed to load saved state:', error);
-            }
-        }
-
-        // Enhanced Progress and Loading Functions
-        function showProgressBar(percentage) {
-            const progressBar = document.getElementById('loadingProgress');
-            if (progressBar) {
-                progressBar.style.width = `${percentage}%`;
-            }
-        }
-
-        function hideProgressBar() {
-            setTimeout(() => {
-                const progressBar = document.getElementById('loadingProgress');
-                if (progressBar) {
-                    progressBar.style.width = '0%';
-                }
-            }, 500);
-        }
-
-        // Reuse existing functions from original code with enhancements...
-        async function fetchWithRetry(url, options = {}, retries = CONFIG.RETRY_ATTEMPTS) {
-            let lastError;
-            let delay = CONFIG.RETRY_DELAY;
-            
-            for (let attempt = 1; attempt <= retries; attempt++) {
-                try {
-                    console.log(`🔄 Attempt ${attempt}/${retries}: ${url}`);
-                    
-                    const response = await fetch(url, {
-                        ...options,
-                        headers: {
-                            'Content-Type': 'application/json',
-                            ...options.headers
-                        }
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                    }
-                    
-                    return response;
-                    
-                } catch (error) {
-                    lastError = error;
-                    console.log(`❌ Attempt ${attempt} failed:`, error.message);
-                    
-                    if (attempt < retries) {
-                        console.log(`⏳ Retrying in ${delay}ms...`);
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        delay = Math.min(delay * 2, CONFIG.MAX_RETRY_DELAY);
-                    }
-                }
-            }
-            
-            throw lastError;
-        }
-
-        async function updateCallout(rowIndex, updates) {
-            const response = await fetchWithRetry(CONFIG.APPS_SCRIPT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    action: 'update',
-                    calloutId: rowIndex,
-                    updates: updates
-                })
-            });
-            
-            return await response.json();
-        }
-
         function formatStatus(status) {
             if (!status) return 'Pending';
             return status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-        }
-
-        function formatDate(dateString) {
-            if (!dateString) return 'N/A';
-            try {
-                return new Date(dateString).toLocaleDateString();
-            } catch (error) {
-                return 'Invalid Date';
-            }
-        }
-
-        function formatDateTime(dateString) {
-            if (!dateString) return 'N/A';
-            try {
-                return new Date(dateString).toLocaleString();
-            } catch (error) {
-                return 'Invalid Date';
-            }
         }
 
         function truncateText(text, maxLength) {
@@ -2791,15 +1247,10 @@
         }
 
         function setView(view) {
-            appState.currentView = view;
-            
             document.querySelectorAll('.view-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            
             event.target.classList.add('active');
-            renderJobs();
-            saveState();
         }
 
         function updateJobsTitle() {
@@ -2808,7 +1259,7 @@
             const filteredCount = appState.filteredJobs.length;
             const totalCount = appState.allJobs.length;
             
-            if (appState.currentFilter === 'all' && !appState.searchTerm && !appState.filters.status && !appState.filters.priority) {
+            if (appState.currentFilter === 'all' && !appState.searchTerm) {
                 title.innerHTML = '📋 All Callouts';
                 count.textContent = `(${totalCount})`;
             } else {
@@ -2825,9 +1276,6 @@
                         <div class="loading-spinner"></div>
                         <h3>🚀 Loading Callouts</h3>
                         <p>Fetching latest data from Google Apps Script API...</p>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 0%" id="loadingProgress"></div>
-                        </div>
                     </div>
                 `;
             }
@@ -2848,40 +1296,12 @@
                             <li>Ensure API permissions are correct</li>
                             <li>Check browser console for detailed errors</li>
                         </ol>
-                        <button class="btn-primary" onclick="loadData()" style="margin-top: 15px;">
+                        <button class="action-btn btn-refresh" onclick="loadData()" style="margin-top: 15px;">
                             🔄 Retry Loading
                         </button>
                     </div>
                 </div>
             `;
-        }
-
-        function showNotification(message, type = 'info', duration = 3000) {
-            const existing = document.querySelector('.notification');
-            if (existing) existing.remove();
-
-            const icons = {
-                success: '✅',
-                error: '❌',
-                warning: '⚠️',
-                info: 'ℹ️'
-            };
-
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.innerHTML = `
-                <span class="notification-icon">${icons[type] || 'ℹ️'}</span>
-                <span>${message}</span>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => notification.classList.add('show'), 100);
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => notification.remove(), 300);
-            }, duration);
         }
 
         function showSystemStatus(status, type) {
@@ -2911,6 +1331,62 @@
             document.getElementById('autoRefresh').textContent = 'Auto-Refresh: ON';
         }
 
+        function clearAllFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('priorityFilter').value = '';
+            
+            appState.searchTerm = '';
+            appState.currentFilter = 'all';
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('[data-filter="all"]').classList.add('active');
+            
+            applyFilters();
+        }
+
+        async function fetchWithRetry(url, options = {}, retries = CONFIG.RETRY_ATTEMPTS) {
+            let lastError;
+            let delay = CONFIG.RETRY_DELAY;
+            
+            for (let attempt = 1; attempt <= retries; attempt++) {
+                try {
+                    console.log(`🔄 Attempt ${attempt}/${retries}: ${url}`);
+                    
+                    const response = await fetch(url, {
+                        ...options,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            ...options.headers
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    return response;
+                    
+                } catch (error) {
+                    lastError = error;
+                    console.log(`❌ Attempt ${attempt} failed:`, error.message);
+                    
+                    if (attempt < retries) {
+                        console.log(`⏳ Retrying in ${delay}ms...`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        delay = Math.min(delay * 2, CONFIG.MAX_RETRY_DELAY);
+                    }
+                }
+            }
+            
+            throw lastError;
+        }
+
+        function exportData() {
+            const csvContent = convertToCSV(appState.filteredJobs);
+            downloadCSV(csvContent, `callouts_export_${new Date().toISOString().slice(0, 10)}.csv`);
+        }
+
         function convertToCSV(data) {
             if (data.length === 0) return '';
             
@@ -2926,8 +1402,8 @@
             return csvRows.join('\n');
         }
 
-        function downloadFile(content, filename, mimeType) {
-            const blob = new Blob([content], { type: mimeType });
+        function downloadCSV(content, filename) {
+            const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             
             if (link.download !== undefined) {
@@ -2938,26 +1414,17 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                URL.revokeObjectURL(url);
             }
         }
 
         function showSystemInfo() {
-            const info = `
-                Dashboard v3.0 Enhanced
-                API: ${appState.performance.errors === 0 ? 'Healthy' : 'Issues Detected'}
-                Jobs: ${appState.allJobs.length}
-                Load Time: ${appState.performance.loadTime.toFixed(2)}ms
-                API Calls: ${appState.performance.apiCalls}
-                Errors: ${appState.performance.errors}
-            `;
-            showNotification(info, 'info', 8000);
+            alert(`Dashboard v1.0 Read-Only\nAPI: ${appState.isLoading ? 'Loading' : 'Connected'}\nJobs: ${appState.allJobs.length}`);
         }
 
         function showApiStatus() {
             const status = appState.isLoading ? 'Loading...' : 'Connected';
             const lastUpdate = appState.lastUpdated ? appState.lastUpdated.toLocaleTimeString() : 'Never';
-            showNotification(`API Status: ${status} | Last Update: ${lastUpdate}`, 'info', 5000);
+            alert(`API Status: ${status}\nLast Update: ${lastUpdate}`);
         }
 
         function downloadLogs() {
@@ -2965,50 +1432,27 @@
                 timestamp: new Date().toISOString(),
                 config: CONFIG,
                 stats: appState.stats,
-                performance: appState.performance,
                 totalJobs: appState.allJobs.length,
                 filteredJobs: appState.filteredJobs.length,
-                lastUpdated: appState.lastUpdated,
-                currentFilters: appState.filters,
-                currentSearch: appState.searchTerm
+                lastUpdated: appState.lastUpdated
             }, null, 2);
             
-            downloadFile(logs, `dashboard_logs_${new Date().toISOString().slice(0, 10)}.json`, 'application/json');
-        }
-
-        function showAnalytics() {
-            const analytics = {
-                totalCallouts: appState.allJobs.length,
-                completionRate: calculateCompletionRate(),
-                averageProcessingTime: calculateAverageProcessingTime(),
-                topCustomers: getTopCustomers(),
-                urgentJobsCount: appState.stats.urgent,
-                performanceMetrics: appState.performance
-            };
-            
-            showNotification(`Completion Rate: ${analytics.completionRate}% | Avg Processing: ${analytics.averageProcessingTime}`, 'info', 6000);
-        }
-
-        function calculateAverageProcessingTime() {
-            const completedJobs = appState.allJobs.filter(job => job.Status === 'COMPLETED');
-            if (completedJobs.length === 0) return 'N/A';
-            
-            const totalHours = completedJobs.reduce((sum, job) => {
-                const hours = Math.floor((new Date() - job.createdAt) / 3600000);
-                return sum + hours;
-            }, 0);
-            
-            return `${Math.round(totalHours / completedJobs.length)} hours`;
+            const blob = new Blob([logs], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `dashboard_logs_${new Date().toISOString().slice(0, 10)}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
         }
 
         window.addEventListener('beforeunload', function() {
             if (appState.refreshInterval) {
                 clearInterval(appState.refreshInterval);
             }
-            saveState();
         });
 
-        console.log('🎯 Enhanced TASK Energy Dashboard Ready!');
+        console.log('🎯 TASK Energy Read-Only Dashboard Ready!');
     </script>
 </body>
 </html>

@@ -1,1571 +1,962 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TASK Energy - Mobile Job Dashboard</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #8B0000 0%, #007bff 100%);
-            min-height: 100vh;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-            color: white;
-        }
-
-        .header h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header p {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 25px;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .search-container {
-            flex: 1;
-            min-width: 250px;
-            max-width: 400px;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 12px 40px 12px 15px;
-            border: none;
-            border-radius: 25px;
-            font-size: 14px;
-            background: rgba(255,255,255,0.95);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        .search-input:focus {
-            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
-            transform: translateY(-1px);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #666;
-            font-size: 16px;
-        }
-
-        .filter-buttons {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 8px 16px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            font-size: 13px;
-            backdrop-filter: blur(10px);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .filter-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-1px);
-        }
-
-        .filter-btn.active {
-            background: rgba(255,255,255,0.9);
-            color: #333;
-            border-color: rgba(255,255,255,0.9);
-        }
-
-        .refresh-button {
-            padding: 8px 16px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
-            font-size: 13px;
-        }
-
-        .refresh-button:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-1px);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: rgba(255,255,255,0.95);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            border-color: #8B0000;
-        }
-
-        .stat-card.active {
-            border-color: #8B0000;
-            background: rgba(139, 0, 0, 0.05);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: #8B0000;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            color: #666;
-            font-weight: 600;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .jobs-container {
-            margin-bottom: 30px;
-        }
-
-        .jobs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-        }
-
-        /* OPTION 1 CARD STYLE - CONFIRMED SELECTION */
-        .job-card {
-            background: rgba(255,255,255,0.98);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .job-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #8B0000 0%, #ff4757 100%);
-        }
-
-        .job-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            border-color: #8B0000;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-
-        .job-id {
-            font-size: 1.3rem;
-            font-weight: 900;
-            color: #8B0000;
-            letter-spacing: 0.5px;
-        }
-
-        .status-badge {
-            padding: 6px 12px;
-            border-radius: 25px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            text-align: center;
-            min-width: 90px;
-        }
-
-        .status-new { background: #e3f2fd; color: #1565c0; }
-        .status-pending { background: #fff3e0; color: #ef6c00; }
-        .status-pending_approval { background: #fff8e1; color: #f57f17; }
-        .status-approved { background: #e8f5e8; color: #2e7d32; }
-        .status-completed { background: #e8f5e8; color: #2e7d32; }
-        .status-confirmed { background: #e8f5e8; color: #2e7d32; }
-        .status-updated { background: #e1f5fe; color: #0277bd; }
-
-        .card-content {
-            margin-bottom: 15px;
-        }
-
-        .job-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-
-        .job-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .detail-item {
-            font-size: 0.85rem;
-            color: #666;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .detail-label {
-            font-weight: 600;
-            color: #8B0000;
-        }
-
-        .ros-section {
-            background: rgba(139, 0, 0, 0.05);
-            border-radius: 8px;
-            padding: 10px;
-            margin: 10px 0;
-            border-left: 3px solid #8B0000;
-        }
-
-        .ros-date {
-            font-weight: 700;
-            color: #8B0000;
-            font-size: 0.9rem;
-        }
-
-        .ros-status {
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 2px;
-        }
-
-        .card-actions {
-            display: flex;
-            gap: 8px;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #8B0000 0%, #a01000 100%);
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: #8B0000;
-            padding: 8px 16px;
-            border: 1px solid #8B0000;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-secondary:hover {
-            background: #8B0000;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .btn-complete {
-            background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
-            color: white;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 15px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-complete:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: white;
-            font-size: 1.2rem;
-        }
-
-        .error-container {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .no-results {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            color: #666;
-            font-size: 1.1rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .last-updated {
-            text-align: center;
-            color: rgba(255,255,255,0.8);
-            font-size: 0.9rem;
-            margin-top: 20px;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 2% auto;
-            padding: 0;
-            border-radius: 15px;
-            width: 95%;
-            max-width: 900px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-
-        .modal-header {
-            background: linear-gradient(135deg, #8B0000 0%, #007bff 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 15px 15px 0 0;
-            position: relative;
-        }
-
-        .close {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: white;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background-color 0.3s;
-        }
-
-        .close:hover {
-            background-color: rgba(255,255,255,0.2);
-        }
-
-        .modal-body {
-            padding: 25px;
-        }
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .detail-section {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            border-left: 4px solid #8B0000;
-        }
-
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #8B0000;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #8B0000;
-            padding-bottom: 8px;
-        }
-
-        .detail-item {
-            margin-bottom: 12px;
-        }
-
-        .detail-label {
-            font-weight: 600;
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 4px;
-        }
-
-        .detail-value {
-            color: #333;
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        .empty-value {
-            color: #999;
-            font-style: italic;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            padding: 20px 25px;
-            border-top: 1px solid #eee;
-            background: #f8f9fa;
-            border-radius: 0 0 15px 15px;
-        }
-
-        .btn-modal {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            min-width: 120px;
-        }
-
-        .btn-edit {
-            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-            color: white;
-        }
-
-        .btn-edit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
-        }
-
-        .btn-complete-modal {
-            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
-            color: white;
-        }
-
-        .btn-complete-modal:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
-        }
-
-        .btn-close-modal {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-close-modal:hover {
-            background: #545b62;
-            transform: translateY(-2px);
-        }
-
-        /* Edit Modal Styles */
-        .edit-form {
-            max-width: 100%;
-        }
-
-        .edit-input, .edit-select, .edit-textarea {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-            background: white;
-        }
-
-        .edit-input:focus, .edit-select:focus, .edit-textarea:focus {
-            outline: none;
-            border-color: #8B0000;
-            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
-        }
-
-        .edit-textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        .edit-actions {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            padding: 20px 0;
-        }
-
-        .btn-save {
-            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            min-width: 120px;
-        }
-
-        .btn-save:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
-        }
-
-        .btn-cancel {
-            background: #6c757d;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            min-width: 120px;
-        }
-
-        .btn-cancel:hover {
-            background: #545b62;
-            transform: translateY(-2px);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-
-            .header h1 {
-                font-size: 1.8rem;
-            }
-
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .search-container {
-                max-width: none;
-            }
-
-            .filter-buttons {
-                justify-content: center;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            }
-
-            .jobs-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .job-details {
-                grid-template-columns: 1fr;
-            }
-
-            .card-actions {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .modal-content {
-                width: 98%;
-                margin: 1% auto;
-                max-height: 95vh;
-            }
-
-            .detail-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .modal-actions {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🏗️ TASK Energy</h1>
-            <p>Mobile Job Dashboard - Real-time Callout Management</p>
-            <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 5px;">✓ CRUD Operations Available</p>
-        </div>
-
-        <div class="controls">
-            <div class="search-container">
-                <input type="text" id="searchInput" class="search-input" placeholder="Search by ID, client, or location...">
-                <span class="search-icon">🔍</span>
-            </div>
-            
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="new">New</button>
-                <button class="filter-btn" data-filter="pending">Pending</button>
-                <button class="filter-btn" data-filter="approved">Approved</button>
-                <button class="filter-btn" data-filter="completed">Completed</button>
-            </div>
-            
-            <button class="refresh-button" onclick="loadData()">🔄 Refresh</button>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card" data-filter="all">
-                <div class="stat-number" id="totalJobs">0</div>
-                <div class="stat-label">Total Jobs</div>
-            </div>
-            <div class="stat-card" data-filter="new">
-                <div class="stat-number" id="newJobs">0</div>
-                <div class="stat-label">New</div>
-            </div>
-            <div class="stat-card" data-filter="pending">
-                <div class="stat-number" id="pendingJobs">0</div>
-                <div class="stat-label">Pending</div>
-            </div>
-            <div class="stat-card" data-filter="approved">
-                <div class="stat-number" id="approvedJobs">0</div>
-                <div class="stat-label">Approved</div>
-            </div>
-        </div>
-
-        <div class="jobs-container">
-            <div class="jobs-grid" id="jobsContainer">
-                <div class="loading">Loading job data...</div>
-            </div>
-        </div>
-
-        <div class="last-updated" id="lastUpdated">
-            Last updated: Never
-        </div>
-    </div>
-
-    <!-- Job Detail Modal -->
-    <div id="jobModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">Job Details</h2>
-                <span class="close" onclick="closeModal()">&times;</span>
-            </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Content will be populated by JavaScript -->
-            </div>
-            <div class="modal-actions">
-                <button class="btn-modal btn-edit" onclick="openEditModal()">Edit Job</button>
-                <button class="btn-modal btn-complete-modal" onclick="completeJob()">Mark Complete</button>
-                <button class="btn-modal btn-close-modal" onclick="closeModal()">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Job Modal -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Edit Job Details</h2>
-                <span class="close" onclick="closeEditModal()">&times;</span>
-            </div>
-            <div class="modal-body" id="editModalBody">
-                <!-- Content will be populated by JavaScript -->
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Configuration - UPDATED WITH WORKING API
-        const CONFIG = {
-            APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzp6XLSYxUrXfZMIjuJYaz-7ryYQVt0SUs2Tj3Dd3ctuCKuVFTh96cL_KVa1-ULW19R/exec',
-            REFRESH_INTERVAL: 30000, // 30 seconds
-            DEBUG: true
+/**
+ * TASK Energy - Callout Management System API
+ * COMPLETE CORS-ENABLED VERSION for GitHub Pages
+ * Version: 6.1 - Production Ready with Full CORS Support
+ */
+
+// CONFIGURATION
+const SHEET_ID = '1kS_vO8FfE94LHnv5ftsHqaHLm8Xum0l5W6NvXGlZB1A';
+const SHEET_NAME = 'Sheet1';
+const DEBUG_MODE = true;
+
+// ============================================
+// CORS-ENABLED MAIN ENTRY POINTS
+// ============================================
+
+/**
+ * Handle GET requests with CORS headers
+ */
+function doGet(e) {
+  try {
+    logDebug('=== GET REQUEST RECEIVED WITH CORS ===');
+    
+    const params = e && e.parameter ? e.parameter : {};
+    logDebug('Parameters:', params);
+    
+    // Test basic sheet access first
+    const sheetTest = testBasicSheetAccess();
+    if (!sheetTest.success) {
+      logDebug('Sheet access failed:', sheetTest.error);
+      return createCORSResponse(false, 'Sheet access error: ' + sheetTest.error);
+    }
+    
+    const action = params.action || 'read';
+    logDebug('Action requested:', action);
+    
+    switch (action) {
+      case 'read':
+        return handleRead(params);
+      case 'test':
+        return createCORSResponse(true, 'API is working with CORS enabled', { 
+          timestamp: new Date().toISOString(),
+          sheetDimensions: `${sheetTest.lastRow}x${sheetTest.lastCol}`,
+          totalColumns: sheetTest.lastCol,
+          corsEnabled: true,
+          githubPagesSupported: true,
+          apiVersion: '6.1'
+        });
+      case 'debug':
+        return handleDebugInfo();
+      case 'headers':
+        return getAllHeaders();
+      default:
+        return createCORSResponse(false, 'Invalid action: ' + action);
+    }
+    
+  } catch (error) {
+    logDebug('GET Error caught:', error.toString());
+    return createCORSResponse(false, 'GET Error: ' + error.toString());
+  }
+}
+
+/**
+ * Handle POST requests with CORS headers
+ */
+function doPost(e) {
+  try {
+    logDebug('=== POST REQUEST RECEIVED WITH CORS ===');
+    
+    if (!e || !e.postData || !e.postData.contents) {
+      return createCORSResponse(false, 'No POST data received');
+    }
+    
+    let requestData;
+    try {
+      requestData = JSON.parse(e.postData.contents);
+      logDebug('Parsed request data:', requestData);
+    } catch (parseError) {
+      return createCORSResponse(false, 'Invalid JSON: ' + parseError.toString());
+    }
+    
+    const action = requestData.action;
+    logDebug('Action requested:', action);
+    
+    switch (action) {
+      case 'create':
+        return handleCreate(requestData.callout);
+      case 'read':
+        return handleRead(requestData.filters || {});
+      case 'update':
+        return handleUpdate(requestData.calloutId, requestData.updates);
+      case 'delete':
+        return handleDelete(requestData.calloutId);
+      default:
+        return createCORSResponse(false, 'Invalid action: ' + action);
+    }
+    
+  } catch (error) {
+    logDebug('POST Error caught:', error.toString());
+    return createCORSResponse(false, 'POST Error: ' + error.toString());
+  }
+}
+
+/**
+ * Handle OPTIONS requests for CORS preflight
+ */
+function doOptions(e) {
+  logDebug('=== OPTIONS REQUEST (CORS PREFLIGHT) ===');
+  return createCORSResponse(true, 'CORS preflight successful', {
+    allowedMethods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    corsEnabled: true
+  });
+}
+
+// ============================================
+// CORS-ENABLED RESPONSE CREATION
+// ============================================
+
+/**
+ * Create standardized response with comprehensive CORS headers
+ */
+function createCORSResponse(success, message, data = null) {
+  const response = {
+    success: success,
+    message: message,
+    data: data,
+    timestamp: new Date().toISOString(),
+    cors: 'enabled',
+    version: '6.1'
+  };
+  
+  logDebug('Creating CORS response:', { 
+    success, 
+    message, 
+    dataType: data ? typeof data : 'null',
+    dataLength: data ? JSON.stringify(data).length : 0 
+  });
+  
+  return ContentService
+    .createTextOutput(JSON.stringify(response))
+    .setMimeType(ContentService.MimeType.JSON)
+    .setHeader('Access-Control-Allow-Origin', '*')
+    .setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
+    .setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin')
+    .setHeader('Access-Control-Max-Age', '86400')
+    .setHeader('Access-Control-Allow-Credentials', 'false')
+    .setHeader('Vary', 'Origin')
+    .setHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
+    .setHeader('Pragma', 'no-cache')
+    .setHeader('Expires', '0');
+}
+
+// ============================================
+// SHEET ACCESS WITH ALL COLUMNS
+// ============================================
+
+/**
+ * Test basic sheet access
+ */
+function testBasicSheetAccess() {
+  try {
+    logDebug('Testing sheet access...');
+    logDebug('Sheet ID:', SHEET_ID);
+    logDebug('Sheet Name:', SHEET_NAME);
+    
+    const spreadsheet = SpreadsheetApp.openById(SHEET_ID);
+    if (!spreadsheet) {
+      return { success: false, error: 'Cannot open spreadsheet' };
+    }
+    
+    logDebug('Spreadsheet opened successfully');
+    logDebug('Spreadsheet name:', spreadsheet.getName());
+    
+    const sheet = spreadsheet.getSheetByName(SHEET_NAME);
+    if (!sheet) {
+      const availableSheets = spreadsheet.getSheets().map(s => s.getName());
+      return { 
+        success: false, 
+        error: `Sheet '${SHEET_NAME}' not found. Available: ${availableSheets.join(', ')}` 
+      };
+    }
+    
+    const lastRow = sheet.getLastRow();
+    const lastCol = sheet.getLastColumn();
+    
+    logDebug('Sheet dimensions:', lastRow, 'rows x', lastCol, 'columns');
+    
+    return { 
+      success: true, 
+      sheet: sheet, 
+      lastRow: lastRow, 
+      lastCol: lastCol,
+      spreadsheetName: spreadsheet.getName()
+    };
+    
+  } catch (error) {
+    logDebug('Sheet access error:', error.toString());
+    return { success: false, error: error.toString() };
+  }
+}
+
+/**
+ * Get all headers from the sheet with CORS
+ */
+function getAllHeaders() {
+  try {
+    logDebug('=== GETTING ALL HEADERS WITH CORS ===');
+    
+    const sheet = getSheet();
+    const lastCol = sheet.getLastColumn();
+    
+    logDebug('Reading all', lastCol, 'column headers');
+    
+    const headerRow = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+    const headers = headerRow.map((h, index) => ({
+      index: index + 1,
+      name: (h || '').toString().trim(),
+      hasValue: h && h.toString().trim() !== ''
+    }));
+    
+    const validHeaders = headers.filter(h => h.hasValue);
+    
+    logDebug('Total columns:', lastCol);
+    logDebug('Headers with values:', validHeaders.length);
+    
+    return createCORSResponse(true, 'All headers retrieved with CORS support', {
+      totalColumns: lastCol,
+      validHeaders: validHeaders.length,
+      headers: validHeaders,
+      allHeaders: headers,
+      corsEnabled: true
+    });
+    
+  } catch (error) {
+    logDebug('Get headers error:', error.toString());
+    return createCORSResponse(false, 'Headers error: ' + error.toString());
+  }
+}
+
+/**
+ * Get sheet with error handling
+ */
+function getSheet() {
+  const result = testBasicSheetAccess();
+  if (!result.success) {
+    throw new Error(result.error);
+  }
+  return result.sheet;
+}
+
+// ============================================
+// CORS-ENABLED READ OPERATION
+// ============================================
+
+/**
+ * Handle READ operations with CORS support and improved data validation
+ */
+function handleRead(filters = {}) {
+  try {
+    logDebug('=== STARTING CORS-ENABLED READ OPERATION (ALL COLUMNS) ===');
+    logDebug('Filters:', filters);
+    
+    const sheet = getSheet();
+    const lastRow = sheet.getLastRow();
+    const lastCol = sheet.getLastColumn();
+    
+    logDebug('Sheet info - Rows:', lastRow, 'Columns:', lastCol);
+    
+    if (lastRow === 0) {
+      return createCORSResponse(true, 'Sheet is empty', {
+        callouts: [],
+        stats: { total: 0, new: 0, approved: 0, pending: 0, urgent: 0 },
+        corsEnabled: true
+      });
+    }
+    
+    if (lastRow === 1) {
+      return createCORSResponse(true, 'Only headers found, no data rows', {
+        callouts: [],
+        stats: { total: 0, new: 0, approved: 0, pending: 0, urgent: 0 },
+        corsEnabled: true
+      });
+    }
+    
+    logDebug('Reading ALL', lastCol, 'columns of', lastRow, 'rows');
+    
+    // Read ALL data from the sheet
+    let data;
+    try {
+      data = sheet.getRange(1, 1, lastRow, lastCol).getValues();
+    } catch (rangeError) {
+      logDebug('Failed to read all columns, trying batch approach...');
+      return handleReadInBatches(sheet, lastRow, lastCol, filters);
+    }
+    
+    logDebug('Data retrieved - Size:', data.length, 'x', data[0].length);
+    
+    // Process headers - ALL headers
+    const headerRow = data[0];
+    const allHeaders = headerRow.map(h => (h || '').toString().trim());
+    const validHeaders = allHeaders.filter(h => h !== '');
+    
+    logDebug('Total headers found:', allHeaders.length);
+    logDebug('Valid headers found:', validHeaders.length);
+    logDebug('First 10 headers:', validHeaders.slice(0, 10));
+    logDebug('Last 10 headers:', validHeaders.slice(-10));
+    
+    // Process data rows with IMPROVED validation
+    const dataRows = data.slice(1);
+    logDebug('Data rows to process:', dataRows.length);
+    
+    const callouts = [];
+    let processedRows = 0;
+    let skippedRows = 0;
+    
+    dataRows.forEach((row, index) => {
+      // IMPROVED: More lenient data validation
+      const calloutId = (row[0] || '').toString().trim();
+      const customer = (row[8] || '').toString().trim();
+      const rigNumber = (row[9] || '').toString().trim();
+      
+      const hasKeyData = calloutId !== '' || customer !== '' || rigNumber !== '';
+      const hasAnyData = row.some(cell => cell && cell.toString().trim() !== '');
+      const isValidRow = hasKeyData || hasAnyData;
+      
+      logDebug(`Row ${index + 2}: CalloutID="${calloutId}", Customer="${customer}", RIG="${rigNumber}", Valid=${isValidRow}`);
+      
+      if (isValidRow) {
+        const callout = {};
+        
+        // Map ALL row data to headers
+        allHeaders.forEach((header, colIndex) => {
+          if (header && colIndex < row.length) {
+            const value = (row[colIndex] || '').toString().trim();
+            callout[header] = value;
+          }
+        });
+        
+        // Add metadata
+        callout._rowIndex = index + 2;
+        callout._totalFields = Object.keys(callout).length;
+        callout._hasKeyData = hasKeyData;
+        callout._debugInfo = {
+          calloutId: calloutId,
+          customer: customer,
+          rigNumber: rigNumber
         };
-
-        // Global variables
-        let allJobs = [];
-        let filteredJobs = [];
-        let currentFilter = 'all';
-        let currentJob = null;
-        let refreshInterval;
-
-        // Initialize app
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Initializing TASK Energy Dashboard...');
-            setupEventListeners();
-            loadData();
-            startAutoRefresh();
+        
+        callouts.push(callout);
+        processedRows++;
+        
+        logDebug(`✅ Row ${index + 2} ACCEPTED: ID="${calloutId}", Customer="${customer}"`);
+      } else {
+        skippedRows++;
+        logDebug(`❌ Row ${index + 2} SKIPPED: No valid data found`);
+      }
+    });
+    
+    logDebug('PROCESSING SUMMARY:');
+    logDebug('- Total data rows:', dataRows.length);
+    logDebug('- Processed (accepted):', processedRows);
+    logDebug('- Skipped (rejected):', skippedRows);
+    logDebug('- Final callouts created:', callouts.length);
+    
+    if (callouts.length > 0) {
+      logDebug('Sample callout total fields:', callouts[0]._totalFields);
+      logDebug('Sample callout keys (first 15):', Object.keys(callouts[0]).slice(0, 15));
+      
+      const sampleCallout = callouts[0];
+      logDebug('Sample callout key data:');
+      logDebug('- Callout ID:', sampleCallout['Callout ID']);
+      logDebug('- Customer:', sampleCallout['Customer']);
+      logDebug('- Status:', sampleCallout['Status']);
+      logDebug('- RIG Number:', sampleCallout['RIG Number']);
+      logDebug('- Well Name:', sampleCallout['Well Name']);
+    } else {
+      logDebug('⚠️ WARNING: No callouts created - all rows were filtered out');
+    }
+    
+    // Apply filters
+    let filteredCallouts = callouts;
+    if (Object.keys(filters).length > 0) {
+      filteredCallouts = callouts.filter(callout => {
+        return Object.entries(filters).every(([key, value]) => {
+          const calloutValue = (callout[key] || '').toString().toLowerCase();
+          const filterValue = value.toString().toLowerCase();
+          return calloutValue.includes(filterValue);
         });
+      });
+      logDebug('After filtering:', filteredCallouts.length, 'callouts');
+    }
+    
+    // Calculate statistics
+    const stats = calculateStats(filteredCallouts);
+    logDebug('Statistics:', stats);
+    
+    const result = {
+      callouts: filteredCallouts,
+      stats: stats,
+      debug: {
+        totalRows: lastRow,
+        totalCols: lastCol,
+        totalHeaders: allHeaders.length,
+        validHeaders: validHeaders.length,
+        dataRowsFound: dataRows.length,
+        rowsProcessed: processedRows,
+        rowsSkipped: skippedRows,
+        finalCallouts: filteredCallouts.length,
+        fieldsPerCallout: callouts.length > 0 ? callouts[0]._totalFields : 0,
+        timestamp: new Date().toISOString(),
+        validationMethod: 'improved_key_field_check',
+        corsEnabled: true,
+        githubPagesCompatible: true
+      }
+    };
+    
+    logDebug('CORS-enabled read operation completed successfully');
+    logDebug('Response data size:', JSON.stringify(result).length, 'characters');
+    
+    return createCORSResponse(true, 'Complete callout data retrieved successfully with CORS', result);
+    
+  } catch (error) {
+    logDebug('CORS-enabled read operation failed:', error.toString());
+    return createCORSResponse(false, 'Read failed: ' + error.toString());
+  }
+}
 
-        function setupEventListeners() {
-            // Search functionality
-            document.getElementById('searchInput').addEventListener('input', function() {
-                applyFilters();
-            });
-
-            // Filter buttons
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    currentFilter = this.dataset.filter;
-                    applyFilters();
-                });
-            });
-
-            // Stat cards as filters
-            document.querySelectorAll('.stat-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const filter = this.dataset.filter;
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
-                    document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('active'));
-                    this.classList.add('active');
-                    currentFilter = filter;
-                    applyFilters();
-                });
-            });
-
-            // Modal clicks
-            window.onclick = function(event) {
-                const modal = document.getElementById('jobModal');
-                const editModal = document.getElementById('editModal');
-                if (event.target == modal) {
-                    closeModal();
-                }
-                if (event.target == editModal) {
-                    closeEditModal();
-                }
-            };
-        }
-
-        async function loadData() {
-            try {
-                console.log('Loading data from API:', CONFIG.APPS_SCRIPT_URL);
-                document.getElementById('jobsContainer').innerHTML = '<div class="loading">Loading job data...</div>';
-
-                const response = await fetch(`${CONFIG.APPS_SCRIPT_URL}?action=read`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log('API Response:', data);
-
-                if (data.success && data.data && data.data.callouts) {
-                    // Map API data to frontend format
-                    allJobs = data.data.callouts.map(callout => ({
-                        calloutId: callout['Callout ID'] || callout.calloutId || 'Unknown',
-                        ticketNumber: callout['Ticket Number'] || callout.ticketNumber || '',
-                        status: callout.Status || callout.status || 'Pending',
-                        timestamp: callout.Timestamp || callout.timestamp || '',
-                        client: callout.Customer || callout.client || '',
-                        rigNumber: callout['RIG Number'] || callout.rigNumber || '',
-                        wellName: callout['Well Name'] || callout.wellName || '',
-                        wellId: callout['Well ID'] || callout.wellId || '',
-                        fieldName: callout['Field Name'] || callout.fieldName || '',
-                        serviceType: callout['Service Type'] || callout.serviceType || '',
-                        holeSection: callout['Hole Section'] || callout.holeSection || '',
-                        casingSize: callout['Casing Size'] || callout.casingSize || '',
-                        wellProfile: callout['Well Profile'] || callout.wellProfile || '',
-                        latitude: callout.Latitude || callout.latitude || '',
-                        longitude: callout.Longitude || callout.longitude || '',
-                        surveyStartDepth: callout['Survey Start Depth'] || callout.surveyStartDepth || '',
-                        surveyEndDepth: callout['Survey End Depth'] || callout.surveyEndDepth || '',
-                        surveyInterval: callout['Survey Interval'] || callout.surveyInterval || '',
-                        rosDate: callout['ROS Date'] || callout.rosDate || '',
-                        rosStatus: callout['ROS Status'] || callout.rosStatus || '',
-                        equipmentDate: callout['Equipment Required Date'] || callout.equipmentDate || '',
-                        equipmentTime: callout['Equipment Required Time'] || callout.equipmentTime || '',
-                        crewDate: callout['Crew Required Date'] || callout.crewDate || '',
-                        crewTime: callout['Crew Required Time'] || callout.crewTime || '',
-                        contactPerson: callout['Contact Person'] || callout['Callout Completed By'] || callout.contactPerson || '',
-                        designation: callout.Designation || callout.designation || '',
-                        contactPhone: callout['Contact Number'] || callout.contactPhone || '',
-                        comments: callout.Comments || callout.comments || '',
-                        authorization: callout.Authorization || callout.authorization || '',
-                        priority: callout.Priority || callout.Urgency || callout.priority || 'Normal',
-                        h2sLevel: callout['H2S Level'] || callout.h2sLevel || '0',
-                        lastUpdated: callout['Last Updated'] || callout.lastUpdated || new Date().toLocaleString(),
-                        urgency: callout.Urgency || callout.urgency || 'Normal',
-                        dataCompleteness: callout['Data Completeness'] || callout.dataCompleteness || '0',
-                        ackStatus: callout['Acknowledgment Status'] || callout.ackStatus || 'PENDING',
-                        pdfLink: callout['PDF Drive Link'] || callout.pdfLink || '',
-                        summary: callout.Summary || callout.summary || '',
-                        originalSubject: callout['Original Subject'] || callout.originalSubject || '',
-                        // Add all the additional fields for completeness
-                        ...callout
-                    }));
-
-                    console.log(`Loaded ${allJobs.length} jobs successfully`);
-                    
-                    // Update stats using API data
-                    updateStatsFromAPI(data.data.stats);
-                    
-                    // Apply filters and render
-                    applyFilters();
-                    updateLastUpdated();
-                } else {
-                    throw new Error(data.message || 'Invalid response format');
-                }
-            } catch (error) {
-                console.error('Error loading data:', error);
-                document.getElementById('jobsContainer').innerHTML = `
-                    <div class="error-container">
-                        <h3>Error Loading Data</h3>
-                        <p>Failed to load job data from API. Error: ${error.message}</p>
-                        <button onclick="loadData()" style="margin-top: 15px; padding: 10px 20px; background: #8B0000; color: white; border: none; border-radius: 8px; cursor: pointer;">Retry</button>
-                    </div>
-                `;
-            }
-        }
-
-        function updateStatsFromAPI(apiStats) {
-            if (!apiStats) {
-                updateStats(); // Fallback to local calculation
-                return;
-            }
-
-            document.getElementById('totalJobs').textContent = apiStats.total || 0;
-            document.getElementById('newJobs').textContent = apiStats.new || 0;
-            document.getElementById('pendingJobs').textContent = apiStats.pending || 0;
-            document.getElementById('approvedJobs').textContent = apiStats.approved || 0;
-        }
-
-        function updateStats() {
-            const stats = {
-                total: allJobs.length,
-                new: allJobs.filter(j => getStatusClass(j.status) === 'new').length,
-                pending: allJobs.filter(j => getStatusClass(j.status) === 'pending' || getStatusClass(j.status) === 'pending_approval').length,
-                approved: allJobs.filter(j => getStatusClass(j.status) === 'approved' || getStatusClass(j.status) === 'confirmed' || getStatusClass(j.status) === 'completed').length
-            };
-
-            document.getElementById('totalJobs').textContent = stats.total;
-            document.getElementById('newJobs').textContent = stats.new;
-            document.getElementById('pendingJobs').textContent = stats.pending;
-            document.getElementById('approvedJobs').textContent = stats.approved;
-        }
-
-        function applyFilters() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            
-            filteredJobs = allJobs.filter(job => {
-                // Text search filter
-                const matchesSearch = !searchTerm || 
-                    job.calloutId.toLowerCase().includes(searchTerm) ||
-                    job.client.toLowerCase().includes(searchTerm) ||
-                    job.wellName.toLowerCase().includes(searchTerm) ||
-                    job.rigNumber.toLowerCase().includes(searchTerm) ||
-                    job.fieldName.toLowerCase().includes(searchTerm);
-
-                // Status filter
-                const statusClass = getStatusClass(job.status);
-                const matchesFilter = currentFilter === 'all' || 
-                    (currentFilter === 'new' && statusClass === 'new') ||
-                    (currentFilter === 'pending' && (statusClass === 'pending' || statusClass === 'pending_approval')) ||
-                    (currentFilter === 'approved' && (statusClass === 'approved' || statusClass === 'confirmed' || statusClass === 'completed')) ||
-                    (currentFilter === 'completed' && statusClass === 'completed');
-
-                return matchesSearch && matchesFilter;
-            });
-
-            renderJobs();
-        }
-
-        function renderJobs() {
-            const container = document.getElementById('jobsContainer');
-            
-            if (filteredJobs.length === 0) {
-                container.innerHTML = '<div class="no-results">No jobs found matching your criteria.</div>';
-                return;
-            }
-
-            const jobsHTML = filteredJobs.map(job => `
-                <div class="job-card" onclick="openJobModal('${job.calloutId}')">
-                    <div class="card-header">
-                        <div class="job-id">${job.calloutId}</div>
-                        <div class="status-badge status-${getStatusClass(job.status)}">${formatStatus(job.status)}</div>
-                    </div>
-                    
-                    <div class="card-content">
-                        <div class="job-title">${job.client} - ${job.wellName || 'Unknown Well'}</div>
-                        
-                        <div class="job-details">
-                            <div class="detail-item">
-                                <span class="detail-label">RIG:</span> ${job.rigNumber || 'Not specified'}
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Service:</span> ${job.serviceType || 'Not specified'}
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Field:</span> ${job.fieldName || 'Not specified'}
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-label">Priority:</span> ${job.priority || 'Normal'}
-                            </div>
-                        </div>
-
-                        ${job.rosDate ? `
-                        <div class="ros-section">
-                            <div class="ros-date">ROS: ${job.rosDate}</div>
-                            <div class="ros-status">Status: ${job.rosStatus || 'TBC'}</div>
-                        </div>
-                        ` : ''}
-
-                        ${job.summary ? `
-                        <div style="margin-top: 10px; font-size: 0.85rem; color: #666; font-style: italic;">
-                            ${job.summary.length > 100 ? job.summary.substring(0, 100) + '...' : job.summary}
-                        </div>
-                        ` : ''}
-                    </div>
-
-                    <div class="card-actions">
-                        <button class="btn-primary" onclick="event.stopPropagation(); openJobModal('${job.calloutId}')">
-                            View Details
-                        </button>
-                        ${job.status !== 'Completed' ? `
-                        <button class="btn-complete" onclick="event.stopPropagation(); completeJobFromCard('${job.calloutId}')">
-                            Complete
-                        </button>
-                        ` : ''}
-                    </div>
-                </div>
-            `).join('');
-
-            container.innerHTML = jobsHTML;
-        }
-
-        function formatStatus(status) {
-            if (!status) return 'Pending';
-            
-            const statusMap = {
-                'PENDING_APPROVAL': 'Pending Approval',
-                'NEW': 'New',
-                'APPROVED': 'Approved',
-                'COMPLETED': 'Completed',
-                'CONFIRMED': 'Confirmed',
-                'UPDATED': 'Updated'
-            };
-            
-            return statusMap[status.toUpperCase()] || status.replace(/_/g, ' ');
-        }
-
-        function openJobModal(calloutId) {
-            const job = allJobs.find(j => j.calloutId === calloutId);
-            if (!job) return;
-
-            currentJob = job;
-            document.getElementById('modalTitle').textContent = `Job ${job.calloutId}`;
-            
-            const modalBody = document.getElementById('modalBody');
-            modalBody.innerHTML = `
-                <div class="detail-grid">
-                    <!-- 1. Basic Information -->
-                    <div class="detail-section">
-                        <div class="section-title">1. Basic Information</div>
-                        <div class="detail-item">
-                            <div class="detail-label">Callout ID</div>
-                            <div class="detail-value">${job.calloutId}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Ticket Number</div>
-                            <div class="detail-value">${job.ticketNumber || 'Not assigned'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Status</div>
-                            <div class="detail-value status-badge status-${getStatusClass(job.status)}">${formatStatus(job.status)}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Created</div>
-                            <div class="detail-value">${formatDateTime(job.timestamp)}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Last Updated</div>
-                            <div class="detail-value">${formatDateTime(job.lastUpdated)}</div>
-                        </div>
-                    </div>
-
-                    <!-- 2. Client & Location -->
-                    <div class="detail-section">
-                        <div class="section-title">2. Client & Location</div>
-                        <div class="detail-item">
-                            <div class="detail-label">Customer</div>
-                            <div class="detail-value">${job.client || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">RIG Number</div>
-                            <div class="detail-value">${job.rigNumber || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Well Name</div>
-                            <div class="detail-value">${job.wellName || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Well ID</div>
-                            <div class="detail-value">${job.wellId || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Field Name</div>
-                            <div class="detail-value">${job.fieldName || 'Not specified'}</div>
-                        </div>
-                    </div>
-
-                    <!-- 3. Technical Details -->
-                    <div class="detail-section">
-                        <div class="section-title">3. Technical Details</div>
-                        <div class="detail-item">
-                            <div class="detail-label">Service Type</div>
-                            <div class="detail-value">${job.serviceType || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Hole Section</div>
-                            <div class="detail-value">${job.holeSection || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Casing Size</div>
-                            <div class="detail-value">${job.casingSize || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Well Profile</div>
-                            <div class="detail-value">${job.wellProfile || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">H2S Level</div>
-                            <div class="detail-value">${job.h2sLevel || '0'} ppm</div>
-                        </div>
-                    </div>
-
-                    <!-- 4. Survey Information -->
-                    <div class="detail-section">
-                        <div class="section-title">4. Survey Information</div>
-                        <div class="detail-item">
-                            <div class="detail-label">Survey Start Depth</div>
-                            <div class="detail-value">${job.surveyStartDepth || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Survey End Depth</div>
-                            <div class="detail-value">${job.surveyEndDepth || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Survey Interval</div>
-                            <div class="detail-value">${job.surveyInterval || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Latitude</div>
-                            <div class="detail-value">${job.latitude || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Longitude</div>
-                            <div class="detail-value">${job.longitude || 'Not specified'}</div>
-                        </div>
-                    </div>
-
-                    <!-- 5. Scheduling -->
-                    <div class="detail-section">
-                        <div class="section-title">5. Scheduling</div>
-                        <div class="detail-item">
-                            <div class="detail-label">ROS Date</div>
-                            <div class="detail-value">${job.rosDate || 'Not scheduled'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">ROS Status</div>
-                            <div class="detail-value">${job.rosStatus || 'TBC'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Equipment Required</div>
-                            <div class="detail-value">${job.equipmentDate ? `${job.equipmentDate} ${job.equipmentTime || ''}` : 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Crew Required</div>
-                            <div class="detail-value">${job.crewDate ? `${job.crewDate} ${job.crewTime || ''}` : 'Not specified'}</div>
-                        </div>
-                    </div>
-
-                    <!-- 6. Contact Information -->
-                    <div class="detail-section">
-                        <div class="section-title">6. Contact Information</div>
-                        <div class="detail-item">
-                            <div class="detail-label">Contact Person</div>
-                            <div class="detail-value">${job.contactPerson || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Designation</div>
-                            <div class="detail-value">${job.designation || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Contact Phone</div>
-                            <div class="detail-value">${job.contactPhone || 'Not specified'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Priority</div>
-                            <div class="detail-value">${job.priority || 'Normal'}</div>
-                        </div>
-                    </div>
-                </div>
-
-                ${job.summary ? `
-                <div class="detail-section" style="margin-top: 20px;">
-                    <div class="section-title">Summary</div>
-                    <div class="detail-value">${job.summary}</div>
-                </div>
-                ` : ''}
-
-                ${job.comments ? `
-                <div class="detail-section" style="margin-top: 20px;">
-                    <div class="section-title">Comments</div>
-                    <div class="detail-value">${job.comments}</div>
-                </div>
-                ` : ''}
-
-                ${job.pdfLink ? `
-                <div class="detail-section" style="margin-top: 20px;">
-                    <div class="section-title">Attachments</div>
-                    <div class="detail-item">
-                        <a href="${job.pdfLink}" target="_blank" style="color: #8B0000; text-decoration: none; font-weight: 600;">
-                            📄 View PDF Document
-                        </a>
-                    </div>
-                </div>
-                ` : ''}
-
-                <div class="detail-section" style="margin-top: 20px;">
-                    <div class="section-title">System Information</div>
-                    <div class="detail-item">
-                        <div class="detail-label">Data Completeness</div>
-                        <div class="detail-value">${job.dataCompleteness || '0'}%</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Acknowledgment Status</div>
-                        <div class="detail-value">${job.ackStatus || 'PENDING'}</div>
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('jobModal').style.display = 'block';
-        }
-
-        function formatDateTime(dateStr) {
-            if (!dateStr) return 'Not specified';
-            try {
-                const date = new Date(dateStr);
-                if (isNaN(date.getTime())) return dateStr;
-                return date.toLocaleString();
-            } catch {
-                return dateStr;
-            }
-        }
-
-        function openEditModal() {
-            if (!currentJob) return;
-            
-            const editModalBody = document.getElementById('editModalBody');
-            editModalBody.innerHTML = `
-                <form id="editForm" class="edit-form">
-                    <!-- 1. Basic Information -->
-                    <div class="detail-section detail-section-1">
-                        <div class="section-title">1. Basic Information</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Callout ID</div>
-                                <input type="text" class="edit-input" name="calloutId" value="${currentJob.calloutId}" readonly>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Ticket Number</div>
-                                <input type="text" class="edit-input" name="ticketNumber" value="${currentJob.ticketNumber || ''}">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 2. Contact Information -->
-                    <div class="detail-section detail-section-2">
-                        <div class="section-title">2. Contact Information</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Contact Person</div>
-                                <input type="text" class="edit-input" name="contactPerson" value="${currentJob.contactPerson || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Designation</div>
-                                <input type="text" class="edit-input" name="designation" value="${currentJob.designation || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Contact Phone</div>
-                                <input type="tel" class="edit-input" name="contactPhone" value="${currentJob.contactPhone || ''}">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 3. Scheduling -->
-                    <div class="detail-section detail-section-3">
-                        <div class="section-title">3. Scheduling</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">ROS Date</div>
-                                <input type="text" class="edit-input" name="rosDate" value="${currentJob.rosDate || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">ROS Status</div>
-                                <select class="edit-select" name="rosStatus">
-                                    <option value="TBC" ${currentJob.rosStatus === 'TBC' ? 'selected' : ''}>TBC</option>
-                                    <option value="CONFIRMED" ${currentJob.rosStatus === 'CONFIRMED' ? 'selected' : ''}>Confirmed</option>
-                                    <option value="CANCELLED" ${currentJob.rosStatus === 'CANCELLED' ? 'selected' : ''}>Cancelled</option>
-                                    <option value="POSTPONED" ${currentJob.rosStatus === 'POSTPONED' ? 'selected' : ''}>Postponed</option>
-                                </select>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Equipment Required Date</div>
-                                <input type="date" class="edit-input" name="equipmentDate" value="${currentJob.equipmentDate || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Equipment Required Time</div>
-                                <input type="time" class="edit-input" name="equipmentTime" value="${currentJob.equipmentTime || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Crew Required Date</div>
-                                <input type="date" class="edit-input" name="crewDate" value="${currentJob.crewDate || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Crew Required Time</div>
-                                <input type="time" class="edit-input" name="crewTime" value="${currentJob.crewTime || ''}">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 4. Comments & Notes -->
-                    <div class="detail-section detail-section-4">
-                        <div class="section-title">4. Comments & Notes</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Comments</div>
-                                <textarea class="edit-textarea" name="comments" placeholder="Add any comments or notes...">${currentJob.comments || ''}</textarea>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Authorization</div>
-                                <input type="text" class="edit-input" name="authorization" value="${currentJob.authorization || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Priority</div>
-                                <select class="edit-select" name="priority">
-                                    <option value="Normal" ${currentJob.priority === 'Normal' ? 'selected' : ''}>Normal</option>
-                                    <option value="High" ${currentJob.priority === 'High' ? 'selected' : ''}>High</option>
-                                    <option value="Urgent" ${currentJob.priority === 'Urgent' ? 'selected' : ''}>Urgent</option>
-                                    <option value="Low" ${currentJob.priority === 'Low' ? 'selected' : ''}>Low</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 5. General Information -->
-                    <div class="detail-section detail-section-5">
-                        <div class="section-title">5. General Information</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Customer</div>
-                                <input type="text" class="edit-input" name="client" value="${currentJob.client || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">RIG Number</div>
-                                <input type="text" class="edit-input" name="rigNumber" value="${currentJob.rigNumber || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Well Name</div>
-                                <input type="text" class="edit-input" name="wellName" value="${currentJob.wellName || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Hole Section</div>
-                                <input type="text" class="edit-input" name="holeSection" value="${currentJob.holeSection || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Well ID</div>
-                                <input type="text" class="edit-input" name="wellId" value="${currentJob.wellId || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Field Name</div>
-                                <input type="text" class="edit-input" name="fieldName" value="${currentJob.fieldName || ''}">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 6. Well Information -->
-                    <div class="detail-section detail-section-6">
-                        <div class="section-title">6. Well Information</div>
-                        <div class="detail-grid">
-                            <div class="detail-item">
-                                <div class="detail-label">Latitude</div>
-                                <input type="text" class="edit-input" name="latitude" value="${currentJob.latitude || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Longitude</div>
-                                <input type="text" class="edit-input" name="longitude" value="${currentJob.longitude || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Casing Size</div>
-                                <input type="text" class="edit-input" name="casingSize" value="${currentJob.casingSize || ''}">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Well Profile</div>
-                                <select class="edit-select" name="wellProfile">
-                                    <option value="Vertical" ${currentJob.wellProfile === 'Vertical' ? 'selected' : ''}>Vertical</option>
-                                    <option value="Horizontal" ${currentJob.wellProfile === 'Horizontal' ? 'selected' : ''}>Horizontal</option>
-                                    <option value="Directional" ${currentJob.wellProfile === 'Directional' ? 'selected' : ''}>Directional</option>
-                                    <option value="Deviated" ${currentJob.wellProfile === 'Deviated' ? 'selected' : ''}>Deviated</option>
-                                </select>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">H2S Level</div>
-                                <input type="number" class="edit-input" name="h2sLevel" value="${currentJob.h2sLevel || '0'}" min="0">
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Job Status</div>
-                                <select class="edit-select" name="status">
-                                    <option value="New Callout" ${currentJob.status === 'New Callout' ? 'selected' : ''}>New Callout</option>
-                                    <option value="Approved" ${currentJob.status === 'Approved' ? 'selected' : ''}>Approved</option>
-                                    <option value="Pending" ${currentJob.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                                    <option value="PENDING_APPROVAL" ${currentJob.status === 'PENDING_APPROVAL' ? 'selected' : ''}>Pending Approval</option>
-                                    <option value="UPDATED" ${currentJob.status === 'UPDATED' ? 'selected' : ''}>Updated</option>
-                                    <option value="Rejected" ${currentJob.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
-                                    <option value="Completed" ${currentJob.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="edit-actions">
-                        <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
-                        <button type="button" class="btn-save" onclick="saveChanges()">Save Changes</button>
-                    </div>
-                </form>
-            `;
-
-            document.getElementById('editModal').style.display = 'block';
-        }
-
-        async function saveChanges() {
-            const form = document.getElementById('editForm');
-            const formData = new FormData(form);
-            const updates = Object.fromEntries(formData);
-            
-            console.log('Saving changes:', updates);
-            
-            try {
-                // In production, this would make an API call to update the backend
-                // For now, we'll update locally and show a success message
-                
-                // Update current job
-                Object.assign(currentJob, updates);
-                
-                // Update in allJobs array
-                const jobIndex = allJobs.findIndex(j => j.calloutId === currentJob.calloutId);
-                if (jobIndex !== -1) {
-                    allJobs[jobIndex] = currentJob;
-                }
-                
-                // Refresh displays
-                renderJobs();
-                openJobModal(currentJob.calloutId); // Refresh modal
-                closeEditModal();
-                
-                alert('Changes saved successfully!');
-                
-                // TODO: Implement actual API call
-                // const response = await fetch(`${CONFIG.APPS_SCRIPT_URL}`, {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json'
-                //     },
-                //     body: JSON.stringify({
-                //         action: 'update',
-                //         calloutId: currentJob._rowIndex,
-                //         updates: updates
-                //     })
-                // });
-                
-            } catch (error) {
-                console.error('Error saving changes:', error);
-                alert('Failed to save changes. Please try again.');
-            }
-        }
-
-        function completeJob() {
-            if (!currentJob) return;
-            
-            currentJob.status = 'Completed';
-            const jobIndex = allJobs.findIndex(j => j.calloutId === currentJob.calloutId);
-            if (jobIndex !== -1) {
-                allJobs[jobIndex] = currentJob;
-            }
-            
-            renderJobs();
-            updateStats();
-            closeModal();
-            
-            alert(`Job ${currentJob.calloutId} marked as completed!`);
-        }
-
-        function completeJobFromCard(calloutId) {
-            const job = allJobs.find(j => j.calloutId === calloutId);
-            if (!job) return;
-            
-            job.status = 'Completed';
-            renderJobs();
-            updateStats();
-            
-            alert(`Job ${calloutId} marked as completed!`);
-        }
-
-        function closeModal() {
-            document.getElementById('jobModal').style.display = 'none';
-            currentJob = null;
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').style.display = 'none';
-        }
-
-        function getStatusClass(status) {
-            if (!status) return 'pending';
-            const s = status.toLowerCase();
-            if (s.includes('new')) return 'new';
-            if (s.includes('confirmed') || s.includes('approved')) return 'confirmed';
-            if (s.includes('completed')) return 'completed';
-            if (s.includes('pending_approval')) return 'pending_approval';
-            if (s.includes('updated')) return 'updated';
-            return 'pending';
-        }
-
-        function updateLastUpdated() {
-            const now = new Date();
-            const timeString = now.toLocaleString();
-            document.getElementById('lastUpdated').textContent = `Last updated: ${timeString}`;
-        }
-
-        function startAutoRefresh() {
-            refreshInterval = setInterval(() => {
-                console.log('Auto-refreshing data...');
-                loadData();
-            }, CONFIG.REFRESH_INTERVAL);
-        }
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-                closeEditModal();
-            }
+/**
+ * Handle reading in batches if full read fails (with CORS)
+ */
+function handleReadInBatches(sheet, lastRow, lastCol, filters) {
+  try {
+    logDebug('=== CORS-ENABLED BATCH READ APPROACH ===');
+    
+    const batchSize = 50;
+    const batches = Math.ceil(lastCol / batchSize);
+    
+    logDebug('Reading in', batches, 'batches of', batchSize, 'columns each');
+    
+    // First, get all headers
+    const allHeaders = [];
+    for (let batch = 0; batch < batches; batch++) {
+      const startCol = batch * batchSize + 1;
+      const endCol = Math.min((batch + 1) * batchSize, lastCol);
+      const headerBatch = sheet.getRange(1, startCol, 1, endCol - startCol + 1).getValues()[0];
+      allHeaders.push(...headerBatch);
+    }
+    
+    logDebug('Headers retrieved in batches:', allHeaders.length);
+    
+    // Then get all data
+    const allData = [];
+    for (let row = 1; row <= lastRow; row++) {
+      const rowData = [];
+      for (let batch = 0; batch < batches; batch++) {
+        const startCol = batch * batchSize + 1;
+        const endCol = Math.min((batch + 1) * batchSize, lastCol);
+        const dataBatch = sheet.getRange(row, startCol, 1, endCol - startCol + 1).getValues()[0];
+        rowData.push(...dataBatch);
+      }
+      allData.push(rowData);
+    }
+    
+    logDebug('Data retrieved in batches:', allData.length, 'rows');
+    
+    // Process the batched data with improved validation
+    const validHeaders = allHeaders.map(h => (h || '').toString().trim());
+    const dataRows = allData.slice(1);
+    
+    const callouts = [];
+    dataRows.forEach((row, index) => {
+      const calloutId = (row[0] || '').toString().trim();
+      const customer = (row[8] || '').toString().trim();
+      const rigNumber = (row[9] || '').toString().trim();
+      
+      const hasKeyData = calloutId !== '' || customer !== '' || rigNumber !== '';
+      const hasAnyData = row.some(cell => cell && cell.toString().trim() !== '');
+      const isValidRow = hasKeyData || hasAnyData;
+      
+      if (isValidRow) {
+        const callout = {};
+        validHeaders.forEach((header, colIndex) => {
+          if (header && colIndex < row.length) {
+            const value = (row[colIndex] || '').toString().trim();
+            callout[header] = value;
+          }
         });
+        callout._rowIndex = index + 2;
+        callouts.push(callout);
+      }
+    });
+    
+    const stats = calculateStats(callouts);
+    
+    return createCORSResponse(true, 'Batch read completed successfully with CORS', {
+      callouts: callouts,
+      stats: stats,
+      debug: {
+        method: 'batch',
+        batches: batches,
+        batchSize: batchSize,
+        totalHeaders: allHeaders.length,
+        totalCallouts: callouts.length,
+        corsEnabled: true,
+        githubPagesCompatible: true
+      }
+    });
+    
+  } catch (batchError) {
+    logDebug('CORS-enabled batch read failed:', batchError.toString());
+    return createCORSResponse(false, 'Batch read failed: ' + batchError.toString());
+  }
+}
 
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', function() {
-            if (refreshInterval) {
-                clearInterval(refreshInterval);
-            }
+// ============================================
+// CORS-ENABLED CRUD OPERATIONS
+// ============================================
+
+/**
+ * Handle CREATE operations with CORS
+ */
+function handleCreate(calloutData) {
+  try {
+    logDebug('=== STARTING CORS-ENABLED CREATE OPERATION ===');
+    
+    if (!calloutData) {
+      return createCORSResponse(false, 'No callout data provided');
+    }
+    
+    const sheet = getSheet();
+    const lastCol = sheet.getLastColumn();
+    
+    // Get ALL headers
+    const headerRow = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+    const headers = headerRow.map(h => (h || '').toString().trim());
+    
+    logDebug('Using all', headers.length, 'headers for create operation');
+    
+    // Create row data for ALL columns
+    const rowData = headers.map(header => {
+      if (header && calloutData[header] !== undefined) {
+        return calloutData[header];
+      }
+      
+      // Set default values
+      const lowerHeader = header.toLowerCase();
+      if (lowerHeader.includes('timestamp') || lowerHeader.includes('created')) {
+        return new Date().toISOString();
+      }
+      if (lowerHeader.includes('status')) {
+        return 'New Callout';
+      }
+      if (lowerHeader.includes('callout') && lowerHeader.includes('id')) {
+        return 'CL-' + Date.now();
+      }
+      
+      return '';
+    });
+    
+    sheet.appendRow(rowData);
+    const newRowIndex = sheet.getLastRow();
+    
+    logDebug('Row added at index:', newRowIndex);
+    
+    return createCORSResponse(true, 'Callout created successfully', {
+      rowIndex: newRowIndex,
+      calloutId: rowData[0] || 'CL-' + Date.now(),
+      totalFieldsSet: rowData.filter(v => v !== '').length,
+      corsEnabled: true
+    });
+    
+  } catch (error) {
+    logDebug('CORS-enabled create operation failed:', error.toString());
+    return createCORSResponse(false, 'Create failed: ' + error.toString());
+  }
+}
+
+/**
+ * Handle UPDATE operations with CORS
+ */
+function handleUpdate(calloutId, updates) {
+  try {
+    logDebug('=== STARTING CORS-ENABLED UPDATE OPERATION ===');
+    logDebug('Callout ID:', calloutId);
+    logDebug('Updates:', updates);
+    
+    if (!calloutId || !updates) {
+      return createCORSResponse(false, 'Missing calloutId or updates');
+    }
+    
+    const sheet = getSheet();
+    const lastCol = sheet.getLastColumn();
+    
+    // Get ALL headers
+    const headerRow = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+    const headers = headerRow.map(h => (h || '').toString().trim());
+    
+    // Assume calloutId is the row number
+    const rowIndex = parseInt(calloutId);
+    if (isNaN(rowIndex) || rowIndex < 2) {
+      return createCORSResponse(false, 'Invalid callout ID format');
+    }
+    
+    let updatedFields = [];
+    
+    // Update each field in ANY column
+    Object.entries(updates).forEach(([field, value]) => {
+      const colIndex = headers.indexOf(field);
+      if (colIndex >= 0) {
+        try {
+          sheet.getRange(rowIndex, colIndex + 1).setValue(value);
+          logDebug(`Updated ${field} (col ${colIndex + 1}) in row ${rowIndex}`);
+          updatedFields.push(field);
+        } catch (updateError) {
+          logDebug(`Failed to update ${field}:`, updateError.toString());
+        }
+      } else {
+        logDebug(`Header not found for field: ${field}`);
+      }
+    });
+    
+    // Update timestamp
+    const timestampCol = headers.findIndex(h => {
+      const lowerH = h.toLowerCase();
+      return lowerH.includes('updated') || lowerH.includes('modified') || lowerH.includes('timestamp');
+    });
+    
+    if (timestampCol >= 0) {
+      try {
+        sheet.getRange(rowIndex, timestampCol + 1).setValue(new Date().toISOString());
+        updatedFields.push('timestamp');
+      } catch (timestampError) {
+        logDebug('Failed to update timestamp:', timestampError.toString());
+      }
+    }
+    
+    return createCORSResponse(true, 'Callout updated successfully', {
+      rowIndex: rowIndex,
+      updatedFields: updatedFields,
+      totalHeadersAvailable: headers.length,
+      corsEnabled: true
+    });
+    
+  } catch (error) {
+    logDebug('CORS-enabled update operation failed:', error.toString());
+    return createCORSResponse(false, 'Update failed: ' + error.toString());
+  }
+}
+
+/**
+ * Handle DELETE operations with CORS
+ */
+function handleDelete(calloutId) {
+  try {
+    logDebug('=== STARTING CORS-ENABLED DELETE OPERATION ===');
+    
+    if (!calloutId) {
+      return createCORSResponse(false, 'No callout ID provided');
+    }
+    
+    const updates = { 
+      Status: 'Deleted',
+      Timestamp: new Date().toISOString()
+    };
+    
+    return handleUpdate(calloutId, updates);
+    
+  } catch (error) {
+    logDebug('CORS-enabled delete operation failed:', error.toString());
+    return createCORSResponse(false, 'Delete failed: ' + error.toString());
+  }
+}
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
+/**
+ * Calculate statistics from callouts
+ */
+function calculateStats(callouts) {
+  const stats = {
+    total: callouts.length,
+    new: 0,
+    approved: 0,
+    pending: 0,
+    urgent: 0
+  };
+  
+  callouts.forEach(callout => {
+    // Try multiple possible status column names
+    const status = (
+      callout.Status || 
+      callout.status || 
+      callout.State || 
+      callout.state || 
+      callout['Callout Status'] ||
+      ''
+    ).toLowerCase();
+    
+    // Try multiple possible priority column names
+    const priority = (
+      callout.Priority || 
+      callout.priority || 
+      callout.Urgency || 
+      callout.urgency || 
+      callout['Priority Level'] ||
+      ''
+    ).toLowerCase();
+    
+    // Count based on status
+    if (status.includes('new')) stats.new++;
+    if (status.includes('approved') || status.includes('complete')) stats.approved++;
+    if (status.includes('pending') || status.includes('waiting')) stats.pending++;
+    
+    // Count urgent items
+    if (priority.includes('urgent') || priority.includes('high')) stats.urgent++;
+  });
+  
+  return stats;
+}
+
+/**
+ * Debug logging
+ */
+function logDebug(message, ...args) {
+  if (DEBUG_MODE) {
+    console.log('[DEBUG]', new Date().toISOString(), message, ...args);
+  }
+}
+
+/**
+ * Handle debug info request with CORS
+ */
+function handleDebugInfo() {
+  try {
+    const sheetTest = testBasicSheetAccess();
+    
+    const debugInfo = {
+      sheetAccess: sheetTest.success,
+      sheetError: sheetTest.error || null,
+      sheetDimensions: sheetTest.success ? `${sheetTest.lastRow}x${sheetTest.lastCol}` : null,
+      spreadsheetName: sheetTest.spreadsheetName || null,
+      timestamp: new Date().toISOString(),
+      user: Session.getActiveUser().getEmail(),
+      corsEnabled: true,
+      githubPagesSupported: true,
+      apiVersion: '6.1',
+      config: {
+        SHEET_ID: SHEET_ID,
+        SHEET_NAME: SHEET_NAME,
+        DEBUG_MODE: DEBUG_MODE
+      }
+    };
+    
+    if (sheetTest.success) {
+      try {
+        const sheet = sheetTest.sheet;
+        const maxCols = Math.min(sheetTest.lastCol, 10);
+        const maxRows = Math.min(sheetTest.lastRow, 5);
+        const sampleData = sheet.getRange(1, 1, maxRows, maxCols).getValues();
+        debugInfo.sampleData = sampleData;
+        debugInfo.sampleDataSize = `${maxRows}x${maxCols}`;
+      } catch (e) {
+        debugInfo.sampleDataError = e.toString();
+      }
+    }
+    
+    return createCORSResponse(true, 'Debug info retrieved with CORS support', debugInfo);
+    
+  } catch (error) {
+    return createCORSResponse(false, 'Debug failed: ' + error.toString());
+  }
+}
+
+// ============================================
+// COMPREHENSIVE TEST FUNCTIONS WITH CORS
+// ============================================
+
+/**
+ * Test to check for specific important callout fields (with CORS)
+ */
+function testSpecificFields() {
+  logDebug('=== TESTING SPECIFIC CALLOUT FIELDS WITH CORS ===');
+  
+  try {
+    const result = handleRead({});
+    const content = JSON.parse(result.getBlob().getDataAsString());
+    
+    if (!content.success || content.data.callouts.length === 0) {
+      return 'FAILED: No callouts found for field testing';
+    }
+    
+    const sampleCallout = content.data.callouts[0];
+    const allFields = Object.keys(sampleCallout);
+    
+    logDebug('Total fields in callout:', allFields.length);
+    
+    const criticalFields = [
+      'Contact Person', 'Callout Completed By', 'Contact Number', 'Designation',
+      'Equipment Required Date', 'Equipment Required Time', 'Crew Required Date', 'Crew Required Time',
+      'Latitude', 'Longitude', 'Survey Start Depth', 'Survey End Depth', 'Survey Interval',
+      'Authorization', 'Comments', 'Priority', 'Urgency',
+      'Max Down Hole Temp', 'H2S Level', 'Well Profile'
+    ];
+    
+    const foundFields = [];
+    const missingFields = [];
+    
+    criticalFields.forEach(field => {
+      if (allFields.includes(field)) {
+        const value = sampleCallout[field];
+        foundFields.push({
+          field: field,
+          hasValue: value && value.toString().trim() !== '',
+          value: value ? value.toString().substring(0, 50) : 'EMPTY'
         });
-    </script>
-</body>
-</html>
+      } else {
+        missingFields.push(field);
+      }
+    });
+    
+    const summary = `
+CORS-ENABLED FIELD TEST SUMMARY:
+- Total fields: ${allFields.length}
+- Critical fields found: ${foundFields.length}/${criticalFields.length}
+- Fields with data: ${foundFields.filter(f => f.hasValue).length}
+- Missing fields: ${missingFields.length}
+- CORS: Enabled
+    `;
+    
+    logDebug(summary);
+    return summary;
+    
+  } catch (error) {
+    logDebug('❌ CORS field test error:', error.toString());
+    return 'ERROR: ' + error.toString();
+  }
+}
+
+/**
+ * Quick test with full data and CORS
+ */
+function quickTestFull() {
+  logDebug('=== QUICK TEST WITH FULL DATA AND CORS ===');
+  
+  try {
+    const sheetTest = testBasicSheetAccess();
+    logDebug('Sheet access:', sheetTest.success ? '✅' : '❌');
+    
+    if (!sheetTest.success) {
+      return 'FAILED: ' + sheetTest.error;
+    }
+    
+    logDebug('Sheet dimensions:', sheetTest.lastRow, 'x', sheetTest.lastCol);
+    
+    const readResult = handleRead({});
+    const readBlob = readResult.getBlob().getDataAsString();
+    const readContent = JSON.parse(readBlob);
+    
+    if (readContent.success) {
+      logDebug('✅ CORS-enabled full read successful');
+      logDebug('Total callouts:', readContent.data.callouts.length);
+      logDebug('CORS enabled:', readContent.data.debug.corsEnabled);
+      logDebug('GitHub Pages compatible:', readContent.data.debug.githubPagesCompatible);
+      
+      return `SUCCESS: Found ${readContent.data.callouts.length} callouts with CORS enabled`;
+    } else {
+      logDebug('❌ CORS-enabled full read failed:', readContent.message);
+      return 'FAILED: ' + readContent.message;
+    }
+    
+  } catch (error) {
+    logDebug('❌ CORS quick test error:', error.toString());
+    return 'ERROR: ' + error.toString();
+  }
+}
+
+/**
+ * Quick test function - can be run manually (with CORS)
+ */
+function quickTest() {
+  logDebug('=== CORS-ENABLED QUICK TEST START ===');
+  
+  try {
+    // Test 1: Sheet access
+    logDebug('Test 1: Sheet access');
+    const sheetTest = testBasicSheetAccess();
+    logDebug('Sheet access result:', sheetTest.success);
+    
+    if (!sheetTest.success) {
+      logDebug('Sheet access failed:', sheetTest.error);
+      return 'FAILED: Sheet access error - ' + sheetTest.error;
+    }
+    
+    logDebug('✅ Sheet access successful');
+    logDebug('Sheet name:', sheetTest.spreadsheetName);
+    logDebug('Dimensions:', sheetTest.lastRow, 'x', sheetTest.lastCol);
+    
+    // Test 2: CORS-enabled read operation
+    logDebug('Test 2: CORS-enabled read operation');
+    const readResult = handleRead({});
+    const readBlob = readResult.getBlob().getDataAsString();
+    const readData = JSON.parse(readBlob);
+    logDebug('Read result:', readData.success);
+    
+    if (readData.success) {
+      logDebug('✅ CORS-enabled read operation successful');
+      logDebug('Callouts found:', readData.data.callouts.length);
+      logDebug('Stats:', readData.data.stats);
+      logDebug('CORS enabled:', readData.data.debug.corsEnabled);
+      logDebug('GitHub Pages compatible:', readData.data.debug.githubPagesCompatible);
+      
+      if (readData.data.callouts.length > 0) {
+        logDebug('Sample callout keys:', Object.keys(readData.data.callouts[0]).slice(0, 5));
+      }
+    } else {
+      logDebug('❌ CORS-enabled read operation failed:', readData.message);
+    }
+    
+    logDebug('=== CORS-ENABLED QUICK TEST COMPLETE ===');
+    return readData.success ? 
+      `SUCCESS: Found ${readData.data.callouts.length} callouts with CORS enabled and GitHub Pages support` : 
+      'FAILED: ' + readData.message;
+    
+  } catch (error) {
+    logDebug('❌ CORS test error:', error.toString());
+    return 'FAILED: ' + error.toString();
+  }
+}
+
+/**
+ * Simple sheet info function with CORS
+ */
+function getSheetInfo() {
+  try {
+    const sheetTest = testBasicSheetAccess();
+    
+    if (sheetTest.success) {
+      console.log('✅ SUCCESS WITH CORS');
+      console.log('Spreadsheet:', sheetTest.spreadsheetName);
+      console.log('Sheet:', SHEET_NAME);
+      console.log('Dimensions:', sheetTest.lastRow, 'rows x', sheetTest.lastCol, 'columns');
+      console.log('CORS: Enabled');
+      console.log('GitHub Pages: Supported');
+      
+      if (sheetTest.lastRow > 0) {
+        const headers = sheetTest.sheet.getRange(1, 1, 1, Math.min(sheetTest.lastCol, 10)).getValues()[0];
+        console.log('Sample headers:', headers.filter(h => h).slice(0, 5));
+      }
+      
+      return 'Sheet info logged to console with CORS support';
+    } else {
+      console.log('❌ FAILED:', sheetTest.error);
+      return sheetTest.error;
+    }
+    
+  } catch (error) {
+    console.log('❌ ERROR:', error.toString());
+    return error.toString();
+  }
+}
